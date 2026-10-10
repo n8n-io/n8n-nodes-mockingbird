@@ -1,0 +1,106 @@
+nodes/ProductCatalogue/generated/properties.ts
+  s_dfbabf402cf9db::t_426566de3f9664 83,207
+  s_dfbabf402cf9db::t_cdebf8869f112e 72-76,87-193
+  s_dfbabf402cf9db::t_2c702cbc10e951 12-14,27,33-36,45-48,57-60,80,204
+  s_dfbabf402cf9db::t_36613658f74da6 1-11,15-16,18-26,28-32,37-44,49-56,61-71,77-79,81-82,84-86,194-195,197-203,205-206,208-212
+  s_dfbabf402cf9db::t_d0db3944b93c8c 17,196
+nodes/ProductCatalogue/mockingbird.dark.svg
+  s_dfbabf402cf9db::t_2985b767fa1afa 1
+nodes/Helpdesk/mockingbird.dark.svg
+  s_dfbabf402cf9db::t_2985b767fa1afa 1
+.github/workflows/ci.yml
+  s_dfbabf402cf9db::t_28b9f437351e7d 1-39
+nodes/ProductCatalogue/MockingbirdProductCatalogue.node.ts
+  s_dfbabf402cf9db::t_f9394d6802d8e8 1-7,9-29
+  s_dfbabf402cf9db::t_0125a55f1a529e 8
+README.md
+  s_dfbabf402cf9db::t_28b9f437351e7d 1-31,33-34,49-68
+  s_dfbabf402cf9db::t_5c1dcaae65e9a7 32,35-48
+credentials/mockingbird.dark.svg
+  s_dfbabf402cf9db::t_2985b767fa1afa 1
+docs/HANDOFF.md
+  s_26763dc1d89645::t_7cc272e48452de 1-49
+nodes/Helpdesk/MockingbirdHelpdesk.node.json
+  s_dfbabf402cf9db::t_f9394d6802d8e8 1-14
+spec/openapi.json
+  s_dfbabf402cf9db::t_36613658f74da6 1
+nodes/ProductCatalogue/MockingbirdProductCatalogue.node.json
+  s_dfbabf402cf9db::t_f9394d6802d8e8 1-14
+nodes/Helpdesk/MockingbirdHelpdesk.node.ts
+  s_dfbabf402cf9db::t_f9394d6802d8e8 1-7,9-29
+  s_dfbabf402cf9db::t_0125a55f1a529e 8
+nodes/Helpdesk/mockingbird.svg
+  s_dfbabf402cf9db::t_2985b767fa1afa 1
+nodes/Orders/mockingbird.svg
+  s_dfbabf402cf9db::t_2985b767fa1afa 1
+nodes/Orders/MockingbirdOrders.node.ts
+  s_dfbabf402cf9db::t_0125a55f1a529e 8
+  s_dfbabf402cf9db::t_f9394d6802d8e8 1-7,9-29
+nodes/Orders/generated/properties.ts
+  s_dfbabf402cf9db::t_2c702cbc10e951 12-14,27,33-36,45-48,57-60,80,203,311
+  s_dfbabf402cf9db::t_426566de3f9664 83,206,314
+  s_dfbabf402cf9db::t_cdebf8869f112e 72-76,87-192,195-199,210-300
+  s_dfbabf402cf9db::t_d0db3944b93c8c 17,303
+  s_dfbabf402cf9db::t_36613658f74da6 1-11,15-16,18-26,28-32,37-44,49-56,61-71,77-79,81-82,84-86,193-194,200-202,204-205,207-209,301-302,304-310,312-313,315-319
+nodes/ProductCatalogue/mockingbird.svg
+  s_dfbabf402cf9db::t_2985b767fa1afa 1
+nodes/Helpdesk/generated/properties.ts
+  s_dfbabf402cf9db::t_d0db3944b93c8c 17,215,336,353,459,477,626
+  s_dfbabf402cf9db::t_36613658f74da6 1-11,15-16,18-26,28-32,37-44,49-56,61-68,73-80,85-92,97-107,113-115,117-118,120-122,210,212-214,216-229,231-232,234-254,256-257,259-279,281-282,284-288,294-296,298-299,301-303,334-335,337-343,345-346,348-352,354-360,362-363,365-369,375-377,379-380,382-384,457-458,460-466,468-469,471-476,478-491,493-494,496-516,518-519,521-541,543-544,546-566,568-569,571-591,593-594,596-616,618-619,621-625,627-633,635-636,638-658,660-661,663-667
+  s_dfbabf402cf9db::t_cdebf8869f112e 108-112,123-209,211,289-293,304-333,370-374,385-456
+  s_dfbabf402cf9db::t_426566de3f9664 119,233,258,283,300,347,364,381,470,495,520,545,570,595,620,637,662
+  s_dfbabf402cf9db::t_2c702cbc10e951 12-14,27,33-36,45-48,57-60,69-72,81-84,93-96,116,230,255,280,297,344,361,378,467,492,517,542,567,592,617,634,659
+nodes/Orders/MockingbirdOrders.node.json
+  s_dfbabf402cf9db::t_f9394d6802d8e8 1-14
+credentials/MockingbirdApi.credentials.ts
+  s_dfbabf402cf9db::t_f9394d6802d8e8 17
+  s_dfbabf402cf9db::t_46c807338330a9 2,18-34,46,49-50,58-62,66-75,77-91
+  s_dfbabf402cf9db::t_485685596ae8b3 63
+  s_dfbabf402cf9db::t_0125a55f1a529e 13-16
+  s_dfbabf402cf9db::t_5c1dcaae65e9a7 35-45,47-48,51-57,64-65,76
+scripts/generate.cjs
+  s_dfbabf402cf9db::t_cdebf8869f112e 99-117
+  s_dfbabf402cf9db::t_dab9af1a0367d6 97-98
+  s_dfbabf402cf9db::t_426566de3f9664 7-9,25-28,38-42,44-50,53-56,94-96,139-148
+  s_dfbabf402cf9db::t_36613658f74da6 1-6,10,12,16-17,129-138,149-158
+  s_dfbabf402cf9db::t_2c702cbc10e951 11,13-15,18-24,29-37,43,120-128
+  s_dfbabf402cf9db::t_d0db3944b93c8c 51-52,57-58,93,118-119
+  s_dfbabf402cf9db::t_25331ecfedd925 59-92
+nodes/Orders/mockingbird.dark.svg
+  s_dfbabf402cf9db::t_2985b767fa1afa 1
+CHANGELOG.md
+  s_dfbabf402cf9db::t_28b9f437351e7d 1-6
+package.json
+  s_dfbabf402cf9db::t_9d979dd9079833 25-26
+  s_dfbabf402cf9db::t_2acca85c56a0f4 44
+  s_dfbabf402cf9db::t_f9394d6802d8e8 38-40
+  s_dfbabf402cf9db::t_ecd81415797843 1-24,27-37,41-43,45-54
+LICENSE
+  s_dfbabf402cf9db::t_ecd81415797843 1-21
+credentials/mockingbird.svg
+  s_dfbabf402cf9db::t_2985b767fa1afa 1
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.2",
+  "base_commit_sha": "63f683315c456a303a62387325a91a2ad727626b",
+  "prompts": {},
+  "sessions": {
+    "s_26763dc1d89645": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "b8d9ab22-9734-471c-a130-be2503520472",
+        "model": "claude-sonnet-5-5"
+      },
+      "human_author": "Jamie Madden <digitalchild@gmail.com>"
+    },
+    "s_dfbabf402cf9db": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "8583a217-13b9-4fe7-84a5-4daed4508dce",
+        "model": "claude-sonnet-5-5"
+      },
+      "human_author": "Jamie Madden <digitalchild@gmail.com>"
+    }
+  }
+}
