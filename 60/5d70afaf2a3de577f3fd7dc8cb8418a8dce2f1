@@ -1,0 +1,17 @@
+nodes/ProductCatalogue/generated/properties.ts
+  ai_agent 44
+nodes/Orders/generated/properties.ts
+  ai_agent 44
+scripts/generate.cjs
+  ai_agent 174-175
+test/generated.test.cjs
+  ai_agent 42
+nodes/Helpdesk/generated/properties.ts
+  ai_agent 44
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.2",
+  "base_commit_sha": "605d70afaf2a3de577f3fd7dc8cb8418a8dce2f1",
+  "prompts": {}
+}
