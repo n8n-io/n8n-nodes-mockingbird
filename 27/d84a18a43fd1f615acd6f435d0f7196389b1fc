@@ -1,0 +1,31 @@
+.github/workflows/ci.yml
+  s_dfbabf402cf9db::t_56c4adeaa373bd 33
+scripts/generate.cjs
+  s_dfbabf402cf9db::t_56c4adeaa373bd 109,117
+  s_dfbabf402cf9db::t_2ba57b7e248915 110-116,118-124,161
+  s_dfbabf402cf9db::t_08e070b190fac2 93
+nodes/Orders/generated/properties.ts
+  s_dfbabf402cf9db::t_2ba57b7e248915 180
+credentials/MockingbirdApi.credentials.ts
+  s_dfbabf402cf9db::t_56c4adeaa373bd 48
+nodes/Helpdesk/generated/properties.ts
+  s_dfbabf402cf9db::t_2ba57b7e248915 199
+nodes/ProductCatalogue/generated/properties.ts
+  s_dfbabf402cf9db::t_2ba57b7e248915 181
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.2",
+  "base_commit_sha": "27d84a18a43fd1f615acd6f435d0f7196389b1fc",
+  "prompts": {},
+  "sessions": {
+    "s_dfbabf402cf9db": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "8583a217-13b9-4fe7-84a5-4daed4508dce",
+        "model": "claude-sonnet-5-5"
+      },
+      "human_author": "Jamie Madden <digitalchild@gmail.com>"
+    }
+  }
+}
