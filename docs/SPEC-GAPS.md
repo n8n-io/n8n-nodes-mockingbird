@@ -8,7 +8,7 @@ Found 2026-10-10 against spec version 1.0.0.
 
 The spec has no `enum` on any parameter or body field. Fields with a fixed set of values are plain strings. The nodes cannot offer dropdowns, and users must guess valid values.
 
-Values below were read from live seed data. They show what exists today. They are not confirmed lists, so the API owners must confirm them. Rare values may be missing.
+Values below were read from live seed data. They show what exists today. They are not confirmed lists. Confirm them against the API code before adding the enums. Rare values may be missing.
 
 | Endpoint | Field | Observed values |
 | --- | --- | --- |
