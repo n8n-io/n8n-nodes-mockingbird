@@ -86,8 +86,9 @@ export class MockingbirdApi implements ICredentialType {
 
 	test: ICredentialTestRequest = {
 		request: {
-			baseURL: '={{$credentials.baseUrl}}',
-			url: '/products',
+			baseURL:
+				'={{ ($credentials.baseUrl || "https://mockingbird.n8n.io/v1").replace(/\\/+$/, "") }}',
+			url: '/tickets',
 			qs: { limit: 1 },
 		},
 	};

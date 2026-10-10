@@ -37,7 +37,20 @@ export const generatedProperties: INodeProperties[] = [
 				"routing": {
 					"request": {
 						"method": "GET",
-						"url": "=/tickets"
+						"url": "=/tickets",
+						"qs": {
+							"paginate": false
+						}
+					},
+					"output": {
+						"postReceive": [
+							{
+								"type": "limit",
+								"properties": {
+									"maxResults": "={{ $parameter.returnAll ? 1000000 : $parameter.limit }}"
+								}
+							}
+						]
 					}
 				}
 			},
@@ -102,7 +115,47 @@ export const generatedProperties: INodeProperties[] = [
 				}
 			}
 		],
-		"default": ""
+		"default": "get-many"
+	},
+	{
+		"displayName": "Return All",
+		"name": "returnAll",
+		"type": "boolean",
+		"default": false,
+		"description": "Whether to return all results or only up to a given limit",
+		"displayOptions": {
+			"show": {
+				"resource": [
+					"ticket"
+				],
+				"operation": [
+					"get-many"
+				]
+			}
+		}
+	},
+	{
+		"displayName": "Limit",
+		"name": "limit",
+		"type": "number",
+		"typeOptions": {
+			"minValue": 1
+		},
+		"default": 50,
+		"description": "Max number of results to return",
+		"displayOptions": {
+			"show": {
+				"resource": [
+					"ticket"
+				],
+				"operation": [
+					"get-many"
+				],
+				"returnAll": [
+					false
+				]
+			}
+		}
 	},
 	{
 		"displayName": "Additional Fields",
@@ -124,8 +177,8 @@ export const generatedProperties: INodeProperties[] = [
 			{
 				"displayName": "Status",
 				"name": "status",
-				"default": "",
-				"type": "string",
+				"default": "open",
+				"type": "options",
 				"routing": {
 					"send": {
 						"type": "query",
@@ -133,13 +186,31 @@ export const generatedProperties: INodeProperties[] = [
 						"value": "={{ $value }}",
 						"propertyInDotNotation": false
 					}
-				}
+				},
+				"options": [
+					{
+						"name": "Open",
+						"value": "open"
+					},
+					{
+						"name": "Pending",
+						"value": "pending"
+					},
+					{
+						"name": "Resolved",
+						"value": "resolved"
+					},
+					{
+						"name": "Closed",
+						"value": "closed"
+					}
+				]
 			},
 			{
 				"displayName": "Priority",
 				"name": "priority",
-				"default": "",
-				"type": "string",
+				"default": "low",
+				"type": "options",
 				"routing": {
 					"send": {
 						"type": "query",
@@ -147,13 +218,31 @@ export const generatedProperties: INodeProperties[] = [
 						"value": "={{ $value }}",
 						"propertyInDotNotation": false
 					}
-				}
+				},
+				"options": [
+					{
+						"name": "Low",
+						"value": "low"
+					},
+					{
+						"name": "Normal",
+						"value": "normal"
+					},
+					{
+						"name": "High",
+						"value": "high"
+					},
+					{
+						"name": "Urgent",
+						"value": "urgent"
+					}
+				]
 			},
 			{
 				"displayName": "Category",
 				"name": "category",
-				"default": "",
-				"type": "string",
+				"default": "billing",
+				"type": "options",
 				"routing": {
 					"send": {
 						"type": "query",
@@ -161,52 +250,29 @@ export const generatedProperties: INodeProperties[] = [
 						"value": "={{ $value }}",
 						"propertyInDotNotation": false
 					}
-				}
-			},
-			{
-				"displayName": "Page",
-				"name": "page",
-				"description": "1-based page number",
-				"default": 1,
-				"type": "number",
-				"routing": {
-					"send": {
-						"type": "query",
-						"property": "page",
-						"value": "={{ $value }}",
-						"propertyInDotNotation": false
+				},
+				"options": [
+					{
+						"name": "Billing",
+						"value": "billing"
+					},
+					{
+						"name": "Defect",
+						"value": "defect"
+					},
+					{
+						"name": "Installation",
+						"value": "installation"
+					},
+					{
+						"name": "Shipping",
+						"value": "shipping"
+					},
+					{
+						"name": "Other",
+						"value": "other"
 					}
-				}
-			},
-			{
-				"displayName": "Limit",
-				"name": "limit",
-				"description": "Items per page (max 200)",
-				"default": 50,
-				"type": "number",
-				"routing": {
-					"send": {
-						"type": "query",
-						"property": "limit",
-						"value": "={{ $value }}",
-						"propertyInDotNotation": false
-					}
-				}
-			},
-			{
-				"displayName": "Paginate",
-				"name": "paginate",
-				"description": "Whether to return a paginated envelope. When off, the API returns the full set as a bare array.",
-				"default": true,
-				"type": "boolean",
-				"routing": {
-					"send": {
-						"type": "query",
-						"property": "paginate",
-						"value": "={{ $value }}",
-						"propertyInDotNotation": false
-					}
-				}
+				]
 			}
 		]
 	},
@@ -305,8 +371,8 @@ export const generatedProperties: INodeProperties[] = [
 			{
 				"displayName": "Priority",
 				"name": "priority",
-				"type": "string",
-				"default": "normal",
+				"type": "options",
+				"default": "low",
 				"routing": {
 					"send": {
 						"property": "priority",
@@ -314,13 +380,31 @@ export const generatedProperties: INodeProperties[] = [
 						"type": "body",
 						"value": "={{ $value }}"
 					}
-				}
+				},
+				"options": [
+					{
+						"name": "Low",
+						"value": "low"
+					},
+					{
+						"name": "Normal",
+						"value": "normal"
+					},
+					{
+						"name": "High",
+						"value": "high"
+					},
+					{
+						"name": "Urgent",
+						"value": "urgent"
+					}
+				]
 			},
 			{
 				"displayName": "Category",
 				"name": "category",
-				"type": "string",
-				"default": "other",
+				"type": "options",
+				"default": "billing",
 				"routing": {
 					"send": {
 						"property": "category",
@@ -328,7 +412,29 @@ export const generatedProperties: INodeProperties[] = [
 						"type": "body",
 						"value": "={{ $value }}"
 					}
-				}
+				},
+				"options": [
+					{
+						"name": "Billing",
+						"value": "billing"
+					},
+					{
+						"name": "Defect",
+						"value": "defect"
+					},
+					{
+						"name": "Installation",
+						"value": "installation"
+					},
+					{
+						"name": "Shipping",
+						"value": "shipping"
+					},
+					{
+						"name": "Other",
+						"value": "other"
+					}
+				]
 			}
 		]
 	},
@@ -414,8 +520,8 @@ export const generatedProperties: INodeProperties[] = [
 			{
 				"displayName": "Priority",
 				"name": "priority",
-				"type": "string",
-				"default": "",
+				"type": "options",
+				"default": "low",
 				"routing": {
 					"send": {
 						"property": "priority",
@@ -423,13 +529,31 @@ export const generatedProperties: INodeProperties[] = [
 						"type": "body",
 						"value": "={{ $value }}"
 					}
-				}
+				},
+				"options": [
+					{
+						"name": "Low",
+						"value": "low"
+					},
+					{
+						"name": "Normal",
+						"value": "normal"
+					},
+					{
+						"name": "High",
+						"value": "high"
+					},
+					{
+						"name": "Urgent",
+						"value": "urgent"
+					}
+				]
 			},
 			{
 				"displayName": "Status",
 				"name": "status",
-				"type": "string",
-				"default": "",
+				"type": "options",
+				"default": "open",
 				"routing": {
 					"send": {
 						"property": "status",
@@ -437,13 +561,31 @@ export const generatedProperties: INodeProperties[] = [
 						"type": "body",
 						"value": "={{ $value }}"
 					}
-				}
+				},
+				"options": [
+					{
+						"name": "Open",
+						"value": "open"
+					},
+					{
+						"name": "Pending",
+						"value": "pending"
+					},
+					{
+						"name": "Resolved",
+						"value": "resolved"
+					},
+					{
+						"name": "Closed",
+						"value": "closed"
+					}
+				]
 			},
 			{
 				"displayName": "Category",
 				"name": "category",
-				"type": "string",
-				"default": "",
+				"type": "options",
+				"default": "billing",
 				"routing": {
 					"send": {
 						"property": "category",
@@ -451,7 +593,29 @@ export const generatedProperties: INodeProperties[] = [
 						"type": "body",
 						"value": "={{ $value }}"
 					}
-				}
+				},
+				"options": [
+					{
+						"name": "Billing",
+						"value": "billing"
+					},
+					{
+						"name": "Defect",
+						"value": "defect"
+					},
+					{
+						"name": "Installation",
+						"value": "installation"
+					},
+					{
+						"name": "Shipping",
+						"value": "shipping"
+					},
+					{
+						"name": "Other",
+						"value": "other"
+					}
+				]
 			}
 		]
 	},
@@ -551,8 +715,8 @@ export const generatedProperties: INodeProperties[] = [
 		"required": true,
 		"displayName": "Priority",
 		"name": "priority",
-		"type": "string",
-		"default": "",
+		"type": "options",
+		"default": "low",
 		"routing": {
 			"send": {
 				"property": "priority",
@@ -570,14 +734,32 @@ export const generatedProperties: INodeProperties[] = [
 					"replace"
 				]
 			}
-		}
+		},
+		"options": [
+			{
+				"name": "Low",
+				"value": "low"
+			},
+			{
+				"name": "Normal",
+				"value": "normal"
+			},
+			{
+				"name": "High",
+				"value": "high"
+			},
+			{
+				"name": "Urgent",
+				"value": "urgent"
+			}
+		]
 	},
 	{
 		"required": true,
 		"displayName": "Status",
 		"name": "status",
-		"type": "string",
-		"default": "",
+		"type": "options",
+		"default": "open",
 		"routing": {
 			"send": {
 				"property": "status",
@@ -595,14 +777,32 @@ export const generatedProperties: INodeProperties[] = [
 					"replace"
 				]
 			}
-		}
+		},
+		"options": [
+			{
+				"name": "Open",
+				"value": "open"
+			},
+			{
+				"name": "Pending",
+				"value": "pending"
+			},
+			{
+				"name": "Resolved",
+				"value": "resolved"
+			},
+			{
+				"name": "Closed",
+				"value": "closed"
+			}
+		]
 	},
 	{
 		"required": true,
 		"displayName": "Category",
 		"name": "category",
-		"type": "string",
-		"default": "",
+		"type": "options",
+		"default": "billing",
 		"routing": {
 			"send": {
 				"property": "category",
@@ -620,7 +820,29 @@ export const generatedProperties: INodeProperties[] = [
 					"replace"
 				]
 			}
-		}
+		},
+		"options": [
+			{
+				"name": "Billing",
+				"value": "billing"
+			},
+			{
+				"name": "Defect",
+				"value": "defect"
+			},
+			{
+				"name": "Installation",
+				"value": "installation"
+			},
+			{
+				"name": "Shipping",
+				"value": "shipping"
+			},
+			{
+				"name": "Other",
+				"value": "other"
+			}
+		]
 	},
 	{
 		"displayName": "Ticket ID",

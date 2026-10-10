@@ -37,7 +37,20 @@ export const generatedProperties: INodeProperties[] = [
 				"routing": {
 					"request": {
 						"method": "GET",
-						"url": "=/products"
+						"url": "=/products",
+						"qs": {
+							"paginate": false
+						}
+					},
+					"output": {
+						"postReceive": [
+							{
+								"type": "limit",
+								"properties": {
+									"maxResults": "={{ $parameter.returnAll ? 1000000 : $parameter.limit }}"
+								}
+							}
+						]
 					}
 				}
 			},
@@ -66,7 +79,47 @@ export const generatedProperties: INodeProperties[] = [
 				}
 			}
 		],
-		"default": ""
+		"default": "get-many"
+	},
+	{
+		"displayName": "Return All",
+		"name": "returnAll",
+		"type": "boolean",
+		"default": false,
+		"description": "Whether to return all results or only up to a given limit",
+		"displayOptions": {
+			"show": {
+				"resource": [
+					"product"
+				],
+				"operation": [
+					"get-many"
+				]
+			}
+		}
+	},
+	{
+		"displayName": "Limit",
+		"name": "limit",
+		"type": "number",
+		"typeOptions": {
+			"minValue": 1
+		},
+		"default": 50,
+		"description": "Max number of results to return",
+		"displayOptions": {
+			"show": {
+				"resource": [
+					"product"
+				],
+				"operation": [
+					"get-many"
+				],
+				"returnAll": [
+					false
+				]
+			}
+		}
 	},
 	{
 		"displayName": "Additional Fields",
@@ -89,8 +142,8 @@ export const generatedProperties: INodeProperties[] = [
 				"displayName": "Category",
 				"name": "category",
 				"description": "Exact category filter",
-				"default": "",
-				"type": "string",
+				"default": "bearings",
+				"type": "options",
 				"routing": {
 					"send": {
 						"type": "query",
@@ -98,7 +151,33 @@ export const generatedProperties: INodeProperties[] = [
 						"value": "={{ $value }}",
 						"propertyInDotNotation": false
 					}
-				}
+				},
+				"options": [
+					{
+						"name": "Bearings",
+						"value": "bearings"
+					},
+					{
+						"name": "Compressors",
+						"value": "compressors"
+					},
+					{
+						"name": "Controls",
+						"value": "controls"
+					},
+					{
+						"name": "Pumps",
+						"value": "pumps"
+					},
+					{
+						"name": "Spares",
+						"value": "spares"
+					},
+					{
+						"name": "Valves",
+						"value": "valves"
+					}
+				]
 			},
 			{
 				"displayName": "Min Price (Cents)",
@@ -140,51 +219,6 @@ export const generatedProperties: INodeProperties[] = [
 					"send": {
 						"type": "query",
 						"property": "q",
-						"value": "={{ $value }}",
-						"propertyInDotNotation": false
-					}
-				}
-			},
-			{
-				"displayName": "Page",
-				"name": "page",
-				"description": "1-based page number",
-				"default": 1,
-				"type": "number",
-				"routing": {
-					"send": {
-						"type": "query",
-						"property": "page",
-						"value": "={{ $value }}",
-						"propertyInDotNotation": false
-					}
-				}
-			},
-			{
-				"displayName": "Limit",
-				"name": "limit",
-				"description": "Items per page (max 200)",
-				"default": 50,
-				"type": "number",
-				"routing": {
-					"send": {
-						"type": "query",
-						"property": "limit",
-						"value": "={{ $value }}",
-						"propertyInDotNotation": false
-					}
-				}
-			},
-			{
-				"displayName": "Paginate",
-				"name": "paginate",
-				"description": "Whether to return a paginated envelope. When off, the API returns the full set as a bare array.",
-				"default": true,
-				"type": "boolean",
-				"routing": {
-					"send": {
-						"type": "query",
-						"property": "paginate",
 						"value": "={{ $value }}",
 						"propertyInDotNotation": false
 					}

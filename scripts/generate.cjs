@@ -90,11 +90,109 @@ function collectOptional(properties) {
 	return kept;
 }
 
+// Valid values are not in the spec (see docs/SPEC-GAPS.md). Verified against the live API.
+const ENUMS = {
+	'Product Catalogue': {
+		category: ['bearings', 'compressors', 'controls', 'pumps', 'spares', 'valves'],
+	},
+	Helpdesk: {
+		status: ['open', 'pending', 'resolved', 'closed'],
+		priority: ['low', 'normal', 'high', 'urgent'],
+		category: ['billing', 'defect', 'installation', 'shipping', 'other'],
+	},
+	Orders: {
+		status: ['pending', 'paid', 'shipped', 'delivered', 'cancelled', 'refunded'],
+	},
+};
+
+const optionName = (v) => v.replace(/_/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase());
+
+function applyEnums(props, tag) {
+	const enums = ENUMS[tag] || {};
+	return props.map((p) => {
+		if (p.type === 'collection') return { ...p, options: applyEnums(p.options, tag) };
+		const values = enums[p.name];
+		if (!values || p.type !== 'string' || !p.routing) return p;
+		return {
+			...p,
+			type: 'options',
+			options: values.map((v) => ({ name: optionName(v), value: v })),
+			default: values[0],
+		};
+	});
+}
+
+// Paginated lists: replace page, limit, and paginate with Return All and Limit.
+// The API returns the full set as a bare array when `paginate=false`, which n8n splits into items.
+// Cursor lists keep their cursor fields and only get the `data` envelope unwrapped.
+function addListHandling(props) {
+	const out = [];
+	const opProp = props.find((p) => p.name === 'operation');
+	const routingFor = (value) => opProp.options.find((o) => o.value === value).routing;
+	for (const p of props) {
+		if (p.type !== 'collection') {
+			out.push(p);
+			continue;
+		}
+		const names = p.options.map((o) => o.name);
+		const op = p.displayOptions.show.operation[0];
+		const resource = p.displayOptions.show.resource;
+		const isOffset = ['page', 'limit', 'paginate'].every((n) => names.includes(n));
+		const isCursor = names.includes('cursor') && names.includes('limit');
+		if (isOffset) {
+			const rest = p.options.filter((o) => !['page', 'limit', 'paginate'].includes(o.name));
+			const show = { resource, operation: [op] };
+			out.push(
+				{
+					displayName: 'Return All',
+					name: 'returnAll',
+					type: 'boolean',
+					default: false,
+					description: 'Whether to return all results or only up to a given limit',
+					displayOptions: { show },
+				},
+				{
+					displayName: 'Limit',
+					name: 'limit',
+					type: 'number',
+					typeOptions: { minValue: 1 },
+					default: 50,
+					description: 'Max number of results to return',
+					displayOptions: { show: { ...show, returnAll: [false] } },
+				},
+			);
+			if (rest.length) out.push({ ...p, options: rest });
+			const routing = routingFor(op);
+			routing.request.qs = { ...(routing.request.qs || {}), paginate: false };
+			routing.output = {
+				postReceive: [
+					{
+						type: 'limit',
+						properties: { maxResults: '={{ $parameter.returnAll ? 1000000 : $parameter.limit }}' },
+					},
+				],
+			};
+			continue;
+		}
+		if (isCursor) {
+			routingFor(op).output = {
+				postReceive: [{ type: 'rootProperty', properties: { property: 'data' } }],
+			};
+		}
+		out.push(p);
+	}
+	return out;
+}
+
+function setOperationDefault(props) {
+	return props.map((p) => (p.name === 'operation' ? { ...p, default: p.options[0].value } : p));
+}
+
 function postProcess(properties, tag) {
 	// The builder gates fields on operation *names*; our option values are kebab-case.
 	const opNames = Object.values(OPERATIONS).map(([name]) => name);
 	const toValue = (v) => (opNames.includes(v) ? kebab(v) : v);
-	return collectOptional(
+	const collected = collectOptional(
 		properties
 			.filter((p) => p.type !== 'notice')
 			.map((p) => {
@@ -128,6 +226,7 @@ function postProcess(properties, tag) {
 				return out;
 			}),
 	);
+	return setOperationDefault(addListHandling(applyEnums(collected, tag)));
 }
 
 const operationParser = {

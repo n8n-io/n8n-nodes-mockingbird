@@ -18,7 +18,8 @@ export class MockingbirdProductCatalogue implements INodeType {
 		outputs: [NodeConnectionTypes.Main],
 		credentials: [{ name: 'mockingbirdApi', required: false }],
 		requestDefaults: {
-			baseURL: '={{$credentials?.baseUrl ?? "https://mockingbird.n8n.io/v1"}}',
+			baseURL:
+				'={{ ($credentials?.baseUrl || "https://mockingbird.n8n.io/v1").replace(/\\/+$/, "") }}',
 			headers: {
 				Accept: 'application/json',
 				'Content-Type': 'application/json',
