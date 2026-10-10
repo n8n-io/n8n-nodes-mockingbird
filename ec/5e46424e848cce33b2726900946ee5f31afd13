@@ -1,0 +1,36 @@
+nodes/Orders/MockingbirdOrders.node.ts
+  s_dfbabf402cf9db::t_6efaeb708d5934 11
+scripts/generate.cjs
+  s_dfbabf402cf9db::t_6efaeb708d5934 108,128,158,166-169,171,258-259
+nodes/Helpdesk/MockingbirdHelpdesk.node.ts
+  s_dfbabf402cf9db::t_6efaeb708d5934 11
+nodes/ProductCatalogue/MockingbirdProductCatalogue.node.ts
+  s_dfbabf402cf9db::t_6efaeb708d5934 11
+nodes/Orders/generated/properties.ts
+  s_dfbabf402cf9db::t_c3fb7b3b2f5a7e 3
+  s_dfbabf402cf9db::t_aa664f446e21d7 43-44,49,103-104
+nodes/ProductCatalogue/generated/properties.ts
+  s_dfbabf402cf9db::t_aa664f446e21d7 43-44,49,103-104
+  s_dfbabf402cf9db::t_c3fb7b3b2f5a7e 3
+nodes/Helpdesk/generated/properties.ts
+  s_dfbabf402cf9db::t_aa664f446e21d7 43-44,49,139-140
+  s_dfbabf402cf9db::t_c3fb7b3b2f5a7e 3
+nodes/shared/unwrapData.ts
+  s_dfbabf402cf9db::t_6efaeb708d5934 1-19
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.2",
+  "base_commit_sha": "ec5e46424e848cce33b2726900946ee5f31afd13",
+  "prompts": {},
+  "sessions": {
+    "s_dfbabf402cf9db": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "8583a217-13b9-4fe7-84a5-4daed4508dce",
+        "model": "claude-sonnet-5-5"
+      },
+      "human_author": "Jamie Madden <digitalchild@gmail.com>"
+    }
+  }
+}
