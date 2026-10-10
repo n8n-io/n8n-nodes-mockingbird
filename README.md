@@ -22,6 +22,8 @@ Follow the [installation guide](https://docs.n8n.io/integrations/community-nodes
 | Mockingbird Helpdesk | Get, Get Many, Create, Update, Replace, Add Comment | Required |
 | Mockingbird Orders | Get, Get Many, Get Many (Cursor) | Required |
 
+**Get Many (Cursor)** makes one request and returns the full `{ data, meta }` response. It does not follow `meta.next_cursor`. Pass the cursor back in Additional Fields to read the next page.
+
 ## Credentials
 
 Tier 1 APIs, such as Product Catalogue, need no credential. Tier 2 to 4 APIs need one.

@@ -1,12 +1,12 @@
 # OpenAPI spec gaps
 
-Gaps in `https://mockingbird.n8n.io/openapi.json` that affect the generated nodes. Close them in the Mockingbird API repo, then run `npm run generate`.
+Gaps in `https://mockingbird.n8n.io/openapi.json` that affect the generated nodes. Close them in the Mockingbird API repo, copy the new spec into this repo's `spec/openapi.json`, then run `npm run generate`.
 
 Found 2026-10-10 against spec version 1.0.0.
 
 ## 1. No enums anywhere
 
-The spec has no `enum` on any parameter or body field. Fields with a fixed set of values are plain strings. The nodes cannot offer dropdowns, and users must guess valid values.
+The spec has no `enum` on any parameter or body field. Fields with a fixed set of values are plain strings. Generated nodes cannot build dropdowns from the spec. Today `scripts/generate.cjs` hard-codes the `ENUMS` table for the pilot nodes, so users get dropdowns, but the lists can drift from the API.
 
 Values below were read from live seed data. They show what exists today. They are not confirmed lists. Confirm them against the API code before adding the enums. Rare values may be missing.
 

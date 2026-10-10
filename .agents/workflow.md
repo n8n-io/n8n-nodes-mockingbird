@@ -28,7 +28,7 @@ When asked to build or update a node in this project, follow these steps:
    - Confirm the plan, if you are not given one and are generating it
    - **Never start coding without a plan**
 4. Implement. Create or update:
-   - The node files (`nodes/<n>/<n>.node.ts`)
+   - The node wrapper files (`nodes/<n>/<n>.node.ts`). Operations and properties are generated into `nodes/<n>/generated/properties.ts`: change `scripts/generate.cjs` or `spec/openapi.json`, then run `npm run generate`. Never edit generated files by hand
    - The credentials files (`credentials/<n>.credentials.ts`)
    - Other files with helpers and extracted functions/classes
    - `package.json` (`n8n.nodes` and `n8n.credentials` entries)

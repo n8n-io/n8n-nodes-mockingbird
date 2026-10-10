@@ -23,7 +23,8 @@
 		"lint:fix": "n8n-node lint --fix",
 		"release": "n8n-node release",
 		"prepublishOnly": "n8n-node prerelease",
-		"generate": "node scripts/generate.cjs"
+		"generate": "node scripts/generate.cjs",
+		"test": "npm run build && node --test test/*.test.cjs"
 	},
 	"files": [
 		"dist"

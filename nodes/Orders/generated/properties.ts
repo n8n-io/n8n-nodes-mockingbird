@@ -180,7 +180,7 @@ export const generatedProperties: INodeProperties[] = [
 			{
 				"displayName": "Customer ID",
 				"name": "customer_id",
-				"default": 0,
+				"default": 1,
 				"type": "number",
 				"routing": {
 					"send": {
@@ -189,6 +189,9 @@ export const generatedProperties: INodeProperties[] = [
 						"value": "={{ $value }}",
 						"propertyInDotNotation": false
 					}
+				},
+				"typeOptions": {
+					"minValue": 1
 				}
 			},
 			{
@@ -284,7 +287,7 @@ export const generatedProperties: INodeProperties[] = [
 			{
 				"displayName": "Customer ID",
 				"name": "customer_id",
-				"default": 0,
+				"default": 1,
 				"type": "number",
 				"routing": {
 					"send": {
@@ -293,6 +296,9 @@ export const generatedProperties: INodeProperties[] = [
 						"value": "={{ $value }}",
 						"propertyInDotNotation": false
 					}
+				},
+				"typeOptions": {
+					"minValue": 1
 				}
 			},
 			{

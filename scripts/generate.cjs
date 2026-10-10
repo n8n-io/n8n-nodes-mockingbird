@@ -71,7 +71,12 @@ function collectOptional(properties) {
 			kept.push(p);
 			continue;
 		}
-		const { displayOptions, ...child } = p;
+		const { displayOptions, ...c } = p;
+		// ID filters reject 0, so an untouched default would fail with 422.
+		const child =
+			c.type === 'number' && /_id$/.test(c.name)
+				? { ...c, default: 1, typeOptions: { ...c.typeOptions, minValue: 1 } }
+				: c;
 		const key = op[0];
 		if (!byOp.has(key)) {
 			byOp.set(key, {

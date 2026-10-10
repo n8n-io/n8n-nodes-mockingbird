@@ -6,6 +6,9 @@ on:
     branches:
       - main
 
+permissions:
+  contents: read
+
 # Cancel in-progress runs for the same branch/PR to avoid wasting CI minutes.
 concurrency:
   group: ci-${{ github.ref }}
@@ -37,3 +40,6 @@ jobs:
 
       - name: Run build
         run: 'npm run build'
+
+      - name: Run tests
+        run: 'npm test'
