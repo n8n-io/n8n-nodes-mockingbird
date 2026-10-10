@@ -8,7 +8,7 @@ export class MockingbirdProductCatalogue implements INodeType {
 		icon: { light: 'file:mockingbird.svg', dark: 'file:mockingbird.dark.svg' },
 		group: ['transform'],
 		version: 1,
-		subtitle: '={{$parameter["operation"] + ": " + $parameter["resource"]}}',
+		subtitle: '={{$parameter["operation"].replace(/-/g, " ") + ": " + $parameter["resource"]}}',
 		description: 'Get products from the Mockingbird product catalogue',
 		defaults: {
 			name: 'Mockingbird Product Catalogue',

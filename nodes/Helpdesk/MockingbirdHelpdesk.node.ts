@@ -8,7 +8,7 @@ export class MockingbirdHelpdesk implements INodeType {
 		icon: { light: 'file:mockingbird.svg', dark: 'file:mockingbird.dark.svg' },
 		group: ['transform'],
 		version: 1,
-		subtitle: '={{$parameter["operation"] + ": " + $parameter["resource"]}}',
+		subtitle: '={{$parameter["operation"].replace(/-/g, " ") + ": " + $parameter["resource"]}}',
 		description: 'Manage support tickets in the Mockingbird helpdesk',
 		defaults: {
 			name: 'Mockingbird Helpdesk',
