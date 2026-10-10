@@ -39,6 +39,7 @@ for (const file of nodeFiles) {
 	test(`${name}: Get Many returns one item per row`, () => {
 		const many = operation.options.find((o) => o.value === 'get-many');
 		assert.ok(many.routing.request.qs.paginate, 'sends paginate');
+		assert.match(many.routing.request.qs.limit, /returnAll \? 200/, 'limit is never empty');
 		assert.strictEqual(many.routing.output.postReceive.length, 1);
 		assert.strictEqual(typeof many.routing.output.postReceive[0], 'function');
 	});

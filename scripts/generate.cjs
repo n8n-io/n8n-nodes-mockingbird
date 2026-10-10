@@ -171,7 +171,8 @@ function addListHandling(props) {
 			routing.request.qs = {
 				...(routing.request.qs || {}),
 				paginate: '={{ !$parameter.returnAll }}',
-				limit: '={{ $parameter.limit }}',
+				// The Limit field is hidden when Return All is on, so never send an empty value.
+				limit: '={{ $parameter.returnAll ? 200 : $parameter.limit }}',
 			};
 			routing.output = { postReceive: [UNWRAP] };
 			continue;

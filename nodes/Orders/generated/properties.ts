@@ -41,7 +41,7 @@ export const generatedProperties: INodeProperties[] = [
 						"url": "=/orders",
 						"qs": {
 							"paginate": "={{ !$parameter.returnAll }}",
-							"limit": "={{ $parameter.limit }}"
+							"limit": "={{ $parameter.returnAll ? 200 : $parameter.limit }}"
 						}
 					},
 					"output": {
