@@ -47,7 +47,3 @@ FastAPI default IDs such as `get_ticket_v1_tickets__ticket_id__get` are used. Ge
 ## 6. Python clients get 403
 
 A plain Python `urllib` request got `403 Forbidden` with a valid key, while curl worked. This is probably a user agent rule at the edge. Check whether it is intended.
-
-## 7. Success responses missing on create operations
-
-Most `POST` operations have no `200` or `201` response schema (for example `POST /tickets`, `POST /customers`, `POST /reservations`). The nodes cannot document the output.
