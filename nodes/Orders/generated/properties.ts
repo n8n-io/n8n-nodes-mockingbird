@@ -177,7 +177,7 @@ export const generatedProperties: INodeProperties[] = [
 			{
 				"displayName": "Paginate",
 				"name": "paginate",
-				"description": "Whether set to false to return the full set as a bare array (nopag)",
+				"description": "Whether to return a paginated envelope. When off, the API returns the full set as a bare array.",
 				"default": true,
 				"type": "boolean",
 				"routing": {

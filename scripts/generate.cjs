@@ -90,7 +90,7 @@ function collectOptional(properties) {
 	return kept;
 }
 
-function postProcess(properties) {
+function postProcess(properties, tag) {
 	// The builder gates fields on operation *names*; our option values are kebab-case.
 	const opNames = Object.values(OPERATIONS).map(([name]) => name);
 	const toValue = (v) => (opNames.includes(v) ? kebab(v) : v);
@@ -106,9 +106,22 @@ function postProcess(properties) {
 						show: { ...show, operation: show.operation.map(toValue) },
 					};
 				}
-				if (out.name === 'resource') out.default = out.options[0].value;
-				else if (out.name !== 'operation') out.displayName = titleCase(out.name);
-				if (out.type === 'boolean' && out.description && !out.description.startsWith('Whether')) {
+				if (out.name === 'resource') {
+					if (!out.options || !out.options.length) {
+						throw new Error(
+							'No operations matched tag "' + tag + '". Check the tag name in the spec.',
+						);
+					}
+					out.default = out.options[0].value;
+				} else if (out.name !== 'operation') out.displayName = titleCase(out.name);
+				if (out.name === 'paginate') {
+					out.description =
+						'Whether to return a paginated envelope. When off, the API returns the full set as a bare array.';
+				} else if (
+					out.type === 'boolean' &&
+					out.description &&
+					!out.description.startsWith('Whether')
+				) {
 					out.description =
 						'Whether ' + out.description.charAt(0).toLowerCase() + out.description.slice(1);
 				}
@@ -145,6 +158,7 @@ for (const { dir, tag, resource } of NODES) {
 				description: () => '',
 			},
 		}).build(),
+		tag,
 	);
 	const out = path.join(__dirname, '..', 'nodes', dir, 'generated');
 	fs.mkdirSync(out, { recursive: true });

@@ -45,7 +45,7 @@ export class MockingbirdApi implements ICredentialType {
 				},
 			],
 			default: 'sandbox',
-			description: 'Whether requests are scoped to a sandbox or to an Academy assessment',
+			description: 'Scope requests to a sandbox or to an Academy assessment',
 		},
 		{
 			displayName:
