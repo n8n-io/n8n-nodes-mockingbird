@@ -1,0 +1,40 @@
+README.md
+  s_dfbabf402cf9db::t_7f481752bf3bc5 25-26
+package.json
+  s_dfbabf402cf9db::t_7f481752bf3bc5 26
+  s_dfbabf402cf9db::t_693e77a1d3234f 27
+.github/workflows/publish.yml
+  s_dfbabf402cf9db::t_7f481752bf3bc5 62
+test/unwrapData.test.cjs
+  s_dfbabf402cf9db::t_7f481752bf3bc5 1-21
+.agents/workflow.md
+  s_dfbabf402cf9db::t_7f481752bf3bc5 31
+.github/workflows/ci.yml
+  s_dfbabf402cf9db::t_7f481752bf3bc5 9-11,43-45
+test/generated.test.cjs
+  s_dfbabf402cf9db::t_7f481752bf3bc5 1-49
+docs/SPEC-GAPS.md
+  s_dfbabf402cf9db::t_7f481752bf3bc5 3,9
+nodes/Orders/generated/properties.ts
+  s_dfbabf402cf9db::t_7f481752bf3bc5 183,192-194,290,299-301
+scripts/generate.cjs
+  s_dfbabf402cf9db::t_7f481752bf3bc5 74-79
+credentials/MockingbirdApi.credentials.ts
+  s_dfbabf402cf9db::t_7f481752bf3bc5 18-23
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.2",
+  "base_commit_sha": "9387fb69c4db72a2632f7874834fe894396667d8",
+  "prompts": {},
+  "sessions": {
+    "s_dfbabf402cf9db": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "8583a217-13b9-4fe7-84a5-4daed4508dce",
+        "model": "claude-sonnet-5-5"
+      },
+      "human_author": "Jamie Madden <digitalchild@gmail.com>"
+    }
+  }
+}
