@@ -1,0 +1,9 @@
+docs/SPEC-GAPS.md
+  ai_agent 11
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.2",
+  "base_commit_sha": "ca37ee16a7d310fa4664d8fb559d1c487e1f3178",
+  "prompts": {}
+}
