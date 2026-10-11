@@ -285,7 +285,7 @@ const ENUMS = {
 		],
 	},
 	'Fraud Detection': {
-		status: ['confirmed_fraud', 'cleared'],
+		status: ['cleared', 'confirmed_fraud'],
 	},
 };
 

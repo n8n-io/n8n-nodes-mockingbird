@@ -75,3 +75,19 @@ for (const file of nodeFiles) {
 		assert.strictEqual(credentials[0].name, 'mockingbirdApi');
 	});
 }
+
+test('reservation, booking, and case IDs start at the spec minimum of 100000', () => {
+	const cases = [
+		['Inventory', 'reservation_id'],
+		['MeetingRooms', 'booking_id'],
+		['FraudDetection', 'case_id'],
+	];
+	for (const [dir, field] of cases) {
+		const Node = Object.values(require(path.join(nodesDir, dir, `Mockingbird${dir}.node.js`)))[0];
+		const props = new Node().description.properties;
+		const all = props.flatMap((p) => (p.type === 'collection' ? p.options : [p]));
+		const found = all.filter((p) => p.name === field);
+		assert.ok(found.length > 0, `${dir} has ${field}`);
+		for (const f of found) assert.strictEqual(f.default, 100000, `${dir} ${field} default`);
+	}
+});

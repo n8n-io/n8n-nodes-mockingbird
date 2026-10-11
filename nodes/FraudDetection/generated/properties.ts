@@ -326,7 +326,7 @@ export const generatedProperties: INodeProperties[] = [
 		name: 'status',
 		type: 'options',
 		required: true,
-		default: 'confirmed_fraud',
+		default: 'cleared',
 		routing: {
 			send: {
 				property: 'status',
