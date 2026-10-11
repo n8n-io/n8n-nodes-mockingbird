@@ -62,6 +62,102 @@ const NODES = [
 		resource: 'Fun',
 		description: 'Get dogs, cats, jokes, facts, and other fun data from Mockingbird',
 	},
+	{
+		dir: 'PeopleHr',
+		tag: 'People / HR',
+		resource: 'Employee',
+		description: 'Manage employees in Mockingbird People / HR',
+	},
+	{
+		dir: 'TimeOff',
+		tag: 'Time Off',
+		resource: 'Request',
+		description: 'Manage time off requests in Mockingbird',
+	},
+	{
+		dir: 'Inventory',
+		tag: 'Inventory',
+		resource: 'Stock',
+		description: 'Check and reserve stock in Mockingbird Inventory',
+	},
+	{
+		dir: 'BatchJobs',
+		tag: 'Batch Jobs',
+		resource: 'Job',
+		description: 'Create and check jobs in Mockingbird Batch Jobs',
+	},
+	{
+		dir: 'EventStream',
+		tag: 'Event Stream',
+		resource: 'Event',
+		description: 'Get events from the Mockingbird event stream',
+	},
+	{
+		dir: 'FraudDetection',
+		tag: 'Fraud Detection',
+		resource: 'Transaction',
+		description: 'Score transactions and manage cases in Mockingbird Fraud Detection',
+	},
+	{
+		dir: 'SecurityMonitor',
+		tag: 'Security Monitor',
+		resource: 'Security',
+		description: 'Get security events and manage blocks in Mockingbird Security Monitor',
+	},
+	{
+		dir: 'ProductReviews',
+		tag: 'Product Reviews',
+		resource: 'Review',
+		description: 'Manage product reviews in Mockingbird',
+	},
+	{
+		dir: 'WebhookHub',
+		tag: 'Webhook Hub',
+		resource: 'Webhook',
+		description: 'Manage and fire webhooks in Mockingbird Webhook Hub',
+	},
+	{
+		dir: 'DocumentStore',
+		tag: 'Document Store',
+		resource: 'File',
+		description: 'List files in the Mockingbird document store',
+	},
+	{
+		dir: 'Sandbox',
+		tag: 'Sandbox',
+		resource: 'Sandbox',
+		description: 'Reset a sandbox or get a new sandbox ID in Mockingbird',
+	},
+	{
+		dir: 'MeetingRooms',
+		tag: 'Meeting Rooms',
+		resource: 'Room',
+		description: 'Check rooms and manage bookings in Mockingbird Meeting Rooms',
+	},
+	{
+		dir: 'KnowledgeBase',
+		tag: 'Knowledge Base',
+		resource: 'Article',
+		description: 'Search and get articles in the Mockingbird knowledge base',
+	},
+	{
+		dir: 'AgentTools',
+		tag: 'Agent Tools',
+		resource: 'Tool',
+		description: 'Use the Mockingbird tools made for AI agents',
+	},
+	{
+		dir: 'Classifier',
+		tag: 'Classifier',
+		resource: 'Text',
+		description: 'Classify text and extract entities with Mockingbird',
+	},
+	{
+		dir: 'Assessments',
+		tag: 'Assessments',
+		resource: 'Assessment',
+		description: 'Get and submit assessments in Mockingbird',
+	},
 ];
 
 const kebab = (s) =>
@@ -102,10 +198,7 @@ function collectOptional(properties) {
 		}
 		const { displayOptions, ...c } = p;
 		// ID filters reject 0, so an untouched default would fail with 422.
-		const child =
-			c.type === 'number' && /_id$/.test(c.name)
-				? { ...c, default: 1, typeOptions: { ...c.typeOptions, minValue: 1 } }
-				: c;
+		const child = c.type === 'number' && /_id$/.test(c.name) ? withIdMinimum(c) : c;
 		const key = op[0];
 		if (!byOp.has(key)) {
 			byOp.set(key, {
@@ -167,10 +260,37 @@ const ENUMS = {
 	Orders: {
 		status: ['pending', 'paid', 'shipped', 'delivered', 'cancelled', 'refunded'],
 	},
+	'People / HR': {
+		status: ['active', 'on_leave'],
+		department: ['engineering', 'finance', 'hr', 'ops', 'sales', 'support'],
+	},
+	'Time Off': {
+		leave_type: ['annual', 'sick', 'unpaid', 'parental'],
+		status: ['pending', 'approved', 'rejected', 'cancelled'],
+		department: ['engineering', 'finance', 'hr', 'ops', 'sales', 'support'],
+	},
+	'Batch Jobs': {
+		type: ['export_orders', 'report_sales', 'bulk_price_update'],
+	},
+	'Webhook Hub': {
+		event_type: ['order.created', 'ticket.updated', 'review.created', 'transaction.flagged'],
+	},
+	'Agent Tools': {
+		resolution_category: [
+			'resolved-info',
+			'replacement-shipped',
+			'refund-issued',
+			'no-fault-found',
+			'escalated',
+		],
+	},
+	'Fraud Detection': {
+		status: ['confirmed_fraud', 'cleared'],
+	},
 };
 
 const UNWRAP = '__unwrapData__';
-const optionName = (v) => v.replace(/_/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase());
+const optionName = (v) => v.replace(/[_.-]/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase());
 
 function applyEnums(props, tag) {
 	const enums = ENUMS[tag] || {};
@@ -258,6 +378,16 @@ function normalize(props) {
 		if (out.name === 'limit' && out.type === 'number') {
 			out.typeOptions = { minValue: 1, ...out.typeOptions };
 			out.description = 'Max number of results to return';
+			out.default = 50;
+		}
+		if (out.type === 'json' && /^\[\s*null\s*\]$/.test(String(out.default))) out.default = '[]';
+		if (out.name === 'Idempotency-Key') {
+			// The API rejects POST /reservations without this header, although the spec marks it optional.
+			out.displayName = 'Idempotency Key';
+			out.required = true;
+			out.default = '={{ $now.toMillis() + "-" + $itemIndex }}';
+			out.description =
+				'Sent as the Idempotency-Key header. Repeating a key returns the first result instead of creating a second reservation.';
 		}
 		if (out.type === 'string' && /email/i.test(out.name) && !out.placeholder) {
 			out.placeholder = 'name@email.com';
@@ -318,12 +448,36 @@ function encodePathParams(props) {
 	});
 }
 
-// ID fields (path or body) start at 1, because the API rejects 0.
+// Smallest value the spec allows per ID name. Reservation, booking, and case IDs start at 100000.
+const ID_MINIMUMS = (() => {
+	const mins = {};
+	const add = (name, schema) => {
+		if (/_id$/.test(name) && schema && typeof schema.minimum === 'number') {
+			mins[name] = Math.max(mins[name] || 1, schema.minimum);
+		}
+	};
+	for (const item of Object.values(spec.paths)) {
+		for (const op of Object.values(item)) {
+			for (const prm of op.parameters || []) add(prm.name, prm.schema);
+		}
+	}
+	for (const schema of Object.values(spec.components.schemas)) {
+		for (const [name, prop] of Object.entries(schema.properties || {})) add(name, prop);
+	}
+	return mins;
+})();
+
+function withIdMinimum(p) {
+	const min = ID_MINIMUMS[p.name] || 1;
+	return { ...p, default: min, typeOptions: { ...p.typeOptions, minValue: min } };
+}
+
+// ID fields (path or body) start at the spec minimum, because the API rejects 0 and anything below it.
 function idDefaults(props) {
 	return props.map((p) => {
 		if (p.type === 'collection') return { ...p, options: idDefaults(p.options) };
 		if (p.type === 'number' && /_id$/.test(p.name)) {
-			return { ...p, default: 1, typeOptions: { ...p.typeOptions, minValue: 1 } };
+			return withIdMinimum(p);
 		}
 		return p;
 	});

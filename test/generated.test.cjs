@@ -10,7 +10,15 @@ const nodeFiles = fs
 	.map((d) => path.join(nodesDir, d, `Mockingbird${d}.node.js`));
 
 // Nodes whose Get Many is paginated by the API. Others return a bare list.
-const PAGINATED = ['ProductCatalogue', 'Helpdesk', 'Orders', 'CrmLite'];
+const PAGINATED = [
+	'ProductCatalogue',
+	'Helpdesk',
+	'Orders',
+	'CrmLite',
+	'PeopleHr',
+	'ProductReviews',
+	'TimeOff',
+];
 
 for (const file of nodeFiles) {
 	const Node = Object.values(require(file))[0];
@@ -31,11 +39,11 @@ for (const file of nodeFiles) {
 		}
 	});
 
-	test(`${name}: ID fields start at 1`, () => {
+	test(`${name}: ID fields start at their minimum`, () => {
 		const all = properties.flatMap((p) => (p.type === 'collection' ? p.options : [p]));
 		for (const o of all.filter((x) => x.type === 'number' && /_id$/.test(x.name))) {
-			assert.ok(o.default >= 1, `${o.name} default must be >= 1`);
-			assert.ok(o.typeOptions?.minValue >= 1, `${o.name} needs minValue 1`);
+			assert.ok(o.typeOptions?.minValue >= 1, `${o.name} needs minValue 1 or more`);
+			assert.equal(o.default, o.typeOptions.minValue, `${o.name} default must equal its minValue`);
 		}
 	});
 

@@ -51,3 +51,30 @@ FastAPI default IDs such as `get_ticket_v1_tickets__ticket_id__get` are used. Ge
 ## 6. Python clients get 403
 
 A plain Python `urllib` request got `403 Forbidden` with a valid key, while curl worked. This is probably a user agent rule at the edge. Check whether it is intended.
+
+## 7. `Idempotency-Key` is required but marked optional
+
+`POST /reservations` returns 422 `missing-idempotency-key` without the header. The spec lists the header as optional. Mark it required.
+
+## 8. Some ID minimums are not obvious
+
+Reservation, booking, and fraud case IDs start at 100000. The spec has `minimum: 100000`, but the descriptions and examples do not say so. Id 1 returns 422.
+
+## 9. List endpoints do not agree on pagination
+
+`GET /employees` always returns a bare array, even with `paginate=true`, and honors `limit`. `GET /reviews`, `GET /time-off/requests`, and the other lists return `{ data, meta }`. `GET /reviews?paginate=false` returns all 3000 rows.
+
+## 10. Moderation status shares a name with the list filter
+
+`PATCH /reviews/{id}/moderate` takes `status` of `flagged` or `removed`. `GET /reviews` filters `status` by other values (`published`). The generator has one enum per field name, so Product Reviews gets no `status` dropdown.
+
+## 11. More observed enums
+
+| Endpoint | Field | Values |
+| --- | --- | --- |
+| `POST /jobs` | `type` | export_orders, report_sales, bulk_price_update |
+| `POST /webhooks/fire`, `POST /webhooks/subscriptions` | `event_type`, `event_types` | order.created, ticket.updated, review.created, transaction.flagged |
+| `POST /time-off/requests` | `leave_type` | annual, sick, unpaid, parental |
+| `PATCH /time-off/requests/{id}` | `status` | pending, approved, rejected, cancelled |
+| `PATCH /fraud/cases/{id}` | `status` | confirmed_fraud, cleared |
+| `POST /agent/tickets/{id}/resolve` | `resolution_category` | resolved-info, replacement-shipped, refund-issued, no-fault-found, escalated |

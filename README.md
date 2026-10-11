@@ -27,12 +27,28 @@ Follow the [installation guide](https://docs.n8n.io/integrations/community-nodes
 | Mockingbird Utilities | Echo, Hash Text, Encode and Decode Base64, Validate Email, IBAN, and VAT Number, Convert Units, Generate UUID, Generate Lorem Ipsum, and more | Optional |
 | Mockingbird CRM Lite | Get, Get Many, Create | Optional |
 | Mockingbird Fun Pack | Random dog, cat, robot, joke, fact, activity, and users; Get Trivia, Number Fact, and Fortune | Optional |
+| Mockingbird People / HR | Get, Get Many, Create, Update, Get Reports, Get Departments, Get Org Chart, Get Salary Bands | Required |
+| Mockingbird Time Off | Get Many, Get Many by Employee, Create, Update, Get Balance, Get Calendar | Required |
+| Mockingbird Inventory | Get, Create Reservation, Delete Reservation | Required |
+| Mockingbird Batch Jobs | Create, Get, Get Result | Required |
+| Mockingbird Event Stream | Get Many | Required |
+| Mockingbird Fraud Detection | Get, Get Many, Score, Create Case, Update Case | Required |
+| Mockingbird Security Monitor | Get Many Events, Get Many Blocks, Create Block | Required |
+| Mockingbird Product Reviews | Get Many, Get Latest, Create, Moderate | Optional |
+| Mockingbird Webhook Hub | Get Many Subscriptions, Create Subscription, Delete Subscription, Fire | Required |
+| Mockingbird Document Store | Get Many | Required |
+| Mockingbird Sandbox | Reset, Get ID | Required |
+| Mockingbird Meeting Rooms | Get Many Rooms, Get Availability, Create Booking, Delete Booking | Required |
+| Mockingbird Knowledge Base | Search, Get | Required |
+| Mockingbird Agent Tools | Look Up Customer, Refund Order, Cancel Order, Resend Invoice, Get Next Ticket, Resolve Ticket, Get Tools | Required |
+| Mockingbird Classifier | Classify Sentiment, Classify Intent, Extract Entities | Required |
+| Mockingbird Assessments | Get, Get Many, Get Source, Submit | Optional |
 
 **Get Many (Cursor)** makes one request and returns the full `{ data, meta }` response. It does not follow `meta.next_cursor`. Pass the cursor back in Additional Fields to read the next page.
 
 ## Credentials
 
-Tier 1 APIs, such as Product Catalogue, need no credential. Tier 2 to 4 APIs need one.
+Some operations need no credential, such as Product Catalogue and Weather. Nodes marked Required in the table always need one.
 
 1. Get an API key from the Mockingbird dashboard.
 2. Create a **Mockingbird API** credential in n8n.

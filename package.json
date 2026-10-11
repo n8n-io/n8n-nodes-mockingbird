@@ -44,7 +44,23 @@
 			"dist/nodes/Quotes/MockingbirdQuotes.node.js",
 			"dist/nodes/Utilities/MockingbirdUtilities.node.js",
 			"dist/nodes/CrmLite/MockingbirdCrmLite.node.js",
-			"dist/nodes/FunPack/MockingbirdFunPack.node.js"
+			"dist/nodes/FunPack/MockingbirdFunPack.node.js",
+			"dist/nodes/PeopleHr/MockingbirdPeopleHr.node.js",
+			"dist/nodes/TimeOff/MockingbirdTimeOff.node.js",
+			"dist/nodes/Inventory/MockingbirdInventory.node.js",
+			"dist/nodes/BatchJobs/MockingbirdBatchJobs.node.js",
+			"dist/nodes/EventStream/MockingbirdEventStream.node.js",
+			"dist/nodes/FraudDetection/MockingbirdFraudDetection.node.js",
+			"dist/nodes/SecurityMonitor/MockingbirdSecurityMonitor.node.js",
+			"dist/nodes/ProductReviews/MockingbirdProductReviews.node.js",
+			"dist/nodes/WebhookHub/MockingbirdWebhookHub.node.js",
+			"dist/nodes/DocumentStore/MockingbirdDocumentStore.node.js",
+			"dist/nodes/Sandbox/MockingbirdSandbox.node.js",
+			"dist/nodes/MeetingRooms/MockingbirdMeetingRooms.node.js",
+			"dist/nodes/KnowledgeBase/MockingbirdKnowledgeBase.node.js",
+			"dist/nodes/AgentTools/MockingbirdAgentTools.node.js",
+			"dist/nodes/Classifier/MockingbirdClassifier.node.js",
+			"dist/nodes/Assessments/MockingbirdAssessments.node.js"
 		]
 	},
 	"devDependencies": {
