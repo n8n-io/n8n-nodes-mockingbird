@@ -1,0 +1,41 @@
+test/generated.test.cjs
+  ai_agent 34-45
+nodes/FunPack/generated/properties.ts
+  s_dfbabf402cf9db::t_fd5f4831351cb9 61,73,121,353,360-361
+nodes/CrmLite/generated/properties.ts
+  s_dfbabf402cf9db::t_fd5f4831351cb9 50,512,519-520
+nodes/Helpdesk/generated/properties.ts
+  s_dfbabf402cf9db::t_fd5f4831351cb9 38,62,93,105,263,278-280,412,419-421,428,435-437,587,594-596,603,618-620,790,797-798
+.github/workflows/ci.yml
+  s_dfbabf402cf9db::t_fd5f4831351cb9 36
+nodes/ProductCatalogue/generated/properties.ts
+  s_dfbabf402cf9db::t_fd5f4831351cb9 38,211,218-219
+nodes/Quotes/generated/properties.ts
+  s_dfbabf402cf9db::t_fd5f4831351cb9 37,73,80-81
+nodes/Utilities/generated/properties.ts
+  s_dfbabf402cf9db::t_fd5f4831351cb9 132,144
+nodes/Orders/generated/properties.ts
+  s_dfbabf402cf9db::t_fd5f4831351cb9 38,351,358-359
+docs/SPEC-GAPS.md
+  s_dfbabf402cf9db::t_fd5f4831351cb9 9
+nodes/Weather/generated/properties.ts
+  s_dfbabf402cf9db::t_fd5f4831351cb9 37,49
+scripts/generate.cjs
+  s_dfbabf402cf9db::t_fd5f4831351cb9 128,139-141,298-331,374-375
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.2",
+  "base_commit_sha": "b156f050ccf0862ed516f288a9ed71b1829ad1fe",
+  "prompts": {},
+  "sessions": {
+    "s_dfbabf402cf9db": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "8583a217-13b9-4fe7-84a5-4daed4508dce",
+        "model": "claude-sonnet-5-5"
+      },
+      "human_author": "Jamie Madden <digitalchild@gmail.com>"
+    }
+  }
+}
