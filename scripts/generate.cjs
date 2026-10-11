@@ -387,7 +387,7 @@ function normalize(props) {
 			out.required = true;
 			out.default = '={{ $now.toMillis() + "-" + $itemIndex }}';
 			out.description =
-				'Sent as the Idempotency-Key header. Repeating a key returns the first result instead of creating a second reservation.';
+				'Sent as the Idempotency-Key header. The default is new on every run. Set a fixed key to make retries safe: repeating a key returns the first result instead of creating a second reservation.';
 		}
 		if (out.type === 'string' && /email/i.test(out.name) && !out.placeholder) {
 			out.placeholder = 'name@email.com';
@@ -453,7 +453,12 @@ const ID_MINIMUMS = (() => {
 	const mins = {};
 	const add = (name, schema) => {
 		if (/_id$/.test(name) && schema && typeof schema.minimum === 'number') {
-			mins[name] = Math.max(mins[name] || 1, schema.minimum);
+			if (name in mins && mins[name] !== schema.minimum) {
+				throw new Error(
+					`Conflicting spec minimums for ${name}: ${mins[name]} and ${schema.minimum}`,
+				);
+			}
+			mins[name] = schema.minimum;
 		}
 	};
 	for (const item of Object.values(spec.paths)) {

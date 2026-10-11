@@ -86,7 +86,7 @@ export const generatedProperties: INodeProperties[] = [
 		name: 'Idempotency-Key',
 		type: 'string',
 		description:
-			'Sent as the Idempotency-Key header. Repeating a key returns the first result instead of creating a second reservation.',
+			'Sent as the Idempotency-Key header. The default is new on every run. Set a fixed key to make retries safe: repeating a key returns the first result instead of creating a second reservation.',
 		default: '={{ $now.toMillis() + "-" + $itemIndex }}',
 		routing: {
 			request: {
