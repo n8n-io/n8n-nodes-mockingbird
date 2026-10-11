@@ -4,241 +4,219 @@ import { unwrapData } from '../../shared/unwrapData';
 
 export const generatedProperties: INodeProperties[] = [
 	{
-		"displayName": "Resource",
-		"name": "resource",
-		"type": "options",
-		"noDataExpression": true,
-		"options": [
+		displayName: 'Resource',
+		name: 'resource',
+		type: 'options',
+		noDataExpression: true,
+		options: [
 			{
-				"name": "Product",
-				"value": "product",
-				"description": ""
-			}
+				name: 'Product',
+				value: 'product',
+			},
 		],
-		"default": "product"
+		default: 'product',
 	},
 	{
-		"displayName": "Operation",
-		"name": "operation",
-		"type": "options",
-		"noDataExpression": true,
-		"displayOptions": {
-			"show": {
-				"resource": [
-					"product"
-				]
-			}
+		displayName: 'Operation',
+		name: 'operation',
+		type: 'options',
+		noDataExpression: true,
+		displayOptions: {
+			show: {
+				resource: ['product'],
+			},
 		},
-		"options": [
+		options: [
 			{
-				"name": "Get Many",
-				"value": "get-many",
-				"action": "Get many products",
-				"description": "List products",
-				"routing": {
-					"request": {
-						"method": "GET",
-						"url": "=/products",
-						"qs": {
-							"paginate": "={{ !$parameter.returnAll }}",
-							"limit": "={{ $parameter.returnAll ? 200 : $parameter.limit }}"
-						}
+				name: 'Get',
+				value: 'get',
+				action: 'Get a product',
+				description: 'Get a single product',
+				routing: {
+					request: {
+						method: 'GET',
+						url: '=/products/{{encodeURIComponent($parameter["product_id"])}}',
 					},
-					"output": {
-						"postReceive": [
-							unwrapData
-						]
-					}
-				}
-			},
-			{
-				"name": "Get Categories",
-				"value": "get-categories",
-				"action": "Get product categories",
-				"description": "List product categories with counts",
-				"routing": {
-					"request": {
-						"method": "GET",
-						"url": "=/products/categories"
-					}
-				}
-			},
-			{
-				"name": "Get",
-				"value": "get",
-				"action": "Get a product",
-				"description": "Get a single product",
-				"routing": {
-					"request": {
-						"method": "GET",
-						"url": "=/products/{{$parameter[\"product_id\"]}}"
-					}
-				}
-			}
-		],
-		"default": "get-many"
-	},
-	{
-		"displayName": "Return All",
-		"name": "returnAll",
-		"type": "boolean",
-		"default": false,
-		"description": "Whether to return all results or only up to a given limit",
-		"displayOptions": {
-			"show": {
-				"resource": [
-					"product"
-				],
-				"operation": [
-					"get-many"
-				]
-			}
-		}
-	},
-	{
-		"displayName": "Limit",
-		"name": "limit",
-		"type": "number",
-		"typeOptions": {
-			"minValue": 1,
-			"maxValue": 200
-		},
-		"default": 50,
-		"description": "Max number of results to return",
-		"displayOptions": {
-			"show": {
-				"resource": [
-					"product"
-				],
-				"operation": [
-					"get-many"
-				],
-				"returnAll": [
-					false
-				]
-			}
-		}
-	},
-	{
-		"displayName": "Additional Fields",
-		"name": "additionalFields",
-		"type": "collection",
-		"placeholder": "Add Field",
-		"default": {},
-		"displayOptions": {
-			"show": {
-				"resource": [
-					"product"
-				],
-				"operation": [
-					"get-many"
-				]
-			}
-		},
-		"options": [
-			{
-				"displayName": "Category",
-				"name": "category",
-				"description": "Exact category filter",
-				"default": "bearings",
-				"type": "options",
-				"routing": {
-					"send": {
-						"type": "query",
-						"property": "category",
-						"value": "={{ $value }}",
-						"propertyInDotNotation": false
-					}
 				},
-				"options": [
-					{
-						"name": "Bearings",
-						"value": "bearings"
-					},
-					{
-						"name": "Compressors",
-						"value": "compressors"
-					},
-					{
-						"name": "Controls",
-						"value": "controls"
-					},
-					{
-						"name": "Pumps",
-						"value": "pumps"
-					},
-					{
-						"name": "Spares",
-						"value": "spares"
-					},
-					{
-						"name": "Valves",
-						"value": "valves"
-					}
-				]
 			},
 			{
-				"displayName": "Min Price (Cents)",
-				"name": "min_price_cents",
-				"description": "Min price (cents)",
-				"default": 0,
-				"type": "number",
-				"routing": {
-					"send": {
-						"type": "query",
-						"property": "min_price_cents",
-						"value": "={{ $value }}",
-						"propertyInDotNotation": false
-					}
-				}
+				name: 'Get Categories',
+				value: 'get-categories',
+				action: 'Get product categories',
+				description: 'List product categories with counts',
+				routing: {
+					request: {
+						method: 'GET',
+						url: '=/products/categories',
+					},
+				},
 			},
 			{
-				"displayName": "Max Price (Cents)",
-				"name": "max_price_cents",
-				"description": "Max price (cents)",
-				"default": 0,
-				"type": "number",
-				"routing": {
-					"send": {
-						"type": "query",
-						"property": "max_price_cents",
-						"value": "={{ $value }}",
-						"propertyInDotNotation": false
-					}
-				}
+				name: 'Get Many',
+				value: 'get-many',
+				action: 'Get many products',
+				description: 'List products',
+				routing: {
+					request: {
+						method: 'GET',
+						url: '=/products',
+						qs: {
+							paginate: '={{ !$parameter.returnAll }}',
+							limit: '={{ $parameter.returnAll ? 200 : $parameter.limit }}',
+						},
+					},
+					output: {
+						postReceive: [unwrapData],
+					},
+				},
 			},
-			{
-				"displayName": "Search",
-				"name": "q",
-				"description": "Substring match on name/description",
-				"default": "",
-				"type": "string",
-				"routing": {
-					"send": {
-						"type": "query",
-						"property": "q",
-						"value": "={{ $value }}",
-						"propertyInDotNotation": false
-					}
-				}
-			}
-		]
+		],
+		default: 'get-many',
 	},
 	{
-		"displayName": "Product ID",
-		"name": "product_id",
-		"required": true,
-		"default": 0,
-		"type": "number",
-		"displayOptions": {
-			"show": {
-				"resource": [
-					"product"
+		displayName: 'Return All',
+		name: 'returnAll',
+		type: 'boolean',
+		default: false,
+		description: 'Whether to return all results or only up to a given limit',
+		displayOptions: {
+			show: {
+				resource: ['product'],
+				operation: ['get-many'],
+			},
+		},
+	},
+	{
+		displayName: 'Limit',
+		name: 'limit',
+		type: 'number',
+		typeOptions: {
+			minValue: 1,
+			maxValue: 200,
+		},
+		default: 50,
+		description: 'Max number of results to return',
+		displayOptions: {
+			show: {
+				resource: ['product'],
+				operation: ['get-many'],
+				returnAll: [false],
+			},
+		},
+	},
+	{
+		displayName: 'Additional Fields',
+		name: 'additionalFields',
+		type: 'collection',
+		placeholder: 'Add Field',
+		default: {},
+		displayOptions: {
+			show: {
+				resource: ['product'],
+				operation: ['get-many'],
+			},
+		},
+		options: [
+			{
+				displayName: 'Category',
+				name: 'category',
+				type: 'options',
+				description: 'Exact category filter',
+				default: 'bearings',
+				routing: {
+					send: {
+						type: 'query',
+						property: 'category',
+						value: '={{ $value }}',
+						propertyInDotNotation: false,
+					},
+				},
+				options: [
+					{
+						name: 'Bearings',
+						value: 'bearings',
+					},
+					{
+						name: 'Compressors',
+						value: 'compressors',
+					},
+					{
+						name: 'Controls',
+						value: 'controls',
+					},
+					{
+						name: 'Pumps',
+						value: 'pumps',
+					},
+					{
+						name: 'Spares',
+						value: 'spares',
+					},
+					{
+						name: 'Valves',
+						value: 'valves',
+					},
 				],
-				"operation": [
-					"get"
-				]
-			}
-		}
-	}
+			},
+			{
+				displayName: 'Max Price (Cents)',
+				name: 'max_price_cents',
+				type: 'number',
+				default: 0,
+				routing: {
+					send: {
+						type: 'query',
+						property: 'max_price_cents',
+						value: '={{ $value }}',
+						propertyInDotNotation: false,
+					},
+				},
+			},
+			{
+				displayName: 'Min Price (Cents)',
+				name: 'min_price_cents',
+				type: 'number',
+				default: 0,
+				routing: {
+					send: {
+						type: 'query',
+						property: 'min_price_cents',
+						value: '={{ $value }}',
+						propertyInDotNotation: false,
+					},
+				},
+			},
+			{
+				displayName: 'Search',
+				name: 'q',
+				type: 'string',
+				description: 'Substring match on name/description',
+				default: '',
+				routing: {
+					send: {
+						type: 'query',
+						property: 'q',
+						value: '={{ $value }}',
+						propertyInDotNotation: false,
+					},
+				},
+			},
+		],
+	},
+	{
+		displayName: 'Product ID',
+		name: 'product_id',
+		type: 'number',
+		required: true,
+		default: 1,
+		displayOptions: {
+			show: {
+				resource: ['product'],
+				operation: ['get'],
+			},
+		},
+		typeOptions: {
+			minValue: 1,
+		},
+	},
 ];

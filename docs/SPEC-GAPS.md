@@ -6,7 +6,7 @@ Found 2026-10-10 against spec version 1.0.0.
 
 ## 1. No enums anywhere
 
-The spec has no `enum` on any parameter or body field. Fields with a fixed set of values are plain strings. Generated nodes cannot build dropdowns from the spec. Today `scripts/generate.cjs` hard-codes the `ENUMS` table for the pilot nodes, so users get dropdowns, but the lists can drift from the API.
+The spec has no `enum` on any parameter or body field. Fields with a fixed set of values are plain strings. Generated nodes cannot build dropdowns from the spec. Today `scripts/generate.cjs` hard-codes an `ENUMS` table for the nodes that have known values, so users get dropdowns, but the lists can drift from the API.
 
 Values below were read from live seed data. They show what exists today. They are not confirmed lists. Confirm them against the API code before adding the enums. Rare values may be missing.
 
@@ -24,6 +24,10 @@ Values below were read from live seed data. They show what exists today. They ar
 | `GET /customers` | `segment` | enterprise, mid_market, small |
 | `GET /customers` | `country` | AT, AU, BR, CA, CH, DE, ES, FR, GB, IE, IN, IT, JP, NL, NO, PL, SE, SG, US |
 | `GET /products` | `category` | bearings, compressors, controls, pumps, spares, valves |
+| `GET /rates`, `GET /rates/convert` | `base`, `from`, `to` | EUR, USD, GBP, CHF, SEK, NOK, PLN, CZK, JPY, AUD (from the 422 message) |
+| `GET /util/convert` | `from`, `to` | Units of one kind: length, mass, volume, temperature (c, f, k), or data (b, kb, mb, gb, tb). The exact unit names are not listed anywhere |
+| `GET /fun/dogs/breed/{breed}/random` | `breed` | The keys returned by `GET /fun/dogs/breeds`. An unknown breed returns 404 |
+| `GET /fun/trivia` | `category`, `difficulty` | Not found. An unknown difficulty returns an empty result, not an error |
 | `GET /products`, `GET /products/{id}`, `GET /orders` | `fmt` | json, xml, csv, html (from the 406 message) |
 
 Ask: add `enum` (or a shared enum schema) to each field. For `category` on products, link it to `GET /products/categories`.

@@ -1,0 +1,18 @@
+{
+	"node": "n8n-nodes-mockingbird.mockingbirdUtilities",
+	"nodeVersion": "1.0",
+	"codexVersion": "1.0",
+	"categories": ["Development"],
+	"resources": {
+		"credentialDocumentation": [
+			{
+				"url": "https://github.com/n8n-io/n8n-nodes-mockingbird?tab=readme-ov-file#credentials"
+			}
+		],
+		"primaryDocumentation": [
+			{
+				"url": "https://github.com/n8n-io/n8n-nodes-mockingbird?tab=readme-ov-file"
+			}
+		]
+	}
+}

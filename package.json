@@ -38,7 +38,13 @@
 		"nodes": [
 			"dist/nodes/ProductCatalogue/MockingbirdProductCatalogue.node.js",
 			"dist/nodes/Helpdesk/MockingbirdHelpdesk.node.js",
-			"dist/nodes/Orders/MockingbirdOrders.node.js"
+			"dist/nodes/Orders/MockingbirdOrders.node.js",
+			"dist/nodes/Weather/MockingbirdWeather.node.js",
+			"dist/nodes/ExchangeRates/MockingbirdExchangeRates.node.js",
+			"dist/nodes/Quotes/MockingbirdQuotes.node.js",
+			"dist/nodes/Utilities/MockingbirdUtilities.node.js",
+			"dist/nodes/CrmLite/MockingbirdCrmLite.node.js",
+			"dist/nodes/FunPack/MockingbirdFunPack.node.js"
 		]
 	},
 	"devDependencies": {
