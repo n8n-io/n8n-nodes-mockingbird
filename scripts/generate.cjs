@@ -125,6 +125,7 @@ function collectOptional(properties) {
 }
 
 // Valid values are not in the spec (see docs/SPEC-GAPS.md). Verified against the live API.
+const CURRENCIES = ['EUR', 'USD', 'GBP', 'CHF', 'SEK', 'NOK', 'PLN', 'CZK', 'JPY', 'AUD'];
 const ENUMS = {
 	'Product Catalogue': {
 		category: ['bearings', 'compressors', 'controls', 'pumps', 'spares', 'valves'],
@@ -135,9 +136,9 @@ const ENUMS = {
 		category: ['billing', 'defect', 'installation', 'shipping', 'other'],
 	},
 	'Exchange Rates': {
-		base: ['EUR', 'USD', 'GBP', 'CHF', 'SEK', 'NOK', 'PLN', 'CZK', 'JPY', 'AUD'],
-		from: ['EUR', 'USD', 'GBP', 'CHF', 'SEK', 'NOK', 'PLN', 'CZK', 'JPY', 'AUD'],
-		to: ['EUR', 'USD', 'GBP', 'CHF', 'SEK', 'NOK', 'PLN', 'CZK', 'JPY', 'AUD'],
+		base: CURRENCIES,
+		from: CURRENCIES,
+		to: CURRENCIES,
 	},
 	'CRM Lite': {
 		segment: ['enterprise', 'mid_market', 'small'],
@@ -294,6 +295,40 @@ function normalize(props) {
 	});
 }
 
+// Path values are user input. Encode them so `/`, `?`, and `#` cannot change the route.
+function encodePathParams(props) {
+	return props.map((p) => {
+		if (p.name !== 'operation') return p;
+		return {
+			...p,
+			options: p.options.map((o) => ({
+				...o,
+				routing: {
+					...o.routing,
+					request: {
+						...o.routing.request,
+						url: o.routing.request.url.replace(
+							/\{\{\$parameter\["(\w+)"\]\}\}/g,
+							'{{encodeURIComponent($parameter["$1"])}}',
+						),
+					},
+				},
+			})),
+		};
+	});
+}
+
+// ID fields (path or body) start at 1, because the API rejects 0.
+function idDefaults(props) {
+	return props.map((p) => {
+		if (p.type === 'collection') return { ...p, options: idDefaults(p.options) };
+		if (p.type === 'number' && /_id$/.test(p.name)) {
+			return { ...p, default: 1, typeOptions: { ...p.typeOptions, minValue: 1 } };
+		}
+		return p;
+	});
+}
+
 function setOperationDefault(props) {
 	return props.map((p) => (p.name === 'operation' ? { ...p, default: p.options[0].value } : p));
 }
@@ -336,7 +371,9 @@ function postProcess(properties, tag) {
 				return out;
 			}),
 	);
-	return normalize(setOperationDefault(addListHandling(applyEnums(collected, tag))));
+	return normalize(
+		setOperationDefault(idDefaults(encodePathParams(addListHandling(applyEnums(collected, tag))))),
+	);
 }
 
 const opKey = (context) => `${context.method.toUpperCase()} ${context.pattern}`;

@@ -35,7 +35,7 @@ export const generatedProperties: INodeProperties[] = [
 				routing: {
 					request: {
 						method: 'GET',
-						url: '=/products/{{$parameter["product_id"]}}',
+						url: '=/products/{{encodeURIComponent($parameter["product_id"])}}',
 					},
 				},
 			},
@@ -208,12 +208,15 @@ export const generatedProperties: INodeProperties[] = [
 		name: 'product_id',
 		type: 'number',
 		required: true,
-		default: 0,
+		default: 1,
 		displayOptions: {
 			show: {
 				resource: ['product'],
 				operation: ['get'],
 			},
+		},
+		typeOptions: {
+			minValue: 1,
 		},
 	},
 ];

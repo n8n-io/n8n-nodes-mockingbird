@@ -34,7 +34,7 @@ export const generatedProperties: INodeProperties[] = [
 				routing: {
 					request: {
 						method: 'GET',
-						url: '=/weather/{{$parameter["city"]}}',
+						url: '=/weather/{{encodeURIComponent($parameter["city"])}}',
 					},
 				},
 			},
@@ -46,7 +46,7 @@ export const generatedProperties: INodeProperties[] = [
 				routing: {
 					request: {
 						method: 'GET',
-						url: '=/weather/{{$parameter["city"]}}/forecast',
+						url: '=/weather/{{encodeURIComponent($parameter["city"])}}/forecast',
 					},
 				},
 			},

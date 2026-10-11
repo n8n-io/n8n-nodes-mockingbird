@@ -35,7 +35,7 @@ export const generatedProperties: INodeProperties[] = [
 				routing: {
 					request: {
 						method: 'POST',
-						url: '=/tickets/{{$parameter["ticket_id"]}}/comments',
+						url: '=/tickets/{{encodeURIComponent($parameter["ticket_id"])}}/comments',
 					},
 				},
 			},
@@ -59,7 +59,7 @@ export const generatedProperties: INodeProperties[] = [
 				routing: {
 					request: {
 						method: 'GET',
-						url: '=/tickets/{{$parameter["ticket_id"]}}',
+						url: '=/tickets/{{encodeURIComponent($parameter["ticket_id"])}}',
 					},
 				},
 			},
@@ -90,7 +90,7 @@ export const generatedProperties: INodeProperties[] = [
 				routing: {
 					request: {
 						method: 'PUT',
-						url: '=/tickets/{{$parameter["ticket_id"]}}',
+						url: '=/tickets/{{encodeURIComponent($parameter["ticket_id"])}}',
 					},
 				},
 			},
@@ -102,7 +102,7 @@ export const generatedProperties: INodeProperties[] = [
 				routing: {
 					request: {
 						method: 'PATCH',
-						url: '=/tickets/{{$parameter["ticket_id"]}}',
+						url: '=/tickets/{{encodeURIComponent($parameter["ticket_id"])}}',
 					},
 				},
 			},
@@ -260,7 +260,7 @@ export const generatedProperties: INodeProperties[] = [
 		name: 'customer_id',
 		type: 'number',
 		required: true,
-		default: 0,
+		default: 1,
 		routing: {
 			send: {
 				property: 'customer_id',
@@ -274,6 +274,9 @@ export const generatedProperties: INodeProperties[] = [
 				resource: ['ticket'],
 				operation: ['create'],
 			},
+		},
+		typeOptions: {
+			minValue: 1,
 		},
 	},
 	{
@@ -406,12 +409,15 @@ export const generatedProperties: INodeProperties[] = [
 		name: 'ticket_id',
 		type: 'number',
 		required: true,
-		default: 0,
+		default: 1,
 		displayOptions: {
 			show: {
 				resource: ['ticket'],
 				operation: ['get'],
 			},
+		},
+		typeOptions: {
+			minValue: 1,
 		},
 	},
 	{
@@ -419,12 +425,15 @@ export const generatedProperties: INodeProperties[] = [
 		name: 'ticket_id',
 		type: 'number',
 		required: true,
-		default: 0,
+		default: 1,
 		displayOptions: {
 			show: {
 				resource: ['ticket'],
 				operation: ['update'],
 			},
+		},
+		typeOptions: {
+			minValue: 1,
 		},
 	},
 	{
@@ -575,12 +584,15 @@ export const generatedProperties: INodeProperties[] = [
 		name: 'ticket_id',
 		type: 'number',
 		required: true,
-		default: 0,
+		default: 1,
 		displayOptions: {
 			show: {
 				resource: ['ticket'],
 				operation: ['replace'],
 			},
+		},
+		typeOptions: {
+			minValue: 1,
 		},
 	},
 	{
@@ -588,7 +600,7 @@ export const generatedProperties: INodeProperties[] = [
 		name: 'customer_id',
 		type: 'number',
 		required: true,
-		default: 0,
+		default: 1,
 		routing: {
 			send: {
 				property: 'customer_id',
@@ -602,6 +614,9 @@ export const generatedProperties: INodeProperties[] = [
 				resource: ['ticket'],
 				operation: ['replace'],
 			},
+		},
+		typeOptions: {
+			minValue: 1,
 		},
 	},
 	{
@@ -772,12 +787,15 @@ export const generatedProperties: INodeProperties[] = [
 		name: 'ticket_id',
 		type: 'number',
 		required: true,
-		default: 0,
+		default: 1,
 		displayOptions: {
 			show: {
 				resource: ['ticket'],
 				operation: ['add-comment'],
 			},
+		},
+		typeOptions: {
+			minValue: 1,
 		},
 	},
 	{

@@ -31,11 +31,18 @@ for (const file of nodeFiles) {
 		}
 	});
 
-	test(`${name}: optional fields never send an empty default`, () => {
-		for (const c of properties.filter((x) => x.type === 'collection')) {
-			for (const o of c.options) {
-				if (/_id$/.test(o.name)) assert.ok(o.default >= 1, `${o.name} default must be >= 1`);
-			}
+	test(`${name}: ID fields start at 1`, () => {
+		const all = properties.flatMap((p) => (p.type === 'collection' ? p.options : [p]));
+		for (const o of all.filter((x) => x.type === 'number' && /_id$/.test(x.name))) {
+			assert.ok(o.default >= 1, `${o.name} default must be >= 1`);
+			assert.ok(o.typeOptions?.minValue >= 1, `${o.name} needs minValue 1`);
+		}
+	});
+
+	test(`${name}: path parameters are URL encoded`, () => {
+		for (const o of operation.options) {
+			const raw = o.routing.request.url.replace(/encodeURIComponent\(\$parameter\["\w+"\]\)/g, '');
+			assert.doesNotMatch(raw, /\$parameter/, `${o.value} has an unencoded path parameter`);
 		}
 	});
 

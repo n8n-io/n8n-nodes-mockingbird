@@ -129,7 +129,7 @@ export const generatedProperties: INodeProperties[] = [
 				routing: {
 					request: {
 						method: 'GET',
-						url: '=/util/delay/{{$parameter["seconds"]}}',
+						url: '=/util/delay/{{encodeURIComponent($parameter["seconds"])}}',
 					},
 				},
 			},
@@ -141,7 +141,7 @@ export const generatedProperties: INodeProperties[] = [
 				routing: {
 					request: {
 						method: 'GET',
-						url: '=/util/status/{{$parameter["code"]}}',
+						url: '=/util/status/{{encodeURIComponent($parameter["code"])}}',
 					},
 				},
 			},

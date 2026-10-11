@@ -34,7 +34,7 @@ export const generatedProperties: INodeProperties[] = [
 				routing: {
 					request: {
 						method: 'GET',
-						url: '=/quotes/{{$parameter["quote_id"]}}',
+						url: '=/quotes/{{encodeURIComponent($parameter["quote_id"])}}',
 					},
 				},
 			},
@@ -70,12 +70,15 @@ export const generatedProperties: INodeProperties[] = [
 		name: 'quote_id',
 		type: 'number',
 		required: true,
-		default: 0,
+		default: 1,
 		displayOptions: {
 			show: {
 				resource: ['quote'],
 				operation: ['get'],
 			},
+		},
+		typeOptions: {
+			minValue: 1,
 		},
 	},
 ];

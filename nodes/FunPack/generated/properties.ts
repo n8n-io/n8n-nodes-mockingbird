@@ -58,7 +58,7 @@ export const generatedProperties: INodeProperties[] = [
 				routing: {
 					request: {
 						method: 'GET',
-						url: '=/fun/jokes/{{$parameter["joke_id"]}}',
+						url: '=/fun/jokes/{{encodeURIComponent($parameter["joke_id"])}}',
 					},
 				},
 			},
@@ -70,7 +70,7 @@ export const generatedProperties: INodeProperties[] = [
 				routing: {
 					request: {
 						method: 'GET',
-						url: '=/fun/numbers/{{$parameter["n"]}}',
+						url: '=/fun/numbers/{{encodeURIComponent($parameter["n"])}}',
 					},
 				},
 			},
@@ -118,7 +118,7 @@ export const generatedProperties: INodeProperties[] = [
 				routing: {
 					request: {
 						method: 'GET',
-						url: '=/fun/dogs/breed/{{$parameter["breed"]}}/random',
+						url: '=/fun/dogs/breed/{{encodeURIComponent($parameter["breed"])}}/random',
 					},
 				},
 			},
@@ -350,12 +350,15 @@ export const generatedProperties: INodeProperties[] = [
 		name: 'joke_id',
 		type: 'number',
 		required: true,
-		default: 0,
+		default: 1,
 		displayOptions: {
 			show: {
 				resource: ['fun'],
 				operation: ['get-joke'],
 			},
+		},
+		typeOptions: {
+			minValue: 1,
 		},
 	},
 	{
