@@ -2,7 +2,7 @@
 
 n8n community nodes for [Mockingbird](https://mockingbird.n8n.io), the stable mock APIs used in n8n courses, demos, and content.
 
-[n8n](https://n8n.io/) is a [fair-code licensed](https://docs.n8n.io/sustainable-use-license/) workflow automation platform.
+[n8n](https://n8n.io/) is the platform for AI agents and workflows: the one place to build, run, and manage them, from a first prototype to enterprise scale.
 
 [Installation](#installation)
 [Nodes](#nodes)
