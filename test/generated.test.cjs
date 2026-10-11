@@ -9,6 +9,9 @@ const nodeFiles = fs
 	.filter((d) => d !== 'shared')
 	.map((d) => path.join(nodesDir, d, `Mockingbird${d}.node.js`));
 
+// Nodes whose Get Many is paginated by the API. Others return a bare list.
+const PAGINATED = ['ProductCatalogue', 'Helpdesk', 'Orders', 'CrmLite'];
+
 for (const file of nodeFiles) {
 	const Node = Object.values(require(file))[0];
 	const { properties, credentials } = new Node().description;
@@ -36,17 +39,22 @@ for (const file of nodeFiles) {
 		}
 	});
 
-	test(`${name}: Get Many returns one item per row`, () => {
-		const many = operation.options.find((o) => o.value === 'get-many');
-		const paginated = properties.some(
-			(p) => p.name === 'returnAll' && p.displayOptions?.show?.operation?.includes('get-many'),
-		);
-		if (!many || !paginated) return;
-		assert.ok(many.routing.request.qs.paginate, 'sends paginate');
-		assert.match(many.routing.request.qs.limit, /returnAll \? 200/, 'limit is never empty');
-		assert.strictEqual(many.routing.output.postReceive.length, 1);
-		assert.strictEqual(typeof many.routing.output.postReceive[0], 'function');
-	});
+	if (PAGINATED.includes(path.basename(path.dirname(file)))) {
+		test(`${name}: Get Many returns one item per row`, () => {
+			const many = operation.options.find((o) => o.value === 'get-many');
+			assert.ok(many, 'has a get-many operation');
+			assert.ok(
+				properties.some(
+					(p) => p.name === 'returnAll' && p.displayOptions.show.operation.includes('get-many'),
+				),
+				'has Return All',
+			);
+			assert.ok(many.routing.request.qs.paginate, 'sends paginate');
+			assert.match(many.routing.request.qs.limit, /returnAll \? 200/, 'limit is never empty');
+			assert.strictEqual(many.routing.output.postReceive.length, 1);
+			assert.strictEqual(typeof many.routing.output.postReceive[0], 'function');
+		});
+	}
 
 	test(`${name}: declares the credential`, () => {
 		assert.strictEqual(credentials[0].name, 'mockingbirdApi');

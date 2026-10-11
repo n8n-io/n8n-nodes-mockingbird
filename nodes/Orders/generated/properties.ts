@@ -268,7 +268,6 @@ export const generatedProperties: INodeProperties[] = [
 				},
 				typeOptions: {
 					minValue: 1,
-					maxValue: 200,
 				},
 			},
 			{

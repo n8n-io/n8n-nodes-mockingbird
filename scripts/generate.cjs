@@ -241,21 +241,21 @@ function addListHandling(props) {
 }
 
 // Final pass so generated properties satisfy the n8n lint rules for community nodes.
+// Lint wants "ID" in prose. Leave backticked field names such as `id` alone.
+const fixId = (text) => text.replace(/(`[^`]*`)|\b[Ii]d\b/g, (m, code) => code || 'ID');
 const KEY_ORDER = ['displayName', 'name', 'type'];
 function normalize(props) {
 	return props.map((p) => {
 		const out = { ...p };
 		if (out.description !== undefined) {
-			let d = String(out.description)
-				.trim()
-				.replace(/\b[Ii]d\b/g, 'ID');
+			let d = fixId(String(out.description).trim());
 			d = d.charAt(0).toUpperCase() + d.slice(1);
 			const label = out.displayName || out.name;
 			if (!d || (label && d.toLowerCase() === String(label).toLowerCase())) delete out.description;
 			else out.description = d;
 		}
 		if (out.name === 'limit' && out.type === 'number') {
-			out.typeOptions = { minValue: 1, maxValue: 200, ...out.typeOptions };
+			out.typeOptions = { minValue: 1, ...out.typeOptions };
 			out.description = 'Max number of results to return';
 		}
 		if (out.type === 'string' && /email/i.test(out.name) && !out.placeholder) {
@@ -277,7 +277,7 @@ function normalize(props) {
 				options = options
 					.map((o) => {
 						const c = { ...o };
-						if (c.description) c.description = c.description.replace(/\b[Ii]d\b/g, 'ID');
+						if (c.description) c.description = fixId(c.description);
 						if (!c.description || c.description.toLowerCase() === String(c.name).toLowerCase()) {
 							delete c.description;
 						}
