@@ -61,6 +61,16 @@ for (const file of nodeFiles) {
 		}
 	});
 
+	test(`${name}: no two fields share a name and a display scope`, () => {
+		const seen = new Set();
+		for (const p of properties) {
+			const show = p.displayOptions?.show || {};
+			const key = JSON.stringify([p.name, show.resource, show.operation]);
+			assert.ok(!seen.has(key), `${p.name} is defined twice for ${key}`);
+			seen.add(key);
+		}
+	});
+
 	test(`${name}: ID fields start at their minimum`, () => {
 		const all = properties.flatMap((p) => (p.type === 'collection' ? p.options : [p]));
 		for (const o of all.filter((x) => x.type === 'number' && /_id$/.test(x.name))) {

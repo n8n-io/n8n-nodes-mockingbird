@@ -738,6 +738,11 @@ async function writeFormatted(file, content) {
 
 	const pkgPath = path.join(ROOT, 'package.json');
 	const pkg = JSON.parse(fs.readFileSync(pkgPath, 'utf8'));
-	pkg.n8n.nodes = nodePaths;
+	// Keep hand-written nodes: entries whose folder has no generated output.
+	const handWritten = (pkg.n8n.nodes || []).filter((n) => {
+		const dir = n.split('/')[2];
+		return !nodePaths.includes(n) && !fs.existsSync(path.join(ROOT, 'nodes', dir, 'generated'));
+	});
+	pkg.n8n.nodes = [...nodePaths, ...handWritten];
 	await writeFormatted(pkgPath, JSON.stringify(pkg, null, '\t') + '\n');
 })();
