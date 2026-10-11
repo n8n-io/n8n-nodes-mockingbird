@@ -4,559 +4,517 @@ import { unwrapData } from '../../shared/unwrapData';
 
 export const generatedProperties: INodeProperties[] = [
 	{
-		"displayName": "Resource",
-		"name": "resource",
-		"type": "options",
-		"noDataExpression": true,
-		"options": [
+		displayName: 'Resource',
+		name: 'resource',
+		type: 'options',
+		noDataExpression: true,
+		options: [
 			{
-				"name": "Customer",
-				"value": "customer",
-				"description": ""
-			}
+				name: 'Customer',
+				value: 'customer',
+			},
 		],
-		"default": "customer"
+		default: 'customer',
 	},
 	{
-		"displayName": "Operation",
-		"name": "operation",
-		"type": "options",
-		"noDataExpression": true,
-		"displayOptions": {
-			"show": {
-				"resource": [
-					"customer"
-				]
-			}
+		displayName: 'Operation',
+		name: 'operation',
+		type: 'options',
+		noDataExpression: true,
+		displayOptions: {
+			show: {
+				resource: ['customer'],
+			},
 		},
-		"options": [
+		options: [
 			{
-				"name": "Get Many",
-				"value": "get-many",
-				"action": "Get many customers",
-				"description": "List customers",
-				"routing": {
-					"request": {
-						"method": "GET",
-						"url": "=/customers",
-						"qs": {
-							"paginate": "={{ !$parameter.returnAll }}",
-							"limit": "={{ $parameter.returnAll ? 200 : $parameter.limit }}"
-						}
+				name: 'Create',
+				value: 'create',
+				action: 'Create a customer',
+				description: 'Create a customer',
+				routing: {
+					request: {
+						method: 'POST',
+						url: '=/customers',
 					},
-					"output": {
-						"postReceive": [
-							unwrapData
-						]
-					}
-				}
+				},
 			},
 			{
-				"name": "Create",
-				"value": "create",
-				"action": "Create a customer",
-				"description": "Create a customer",
-				"routing": {
-					"request": {
-						"method": "POST",
-						"url": "=/customers"
-					}
-				}
+				name: 'Get',
+				value: 'get',
+				action: 'Get a customer',
+				description: 'Get a customer',
+				routing: {
+					request: {
+						method: 'GET',
+						url: '=/customers/{{$parameter["customer_id"]}}',
+					},
+				},
 			},
 			{
-				"name": "Get",
-				"value": "get",
-				"action": "Get a customer",
-				"description": "Get a customer",
-				"routing": {
-					"request": {
-						"method": "GET",
-						"url": "=/customers/{{$parameter[\"customer_id\"]}}"
-					}
-				}
-			}
+				name: 'Get Many',
+				value: 'get-many',
+				action: 'Get many customers',
+				description: 'List customers',
+				routing: {
+					request: {
+						method: 'GET',
+						url: '=/customers',
+						qs: {
+							paginate: '={{ !$parameter.returnAll }}',
+							limit: '={{ $parameter.returnAll ? 200 : $parameter.limit }}',
+						},
+					},
+					output: {
+						postReceive: [unwrapData],
+					},
+				},
+			},
 		],
-		"default": "get-many"
+		default: 'get-many',
 	},
 	{
-		"displayName": "Return All",
-		"name": "returnAll",
-		"type": "boolean",
-		"default": false,
-		"description": "Whether to return all results or only up to a given limit",
-		"displayOptions": {
-			"show": {
-				"resource": [
-					"customer"
-				],
-				"operation": [
-					"get-many"
-				]
-			}
-		}
-	},
-	{
-		"displayName": "Limit",
-		"name": "limit",
-		"type": "number",
-		"typeOptions": {
-			"minValue": 1,
-			"maxValue": 200
+		displayName: 'Return All',
+		name: 'returnAll',
+		type: 'boolean',
+		default: false,
+		description: 'Whether to return all results or only up to a given limit',
+		displayOptions: {
+			show: {
+				resource: ['customer'],
+				operation: ['get-many'],
+			},
 		},
-		"default": 50,
-		"description": "Max number of results to return",
-		"displayOptions": {
-			"show": {
-				"resource": [
-					"customer"
-				],
-				"operation": [
-					"get-many"
-				],
-				"returnAll": [
-					false
-				]
-			}
-		}
 	},
 	{
-		"displayName": "Additional Fields",
-		"name": "additionalFields",
-		"type": "collection",
-		"placeholder": "Add Field",
-		"default": {},
-		"displayOptions": {
-			"show": {
-				"resource": [
-					"customer"
-				],
-				"operation": [
-					"get-many"
-				]
-			}
+		displayName: 'Limit',
+		name: 'limit',
+		type: 'number',
+		typeOptions: {
+			minValue: 1,
+			maxValue: 200,
 		},
-		"options": [
+		default: 50,
+		description: 'Max number of results to return',
+		displayOptions: {
+			show: {
+				resource: ['customer'],
+				operation: ['get-many'],
+				returnAll: [false],
+			},
+		},
+	},
+	{
+		displayName: 'Additional Fields',
+		name: 'additionalFields',
+		type: 'collection',
+		placeholder: 'Add Field',
+		default: {},
+		displayOptions: {
+			show: {
+				resource: ['customer'],
+				operation: ['get-many'],
+			},
+		},
+		options: [
 			{
-				"displayName": "Country",
-				"name": "country",
-				"description": "ISO alpha-2 country filter",
-				"default": "AT",
-				"type": "options",
-				"routing": {
-					"send": {
-						"type": "query",
-						"property": "country",
-						"value": "={{ $value }}",
-						"propertyInDotNotation": false
-					}
+				displayName: 'Country',
+				name: 'country',
+				type: 'options',
+				description: 'ISO alpha-2 country filter',
+				default: 'AT',
+				routing: {
+					send: {
+						type: 'query',
+						property: 'country',
+						value: '={{ $value }}',
+						propertyInDotNotation: false,
+					},
 				},
-				"options": [
+				options: [
 					{
-						"name": "AT",
-						"value": "AT"
+						name: 'AT',
+						value: 'AT',
 					},
 					{
-						"name": "AU",
-						"value": "AU"
+						name: 'AU',
+						value: 'AU',
 					},
 					{
-						"name": "BR",
-						"value": "BR"
+						name: 'BR',
+						value: 'BR',
 					},
 					{
-						"name": "CA",
-						"value": "CA"
+						name: 'CA',
+						value: 'CA',
 					},
 					{
-						"name": "CH",
-						"value": "CH"
+						name: 'CH',
+						value: 'CH',
 					},
 					{
-						"name": "DE",
-						"value": "DE"
+						name: 'DE',
+						value: 'DE',
 					},
 					{
-						"name": "ES",
-						"value": "ES"
+						name: 'ES',
+						value: 'ES',
 					},
 					{
-						"name": "FR",
-						"value": "FR"
+						name: 'FR',
+						value: 'FR',
 					},
 					{
-						"name": "GB",
-						"value": "GB"
+						name: 'GB',
+						value: 'GB',
 					},
 					{
-						"name": "IE",
-						"value": "IE"
+						name: 'IE',
+						value: 'IE',
 					},
 					{
-						"name": "IN",
-						"value": "IN"
+						name: 'IN',
+						value: 'IN',
 					},
 					{
-						"name": "IT",
-						"value": "IT"
+						name: 'IT',
+						value: 'IT',
 					},
 					{
-						"name": "JP",
-						"value": "JP"
+						name: 'JP',
+						value: 'JP',
 					},
 					{
-						"name": "NL",
-						"value": "NL"
+						name: 'NL',
+						value: 'NL',
 					},
 					{
-						"name": "NO",
-						"value": "NO"
+						name: 'NO',
+						value: 'NO',
 					},
 					{
-						"name": "PL",
-						"value": "PL"
+						name: 'PL',
+						value: 'PL',
 					},
 					{
-						"name": "SE",
-						"value": "SE"
+						name: 'SE',
+						value: 'SE',
 					},
 					{
-						"name": "SG",
-						"value": "SG"
+						name: 'SG',
+						value: 'SG',
 					},
 					{
-						"name": "US",
-						"value": "US"
-					}
-				]
+						name: 'US',
+						value: 'US',
+					},
+				],
 			},
 			{
-				"displayName": "Segment",
-				"name": "segment",
-				"description": "enterprise | mid_market | small",
-				"default": "enterprise",
-				"type": "options",
-				"routing": {
-					"send": {
-						"type": "query",
-						"property": "segment",
-						"value": "={{ $value }}",
-						"propertyInDotNotation": false
-					}
+				displayName: 'Search',
+				name: 'q',
+				type: 'string',
+				description: 'Substring on company/contact/email',
+				default: '',
+				routing: {
+					send: {
+						type: 'query',
+						property: 'q',
+						value: '={{ $value }}',
+						propertyInDotNotation: false,
+					},
 				},
-				"options": [
-					{
-						"name": "Enterprise",
-						"value": "enterprise"
+			},
+			{
+				displayName: 'Segment',
+				name: 'segment',
+				type: 'options',
+				description: 'Enterprise | mid_market | small',
+				default: 'enterprise',
+				routing: {
+					send: {
+						type: 'query',
+						property: 'segment',
+						value: '={{ $value }}',
+						propertyInDotNotation: false,
 					},
-					{
-						"name": "Mid Market",
-						"value": "mid_market"
-					},
-					{
-						"name": "Small",
-						"value": "small"
-					}
-				]
-			},
-			{
-				"displayName": "Search",
-				"name": "q",
-				"description": "Substring on company/contact/email",
-				"default": "",
-				"type": "string",
-				"routing": {
-					"send": {
-						"type": "query",
-						"property": "q",
-						"value": "={{ $value }}",
-						"propertyInDotNotation": false
-					}
-				}
-			}
-		]
-	},
-	{
-		"required": true,
-		"displayName": "Company",
-		"name": "company",
-		"type": "string",
-		"default": "",
-		"routing": {
-			"send": {
-				"property": "company",
-				"propertyInDotNotation": false,
-				"type": "body",
-				"value": "={{ $value }}"
-			}
-		},
-		"displayOptions": {
-			"show": {
-				"resource": [
-					"customer"
-				],
-				"operation": [
-					"create"
-				]
-			}
-		}
-	},
-	{
-		"required": true,
-		"displayName": "Contact Name",
-		"name": "contact_name",
-		"type": "string",
-		"default": "",
-		"routing": {
-			"send": {
-				"property": "contact_name",
-				"propertyInDotNotation": false,
-				"type": "body",
-				"value": "={{ $value }}"
-			}
-		},
-		"displayOptions": {
-			"show": {
-				"resource": [
-					"customer"
-				],
-				"operation": [
-					"create"
-				]
-			}
-		}
-	},
-	{
-		"required": true,
-		"displayName": "Email",
-		"name": "email",
-		"type": "string",
-		"default": "",
-		"routing": {
-			"send": {
-				"property": "email",
-				"propertyInDotNotation": false,
-				"type": "body",
-				"value": "={{ $value }}"
-			}
-		},
-		"displayOptions": {
-			"show": {
-				"resource": [
-					"customer"
-				],
-				"operation": [
-					"create"
-				]
-			}
-		}
-	},
-	{
-		"required": true,
-		"displayName": "Country",
-		"name": "country",
-		"type": "options",
-		"default": "AT",
-		"routing": {
-			"send": {
-				"property": "country",
-				"propertyInDotNotation": false,
-				"type": "body",
-				"value": "={{ $value }}"
-			}
-		},
-		"displayOptions": {
-			"show": {
-				"resource": [
-					"customer"
-				],
-				"operation": [
-					"create"
-				]
-			}
-		},
-		"options": [
-			{
-				"name": "AT",
-				"value": "AT"
-			},
-			{
-				"name": "AU",
-				"value": "AU"
-			},
-			{
-				"name": "BR",
-				"value": "BR"
-			},
-			{
-				"name": "CA",
-				"value": "CA"
-			},
-			{
-				"name": "CH",
-				"value": "CH"
-			},
-			{
-				"name": "DE",
-				"value": "DE"
-			},
-			{
-				"name": "ES",
-				"value": "ES"
-			},
-			{
-				"name": "FR",
-				"value": "FR"
-			},
-			{
-				"name": "GB",
-				"value": "GB"
-			},
-			{
-				"name": "IE",
-				"value": "IE"
-			},
-			{
-				"name": "IN",
-				"value": "IN"
-			},
-			{
-				"name": "IT",
-				"value": "IT"
-			},
-			{
-				"name": "JP",
-				"value": "JP"
-			},
-			{
-				"name": "NL",
-				"value": "NL"
-			},
-			{
-				"name": "NO",
-				"value": "NO"
-			},
-			{
-				"name": "PL",
-				"value": "PL"
-			},
-			{
-				"name": "SE",
-				"value": "SE"
-			},
-			{
-				"name": "SG",
-				"value": "SG"
-			},
-			{
-				"name": "US",
-				"value": "US"
-			}
-		]
-	},
-	{
-		"displayName": "Additional Fields",
-		"name": "additionalFields",
-		"type": "collection",
-		"placeholder": "Add Field",
-		"default": {},
-		"displayOptions": {
-			"show": {
-				"resource": [
-					"customer"
-				],
-				"operation": [
-					"create"
-				]
-			}
-		},
-		"options": [
-			{
-				"displayName": "Phone",
-				"name": "phone",
-				"type": "string",
-				"default": "",
-				"routing": {
-					"send": {
-						"property": "phone",
-						"propertyInDotNotation": false,
-						"type": "body",
-						"value": "={{ $value }}"
-					}
-				}
-			},
-			{
-				"displayName": "City",
-				"name": "city",
-				"type": "string",
-				"default": "",
-				"routing": {
-					"send": {
-						"property": "city",
-						"propertyInDotNotation": false,
-						"type": "body",
-						"value": "={{ $value }}"
-					}
-				}
-			},
-			{
-				"displayName": "Segment",
-				"name": "segment",
-				"type": "options",
-				"default": "enterprise",
-				"routing": {
-					"send": {
-						"property": "segment",
-						"propertyInDotNotation": false,
-						"type": "body",
-						"value": "={{ $value }}"
-					}
 				},
-				"options": [
+				options: [
 					{
-						"name": "Enterprise",
-						"value": "enterprise"
+						name: 'Enterprise',
+						value: 'enterprise',
 					},
 					{
-						"name": "Mid Market",
-						"value": "mid_market"
+						name: 'Mid Market',
+						value: 'mid_market',
 					},
 					{
-						"name": "Small",
-						"value": "small"
-					}
-				]
+						name: 'Small',
+						value: 'small',
+					},
+				],
 			},
-			{
-				"displayName": "Credit Limit Cents",
-				"name": "credit_limit_cents",
-				"type": "number",
-				"default": 0,
-				"routing": {
-					"send": {
-						"property": "credit_limit_cents",
-						"propertyInDotNotation": false,
-						"type": "body",
-						"value": "={{ $value }}"
-					}
-				}
-			}
-		]
+		],
 	},
 	{
-		"displayName": "Customer ID",
-		"name": "customer_id",
-		"required": true,
-		"default": 0,
-		"type": "number",
-		"displayOptions": {
-			"show": {
-				"resource": [
-					"customer"
+		displayName: 'Company',
+		name: 'company',
+		type: 'string',
+		required: true,
+		default: '',
+		routing: {
+			send: {
+				property: 'company',
+				propertyInDotNotation: false,
+				type: 'body',
+				value: '={{ $value }}',
+			},
+		},
+		displayOptions: {
+			show: {
+				resource: ['customer'],
+				operation: ['create'],
+			},
+		},
+	},
+	{
+		displayName: 'Contact Name',
+		name: 'contact_name',
+		type: 'string',
+		required: true,
+		default: '',
+		routing: {
+			send: {
+				property: 'contact_name',
+				propertyInDotNotation: false,
+				type: 'body',
+				value: '={{ $value }}',
+			},
+		},
+		displayOptions: {
+			show: {
+				resource: ['customer'],
+				operation: ['create'],
+			},
+		},
+	},
+	{
+		displayName: 'Email',
+		name: 'email',
+		type: 'string',
+		required: true,
+		default: '',
+		routing: {
+			send: {
+				property: 'email',
+				propertyInDotNotation: false,
+				type: 'body',
+				value: '={{ $value }}',
+			},
+		},
+		displayOptions: {
+			show: {
+				resource: ['customer'],
+				operation: ['create'],
+			},
+		},
+		placeholder: 'name@email.com',
+	},
+	{
+		displayName: 'Country',
+		name: 'country',
+		type: 'options',
+		required: true,
+		default: 'AT',
+		routing: {
+			send: {
+				property: 'country',
+				propertyInDotNotation: false,
+				type: 'body',
+				value: '={{ $value }}',
+			},
+		},
+		displayOptions: {
+			show: {
+				resource: ['customer'],
+				operation: ['create'],
+			},
+		},
+		options: [
+			{
+				name: 'AT',
+				value: 'AT',
+			},
+			{
+				name: 'AU',
+				value: 'AU',
+			},
+			{
+				name: 'BR',
+				value: 'BR',
+			},
+			{
+				name: 'CA',
+				value: 'CA',
+			},
+			{
+				name: 'CH',
+				value: 'CH',
+			},
+			{
+				name: 'DE',
+				value: 'DE',
+			},
+			{
+				name: 'ES',
+				value: 'ES',
+			},
+			{
+				name: 'FR',
+				value: 'FR',
+			},
+			{
+				name: 'GB',
+				value: 'GB',
+			},
+			{
+				name: 'IE',
+				value: 'IE',
+			},
+			{
+				name: 'IN',
+				value: 'IN',
+			},
+			{
+				name: 'IT',
+				value: 'IT',
+			},
+			{
+				name: 'JP',
+				value: 'JP',
+			},
+			{
+				name: 'NL',
+				value: 'NL',
+			},
+			{
+				name: 'NO',
+				value: 'NO',
+			},
+			{
+				name: 'PL',
+				value: 'PL',
+			},
+			{
+				name: 'SE',
+				value: 'SE',
+			},
+			{
+				name: 'SG',
+				value: 'SG',
+			},
+			{
+				name: 'US',
+				value: 'US',
+			},
+		],
+	},
+	{
+		displayName: 'Additional Fields',
+		name: 'additionalFields',
+		type: 'collection',
+		placeholder: 'Add Field',
+		default: {},
+		displayOptions: {
+			show: {
+				resource: ['customer'],
+				operation: ['create'],
+			},
+		},
+		options: [
+			{
+				displayName: 'City',
+				name: 'city',
+				type: 'string',
+				default: '',
+				routing: {
+					send: {
+						property: 'city',
+						propertyInDotNotation: false,
+						type: 'body',
+						value: '={{ $value }}',
+					},
+				},
+			},
+			{
+				displayName: 'Credit Limit Cents',
+				name: 'credit_limit_cents',
+				type: 'number',
+				default: 0,
+				routing: {
+					send: {
+						property: 'credit_limit_cents',
+						propertyInDotNotation: false,
+						type: 'body',
+						value: '={{ $value }}',
+					},
+				},
+			},
+			{
+				displayName: 'Phone',
+				name: 'phone',
+				type: 'string',
+				default: '',
+				routing: {
+					send: {
+						property: 'phone',
+						propertyInDotNotation: false,
+						type: 'body',
+						value: '={{ $value }}',
+					},
+				},
+			},
+			{
+				displayName: 'Segment',
+				name: 'segment',
+				type: 'options',
+				default: 'enterprise',
+				routing: {
+					send: {
+						property: 'segment',
+						propertyInDotNotation: false,
+						type: 'body',
+						value: '={{ $value }}',
+					},
+				},
+				options: [
+					{
+						name: 'Enterprise',
+						value: 'enterprise',
+					},
+					{
+						name: 'Mid Market',
+						value: 'mid_market',
+					},
+					{
+						name: 'Small',
+						value: 'small',
+					},
 				],
-				"operation": [
-					"get"
-				]
-			}
-		}
-	}
+			},
+		],
+	},
+	{
+		displayName: 'Customer ID',
+		name: 'customer_id',
+		type: 'number',
+		required: true,
+		default: 0,
+		displayOptions: {
+			show: {
+				resource: ['customer'],
+				operation: ['get'],
+			},
+		},
+	},
 ];

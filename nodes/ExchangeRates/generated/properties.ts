@@ -3,295 +3,276 @@ import type { INodeProperties } from 'n8n-workflow';
 
 export const generatedProperties: INodeProperties[] = [
 	{
-		"displayName": "Resource",
-		"name": "resource",
-		"type": "options",
-		"noDataExpression": true,
-		"options": [
+		displayName: 'Resource',
+		name: 'resource',
+		type: 'options',
+		noDataExpression: true,
+		options: [
 			{
-				"name": "Exchange Rate",
-				"value": "exchange-rate",
-				"description": ""
-			}
-		],
-		"default": "exchange-rate"
-	},
-	{
-		"displayName": "Operation",
-		"name": "operation",
-		"type": "options",
-		"noDataExpression": true,
-		"displayOptions": {
-			"show": {
-				"resource": [
-					"exchange-rate"
-				]
-			}
-		},
-		"options": [
-			{
-				"name": "Get Rates",
-				"value": "get-rates",
-				"action": "Get exchange rates for a base currency",
-				"description": "Exchange rates for a base currency",
-				"routing": {
-					"request": {
-						"method": "GET",
-						"url": "=/rates"
-					}
-				}
+				name: 'Exchange Rate',
+				value: 'exchange-rate',
 			},
-			{
-				"name": "Convert",
-				"value": "convert",
-				"action": "Convert an amount between currencies",
-				"description": "Convert an amount between currencies",
-				"routing": {
-					"request": {
-						"method": "GET",
-						"url": "=/rates/convert"
-					}
-				}
-			}
 		],
-		"default": "get-rates"
+		default: 'exchange-rate',
 	},
 	{
-		"displayName": "Additional Fields",
-		"name": "additionalFields",
-		"type": "collection",
-		"placeholder": "Add Field",
-		"default": {},
-		"displayOptions": {
-			"show": {
-				"resource": [
-					"exchange-rate"
-				],
-				"operation": [
-					"get-rates"
-				]
-			}
+		displayName: 'Operation',
+		name: 'operation',
+		type: 'options',
+		noDataExpression: true,
+		displayOptions: {
+			show: {
+				resource: ['exchange-rate'],
+			},
 		},
-		"options": [
+		options: [
 			{
-				"displayName": "Base",
-				"name": "base",
-				"description": "Base currency code",
-				"default": "EUR",
-				"type": "options",
-				"routing": {
-					"send": {
-						"type": "query",
-						"property": "base",
-						"value": "={{ $value }}",
-						"propertyInDotNotation": false
-					}
+				name: 'Convert',
+				value: 'convert',
+				action: 'Convert an amount between currencies',
+				description: 'Convert an amount between currencies',
+				routing: {
+					request: {
+						method: 'GET',
+						url: '=/rates/convert',
+					},
 				},
-				"options": [
-					{
-						"name": "EUR",
-						"value": "EUR"
+			},
+			{
+				name: 'Get Rates',
+				value: 'get-rates',
+				action: 'Get exchange rates for a base currency',
+				description: 'Exchange rates for a base currency',
+				routing: {
+					request: {
+						method: 'GET',
+						url: '=/rates',
 					},
-					{
-						"name": "USD",
-						"value": "USD"
-					},
-					{
-						"name": "GBP",
-						"value": "GBP"
-					},
-					{
-						"name": "CHF",
-						"value": "CHF"
-					},
-					{
-						"name": "SEK",
-						"value": "SEK"
-					},
-					{
-						"name": "NOK",
-						"value": "NOK"
-					},
-					{
-						"name": "PLN",
-						"value": "PLN"
-					},
-					{
-						"name": "CZK",
-						"value": "CZK"
-					},
-					{
-						"name": "JPY",
-						"value": "JPY"
-					},
-					{
-						"name": "AUD",
-						"value": "AUD"
-					}
-				]
-			}
-		]
+				},
+			},
+		],
+		default: 'get-rates',
 	},
 	{
-		"displayName": "From",
-		"name": "from",
-		"required": true,
-		"description": "Source currency code",
-		"default": "EUR",
-		"type": "options",
-		"routing": {
-			"send": {
-				"type": "query",
-				"property": "from",
-				"value": "={{ $value }}",
-				"propertyInDotNotation": false
-			}
+		displayName: 'Additional Fields',
+		name: 'additionalFields',
+		type: 'collection',
+		placeholder: 'Add Field',
+		default: {},
+		displayOptions: {
+			show: {
+				resource: ['exchange-rate'],
+				operation: ['get-rates'],
+			},
 		},
-		"displayOptions": {
-			"show": {
-				"resource": [
-					"exchange-rate"
+		options: [
+			{
+				displayName: 'Base',
+				name: 'base',
+				type: 'options',
+				description: 'Base currency code',
+				default: 'EUR',
+				routing: {
+					send: {
+						type: 'query',
+						property: 'base',
+						value: '={{ $value }}',
+						propertyInDotNotation: false,
+					},
+				},
+				options: [
+					{
+						name: 'AUD',
+						value: 'AUD',
+					},
+					{
+						name: 'CHF',
+						value: 'CHF',
+					},
+					{
+						name: 'CZK',
+						value: 'CZK',
+					},
+					{
+						name: 'EUR',
+						value: 'EUR',
+					},
+					{
+						name: 'GBP',
+						value: 'GBP',
+					},
+					{
+						name: 'JPY',
+						value: 'JPY',
+					},
+					{
+						name: 'NOK',
+						value: 'NOK',
+					},
+					{
+						name: 'PLN',
+						value: 'PLN',
+					},
+					{
+						name: 'SEK',
+						value: 'SEK',
+					},
+					{
+						name: 'USD',
+						value: 'USD',
+					},
 				],
-				"operation": [
-					"convert"
-				]
-			}
-		},
-		"options": [
-			{
-				"name": "EUR",
-				"value": "EUR"
 			},
-			{
-				"name": "USD",
-				"value": "USD"
-			},
-			{
-				"name": "GBP",
-				"value": "GBP"
-			},
-			{
-				"name": "CHF",
-				"value": "CHF"
-			},
-			{
-				"name": "SEK",
-				"value": "SEK"
-			},
-			{
-				"name": "NOK",
-				"value": "NOK"
-			},
-			{
-				"name": "PLN",
-				"value": "PLN"
-			},
-			{
-				"name": "CZK",
-				"value": "CZK"
-			},
-			{
-				"name": "JPY",
-				"value": "JPY"
-			},
-			{
-				"name": "AUD",
-				"value": "AUD"
-			}
-		]
+		],
 	},
 	{
-		"displayName": "To",
-		"name": "to",
-		"required": true,
-		"description": "Target currency code",
-		"default": "EUR",
-		"type": "options",
-		"routing": {
-			"send": {
-				"type": "query",
-				"property": "to",
-				"value": "={{ $value }}",
-				"propertyInDotNotation": false
-			}
+		displayName: 'From',
+		name: 'from',
+		type: 'options',
+		required: true,
+		description: 'Source currency code',
+		default: 'EUR',
+		routing: {
+			send: {
+				type: 'query',
+				property: 'from',
+				value: '={{ $value }}',
+				propertyInDotNotation: false,
+			},
 		},
-		"displayOptions": {
-			"show": {
-				"resource": [
-					"exchange-rate"
-				],
-				"operation": [
-					"convert"
-				]
-			}
+		displayOptions: {
+			show: {
+				resource: ['exchange-rate'],
+				operation: ['convert'],
+			},
 		},
-		"options": [
+		options: [
 			{
-				"name": "EUR",
-				"value": "EUR"
+				name: 'AUD',
+				value: 'AUD',
 			},
 			{
-				"name": "USD",
-				"value": "USD"
+				name: 'CHF',
+				value: 'CHF',
 			},
 			{
-				"name": "GBP",
-				"value": "GBP"
+				name: 'CZK',
+				value: 'CZK',
 			},
 			{
-				"name": "CHF",
-				"value": "CHF"
+				name: 'EUR',
+				value: 'EUR',
 			},
 			{
-				"name": "SEK",
-				"value": "SEK"
+				name: 'GBP',
+				value: 'GBP',
 			},
 			{
-				"name": "NOK",
-				"value": "NOK"
+				name: 'JPY',
+				value: 'JPY',
 			},
 			{
-				"name": "PLN",
-				"value": "PLN"
+				name: 'NOK',
+				value: 'NOK',
 			},
 			{
-				"name": "CZK",
-				"value": "CZK"
+				name: 'PLN',
+				value: 'PLN',
 			},
 			{
-				"name": "JPY",
-				"value": "JPY"
+				name: 'SEK',
+				value: 'SEK',
 			},
 			{
-				"name": "AUD",
-				"value": "AUD"
-			}
-		]
+				name: 'USD',
+				value: 'USD',
+			},
+		],
 	},
 	{
-		"displayName": "Amount",
-		"name": "amount",
-		"required": true,
-		"description": "Amount in the source currency",
-		"default": 0,
-		"type": "number",
-		"routing": {
-			"send": {
-				"type": "query",
-				"property": "amount",
-				"value": "={{ $value }}",
-				"propertyInDotNotation": false
-			}
+		displayName: 'To',
+		name: 'to',
+		type: 'options',
+		required: true,
+		description: 'Target currency code',
+		default: 'EUR',
+		routing: {
+			send: {
+				type: 'query',
+				property: 'to',
+				value: '={{ $value }}',
+				propertyInDotNotation: false,
+			},
 		},
-		"displayOptions": {
-			"show": {
-				"resource": [
-					"exchange-rate"
-				],
-				"operation": [
-					"convert"
-				]
-			}
-		}
-	}
+		displayOptions: {
+			show: {
+				resource: ['exchange-rate'],
+				operation: ['convert'],
+			},
+		},
+		options: [
+			{
+				name: 'AUD',
+				value: 'AUD',
+			},
+			{
+				name: 'CHF',
+				value: 'CHF',
+			},
+			{
+				name: 'CZK',
+				value: 'CZK',
+			},
+			{
+				name: 'EUR',
+				value: 'EUR',
+			},
+			{
+				name: 'GBP',
+				value: 'GBP',
+			},
+			{
+				name: 'JPY',
+				value: 'JPY',
+			},
+			{
+				name: 'NOK',
+				value: 'NOK',
+			},
+			{
+				name: 'PLN',
+				value: 'PLN',
+			},
+			{
+				name: 'SEK',
+				value: 'SEK',
+			},
+			{
+				name: 'USD',
+				value: 'USD',
+			},
+		],
+	},
+	{
+		displayName: 'Amount',
+		name: 'amount',
+		type: 'number',
+		required: true,
+		description: 'Amount in the source currency',
+		default: 0,
+		routing: {
+			send: {
+				type: 'query',
+				property: 'amount',
+				value: '={{ $value }}',
+				propertyInDotNotation: false,
+			},
+		},
+		displayOptions: {
+			show: {
+				resource: ['exchange-rate'],
+				operation: ['convert'],
+			},
+		},
+	},
 ];

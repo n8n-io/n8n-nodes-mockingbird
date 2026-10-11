@@ -3,86 +3,79 @@ import type { INodeProperties } from 'n8n-workflow';
 
 export const generatedProperties: INodeProperties[] = [
 	{
-		"displayName": "Resource",
-		"name": "resource",
-		"type": "options",
-		"noDataExpression": true,
-		"options": [
+		displayName: 'Resource',
+		name: 'resource',
+		type: 'options',
+		noDataExpression: true,
+		options: [
 			{
-				"name": "Quote",
-				"value": "quote",
-				"description": ""
-			}
+				name: 'Quote',
+				value: 'quote',
+			},
 		],
-		"default": "quote"
+		default: 'quote',
 	},
 	{
-		"displayName": "Operation",
-		"name": "operation",
-		"type": "options",
-		"noDataExpression": true,
-		"displayOptions": {
-			"show": {
-				"resource": [
-					"quote"
-				]
-			}
+		displayName: 'Operation',
+		name: 'operation',
+		type: 'options',
+		noDataExpression: true,
+		displayOptions: {
+			show: {
+				resource: ['quote'],
+			},
 		},
-		"options": [
+		options: [
 			{
-				"name": "Get Many",
-				"value": "get-many",
-				"action": "Get many quotes",
-				"description": "List all quotes",
-				"routing": {
-					"request": {
-						"method": "GET",
-						"url": "=/quotes"
-					}
-				}
+				name: 'Get',
+				value: 'get',
+				action: 'Get a quote',
+				description: 'Get a quote by ID',
+				routing: {
+					request: {
+						method: 'GET',
+						url: '=/quotes/{{$parameter["quote_id"]}}',
+					},
+				},
 			},
 			{
-				"name": "Get Quote of the Day",
-				"value": "get-quote-of-the-day",
-				"action": "Get the quote of the day",
-				"description": "Quote of the day",
-				"routing": {
-					"request": {
-						"method": "GET",
-						"url": "=/quotes/random"
-					}
-				}
+				name: 'Get Many',
+				value: 'get-many',
+				action: 'Get many quotes',
+				description: 'List all quotes',
+				routing: {
+					request: {
+						method: 'GET',
+						url: '=/quotes',
+					},
+				},
 			},
 			{
-				"name": "Get",
-				"value": "get",
-				"action": "Get a quote",
-				"description": "Get a quote by id",
-				"routing": {
-					"request": {
-						"method": "GET",
-						"url": "=/quotes/{{$parameter[\"quote_id\"]}}"
-					}
-				}
-			}
+				name: 'Get Quote of the Day',
+				value: 'get-quote-of-the-day',
+				action: 'Get the quote of the day',
+				description: 'Quote of the day',
+				routing: {
+					request: {
+						method: 'GET',
+						url: '=/quotes/random',
+					},
+				},
+			},
 		],
-		"default": "get-many"
+		default: 'get-many',
 	},
 	{
-		"displayName": "Quote ID",
-		"name": "quote_id",
-		"required": true,
-		"default": 0,
-		"type": "number",
-		"displayOptions": {
-			"show": {
-				"resource": [
-					"quote"
-				],
-				"operation": [
-					"get"
-				]
-			}
-		}
-	}
+		displayName: 'Quote ID',
+		name: 'quote_id',
+		type: 'number',
+		required: true,
+		default: 0,
+		displayOptions: {
+			show: {
+				resource: ['quote'],
+				operation: ['get'],
+			},
+		},
+	},
 ];

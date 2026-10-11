@@ -4,380 +4,357 @@ import { unwrapData } from '../../shared/unwrapData';
 
 export const generatedProperties: INodeProperties[] = [
 	{
-		"displayName": "Resource",
-		"name": "resource",
-		"type": "options",
-		"noDataExpression": true,
-		"options": [
+		displayName: 'Resource',
+		name: 'resource',
+		type: 'options',
+		noDataExpression: true,
+		options: [
 			{
-				"name": "Order",
-				"value": "order",
-				"description": ""
-			}
+				name: 'Order',
+				value: 'order',
+			},
 		],
-		"default": "order"
+		default: 'order',
 	},
 	{
-		"displayName": "Operation",
-		"name": "operation",
-		"type": "options",
-		"noDataExpression": true,
-		"displayOptions": {
-			"show": {
-				"resource": [
-					"order"
-				]
-			}
+		displayName: 'Operation',
+		name: 'operation',
+		type: 'options',
+		noDataExpression: true,
+		displayOptions: {
+			show: {
+				resource: ['order'],
+			},
 		},
-		"options": [
+		options: [
 			{
-				"name": "Get Many",
-				"value": "get-many",
-				"action": "Get many orders",
-				"description": "List orders",
-				"routing": {
-					"request": {
-						"method": "GET",
-						"url": "=/orders",
-						"qs": {
-							"paginate": "={{ !$parameter.returnAll }}",
-							"limit": "={{ $parameter.returnAll ? 200 : $parameter.limit }}"
-						}
+				name: 'Get',
+				value: 'get',
+				action: 'Get an order',
+				description: 'Get an order with its line items',
+				routing: {
+					request: {
+						method: 'GET',
+						url: '=/orders/{{$parameter["order_id"]}}',
 					},
-					"output": {
-						"postReceive": [
-							unwrapData
-						]
-					}
-				}
+				},
 			},
 			{
-				"name": "Get Many (Cursor)",
-				"value": "get-many-cursor",
-				"action": "Get many orders using cursor pagination",
-				"description": "List orders",
-				"routing": {
-					"request": {
-						"method": "GET",
-						"url": "=/orders/cursor"
-					}
-				}
+				name: 'Get Many',
+				value: 'get-many',
+				action: 'Get many orders',
+				description: 'List orders',
+				routing: {
+					request: {
+						method: 'GET',
+						url: '=/orders',
+						qs: {
+							paginate: '={{ !$parameter.returnAll }}',
+							limit: '={{ $parameter.returnAll ? 200 : $parameter.limit }}',
+						},
+					},
+					output: {
+						postReceive: [unwrapData],
+					},
+				},
 			},
 			{
-				"name": "Get",
-				"value": "get",
-				"action": "Get an order",
-				"description": "Get an order with its line items",
-				"routing": {
-					"request": {
-						"method": "GET",
-						"url": "=/orders/{{$parameter[\"order_id\"]}}"
-					}
-				}
-			}
+				name: 'Get Many (Cursor)',
+				value: 'get-many-cursor',
+				action: 'Get many orders using cursor pagination',
+				description: 'List orders',
+				routing: {
+					request: {
+						method: 'GET',
+						url: '=/orders/cursor',
+					},
+				},
+			},
 		],
-		"default": "get-many"
+		default: 'get-many',
 	},
 	{
-		"displayName": "Return All",
-		"name": "returnAll",
-		"type": "boolean",
-		"default": false,
-		"description": "Whether to return all results or only up to a given limit",
-		"displayOptions": {
-			"show": {
-				"resource": [
-					"order"
-				],
-				"operation": [
-					"get-many"
-				]
-			}
-		}
-	},
-	{
-		"displayName": "Limit",
-		"name": "limit",
-		"type": "number",
-		"typeOptions": {
-			"minValue": 1,
-			"maxValue": 200
+		displayName: 'Return All',
+		name: 'returnAll',
+		type: 'boolean',
+		default: false,
+		description: 'Whether to return all results or only up to a given limit',
+		displayOptions: {
+			show: {
+				resource: ['order'],
+				operation: ['get-many'],
+			},
 		},
-		"default": 50,
-		"description": "Max number of results to return",
-		"displayOptions": {
-			"show": {
-				"resource": [
-					"order"
-				],
-				"operation": [
-					"get-many"
-				],
-				"returnAll": [
-					false
-				]
-			}
-		}
 	},
 	{
-		"displayName": "Additional Fields",
-		"name": "additionalFields",
-		"type": "collection",
-		"placeholder": "Add Field",
-		"default": {},
-		"displayOptions": {
-			"show": {
-				"resource": [
-					"order"
-				],
-				"operation": [
-					"get-many"
-				]
-			}
+		displayName: 'Limit',
+		name: 'limit',
+		type: 'number',
+		typeOptions: {
+			minValue: 1,
+			maxValue: 200,
 		},
-		"options": [
-			{
-				"displayName": "Status",
-				"name": "status",
-				"description": "Order status filter",
-				"default": "pending",
-				"type": "options",
-				"routing": {
-					"send": {
-						"type": "query",
-						"property": "status",
-						"value": "={{ $value }}",
-						"propertyInDotNotation": false
-					}
-				},
-				"options": [
-					{
-						"name": "Pending",
-						"value": "pending"
-					},
-					{
-						"name": "Paid",
-						"value": "paid"
-					},
-					{
-						"name": "Shipped",
-						"value": "shipped"
-					},
-					{
-						"name": "Delivered",
-						"value": "delivered"
-					},
-					{
-						"name": "Cancelled",
-						"value": "cancelled"
-					},
-					{
-						"name": "Refunded",
-						"value": "refunded"
-					}
-				]
+		default: 50,
+		description: 'Max number of results to return',
+		displayOptions: {
+			show: {
+				resource: ['order'],
+				operation: ['get-many'],
+				returnAll: [false],
 			},
-			{
-				"displayName": "Customer ID",
-				"name": "customer_id",
-				"default": 1,
-				"type": "number",
-				"routing": {
-					"send": {
-						"type": "query",
-						"property": "customer_id",
-						"value": "={{ $value }}",
-						"propertyInDotNotation": false
-					}
-				},
-				"typeOptions": {
-					"minValue": 1
-				}
-			},
-			{
-				"displayName": "Placed After",
-				"name": "placed_after",
-				"description": "ISO datetime lower bound",
-				"default": "",
-				"type": "string",
-				"routing": {
-					"send": {
-						"type": "query",
-						"property": "placed_after",
-						"value": "={{ $value }}",
-						"propertyInDotNotation": false
-					}
-				}
-			},
-			{
-				"displayName": "Placed Before",
-				"name": "placed_before",
-				"description": "ISO datetime upper bound",
-				"default": "",
-				"type": "string",
-				"routing": {
-					"send": {
-						"type": "query",
-						"property": "placed_before",
-						"value": "={{ $value }}",
-						"propertyInDotNotation": false
-					}
-				}
-			}
-		]
-	},
-	{
-		"displayName": "Additional Fields",
-		"name": "additionalFields",
-		"type": "collection",
-		"placeholder": "Add Field",
-		"default": {},
-		"displayOptions": {
-			"show": {
-				"resource": [
-					"order"
-				],
-				"operation": [
-					"get-many-cursor"
-				]
-			}
 		},
-		"options": [
-			{
-				"displayName": "Status",
-				"name": "status",
-				"description": "Order status filter",
-				"default": "pending",
-				"type": "options",
-				"routing": {
-					"send": {
-						"type": "query",
-						"property": "status",
-						"value": "={{ $value }}",
-						"propertyInDotNotation": false
-					}
-				},
-				"options": [
-					{
-						"name": "Pending",
-						"value": "pending"
-					},
-					{
-						"name": "Paid",
-						"value": "paid"
-					},
-					{
-						"name": "Shipped",
-						"value": "shipped"
-					},
-					{
-						"name": "Delivered",
-						"value": "delivered"
-					},
-					{
-						"name": "Cancelled",
-						"value": "cancelled"
-					},
-					{
-						"name": "Refunded",
-						"value": "refunded"
-					}
-				]
-			},
-			{
-				"displayName": "Customer ID",
-				"name": "customer_id",
-				"default": 1,
-				"type": "number",
-				"routing": {
-					"send": {
-						"type": "query",
-						"property": "customer_id",
-						"value": "={{ $value }}",
-						"propertyInDotNotation": false
-					}
-				},
-				"typeOptions": {
-					"minValue": 1
-				}
-			},
-			{
-				"displayName": "Placed After",
-				"name": "placed_after",
-				"description": "ISO datetime lower bound",
-				"default": "",
-				"type": "string",
-				"routing": {
-					"send": {
-						"type": "query",
-						"property": "placed_after",
-						"value": "={{ $value }}",
-						"propertyInDotNotation": false
-					}
-				}
-			},
-			{
-				"displayName": "Placed Before",
-				"name": "placed_before",
-				"description": "ISO datetime upper bound",
-				"default": "",
-				"type": "string",
-				"routing": {
-					"send": {
-						"type": "query",
-						"property": "placed_before",
-						"value": "={{ $value }}",
-						"propertyInDotNotation": false
-					}
-				}
-			},
-			{
-				"displayName": "Cursor",
-				"name": "cursor",
-				"description": "Opaque cursor; omit for the first page",
-				"default": "",
-				"type": "string",
-				"routing": {
-					"send": {
-						"type": "query",
-						"property": "cursor",
-						"value": "={{ $value }}",
-						"propertyInDotNotation": false
-					}
-				}
-			},
-			{
-				"displayName": "Limit",
-				"name": "limit",
-				"description": "Items per page (max 200)",
-				"default": 50,
-				"type": "number",
-				"routing": {
-					"send": {
-						"type": "query",
-						"property": "limit",
-						"value": "={{ $value }}",
-						"propertyInDotNotation": false
-					}
-				}
-			}
-		]
 	},
 	{
-		"displayName": "Order ID",
-		"name": "order_id",
-		"required": true,
-		"default": 0,
-		"type": "number",
-		"displayOptions": {
-			"show": {
-				"resource": [
-					"order"
+		displayName: 'Additional Fields',
+		name: 'additionalFields',
+		type: 'collection',
+		placeholder: 'Add Field',
+		default: {},
+		displayOptions: {
+			show: {
+				resource: ['order'],
+				operation: ['get-many'],
+			},
+		},
+		options: [
+			{
+				displayName: 'Customer ID',
+				name: 'customer_id',
+				type: 'number',
+				default: 1,
+				routing: {
+					send: {
+						type: 'query',
+						property: 'customer_id',
+						value: '={{ $value }}',
+						propertyInDotNotation: false,
+					},
+				},
+				typeOptions: {
+					minValue: 1,
+				},
+			},
+			{
+				displayName: 'Placed After',
+				name: 'placed_after',
+				type: 'string',
+				description: 'ISO datetime lower bound',
+				default: '',
+				routing: {
+					send: {
+						type: 'query',
+						property: 'placed_after',
+						value: '={{ $value }}',
+						propertyInDotNotation: false,
+					},
+				},
+			},
+			{
+				displayName: 'Placed Before',
+				name: 'placed_before',
+				type: 'string',
+				description: 'ISO datetime upper bound',
+				default: '',
+				routing: {
+					send: {
+						type: 'query',
+						property: 'placed_before',
+						value: '={{ $value }}',
+						propertyInDotNotation: false,
+					},
+				},
+			},
+			{
+				displayName: 'Status',
+				name: 'status',
+				type: 'options',
+				description: 'Order status filter',
+				default: 'pending',
+				routing: {
+					send: {
+						type: 'query',
+						property: 'status',
+						value: '={{ $value }}',
+						propertyInDotNotation: false,
+					},
+				},
+				options: [
+					{
+						name: 'Cancelled',
+						value: 'cancelled',
+					},
+					{
+						name: 'Delivered',
+						value: 'delivered',
+					},
+					{
+						name: 'Paid',
+						value: 'paid',
+					},
+					{
+						name: 'Pending',
+						value: 'pending',
+					},
+					{
+						name: 'Refunded',
+						value: 'refunded',
+					},
+					{
+						name: 'Shipped',
+						value: 'shipped',
+					},
 				],
-				"operation": [
-					"get"
-				]
-			}
-		}
-	}
+			},
+		],
+	},
+	{
+		displayName: 'Additional Fields',
+		name: 'additionalFields',
+		type: 'collection',
+		placeholder: 'Add Field',
+		default: {},
+		displayOptions: {
+			show: {
+				resource: ['order'],
+				operation: ['get-many-cursor'],
+			},
+		},
+		options: [
+			{
+				displayName: 'Cursor',
+				name: 'cursor',
+				type: 'string',
+				description: 'Opaque cursor; omit for the first page',
+				default: '',
+				routing: {
+					send: {
+						type: 'query',
+						property: 'cursor',
+						value: '={{ $value }}',
+						propertyInDotNotation: false,
+					},
+				},
+			},
+			{
+				displayName: 'Customer ID',
+				name: 'customer_id',
+				type: 'number',
+				default: 1,
+				routing: {
+					send: {
+						type: 'query',
+						property: 'customer_id',
+						value: '={{ $value }}',
+						propertyInDotNotation: false,
+					},
+				},
+				typeOptions: {
+					minValue: 1,
+				},
+			},
+			{
+				displayName: 'Limit',
+				name: 'limit',
+				type: 'number',
+				description: 'Max number of results to return',
+				default: 50,
+				routing: {
+					send: {
+						type: 'query',
+						property: 'limit',
+						value: '={{ $value }}',
+						propertyInDotNotation: false,
+					},
+				},
+				typeOptions: {
+					minValue: 1,
+					maxValue: 200,
+				},
+			},
+			{
+				displayName: 'Placed After',
+				name: 'placed_after',
+				type: 'string',
+				description: 'ISO datetime lower bound',
+				default: '',
+				routing: {
+					send: {
+						type: 'query',
+						property: 'placed_after',
+						value: '={{ $value }}',
+						propertyInDotNotation: false,
+					},
+				},
+			},
+			{
+				displayName: 'Placed Before',
+				name: 'placed_before',
+				type: 'string',
+				description: 'ISO datetime upper bound',
+				default: '',
+				routing: {
+					send: {
+						type: 'query',
+						property: 'placed_before',
+						value: '={{ $value }}',
+						propertyInDotNotation: false,
+					},
+				},
+			},
+			{
+				displayName: 'Status',
+				name: 'status',
+				type: 'options',
+				description: 'Order status filter',
+				default: 'pending',
+				routing: {
+					send: {
+						type: 'query',
+						property: 'status',
+						value: '={{ $value }}',
+						propertyInDotNotation: false,
+					},
+				},
+				options: [
+					{
+						name: 'Cancelled',
+						value: 'cancelled',
+					},
+					{
+						name: 'Delivered',
+						value: 'delivered',
+					},
+					{
+						name: 'Paid',
+						value: 'paid',
+					},
+					{
+						name: 'Pending',
+						value: 'pending',
+					},
+					{
+						name: 'Refunded',
+						value: 'refunded',
+					},
+					{
+						name: 'Shipped',
+						value: 'shipped',
+					},
+				],
+			},
+		],
+	},
+	{
+		displayName: 'Order ID',
+		name: 'order_id',
+		type: 'number',
+		required: true,
+		default: 0,
+		displayOptions: {
+			show: {
+				resource: ['order'],
+				operation: ['get'],
+			},
+		},
+	},
 ];

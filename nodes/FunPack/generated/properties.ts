@@ -3,613 +3,562 @@ import type { INodeProperties } from 'n8n-workflow';
 
 export const generatedProperties: INodeProperties[] = [
 	{
-		"displayName": "Resource",
-		"name": "resource",
-		"type": "options",
-		"noDataExpression": true,
-		"options": [
+		displayName: 'Resource',
+		name: 'resource',
+		type: 'options',
+		noDataExpression: true,
+		options: [
 			{
-				"name": "Fun",
-				"value": "fun",
-				"description": ""
-			}
+				name: 'Fun',
+				value: 'fun',
+			},
 		],
-		"default": "fun"
+		default: 'fun',
 	},
 	{
-		"displayName": "Operation",
-		"name": "operation",
-		"type": "options",
-		"noDataExpression": true,
-		"displayOptions": {
-			"show": {
-				"resource": [
-					"fun"
-				]
-			}
+		displayName: 'Operation',
+		name: 'operation',
+		type: 'options',
+		noDataExpression: true,
+		displayOptions: {
+			show: {
+				resource: ['fun'],
+			},
 		},
-		"options": [
+		options: [
 			{
-				"name": "Get Random Dog",
-				"value": "get-random-dog",
-				"action": "Get a random dog image",
-				"description": "A random dog image",
-				"routing": {
-					"request": {
-						"method": "GET",
-						"url": "=/fun/dogs/random"
-					}
-				}
+				name: 'Get Dog Breeds',
+				value: 'get-dog-breeds',
+				action: 'Get a list of dog breeds',
+				description: 'List dog breeds',
+				routing: {
+					request: {
+						method: 'GET',
+						url: '=/fun/dogs/breeds',
+					},
+				},
 			},
 			{
-				"name": "Get Dog Breeds",
-				"value": "get-dog-breeds",
-				"action": "Get a list of dog breeds",
-				"description": "List dog breeds",
-				"routing": {
-					"request": {
-						"method": "GET",
-						"url": "=/fun/dogs/breeds"
-					}
-				}
+				name: 'Get Fortune',
+				value: 'get-fortune',
+				action: 'Get a fortune cookie message',
+				description: 'A fortune-cookie message',
+				routing: {
+					request: {
+						method: 'GET',
+						url: '=/fun/fortune',
+					},
+				},
 			},
 			{
-				"name": "Get Random Dog by Breed",
-				"value": "get-random-dog-by-breed",
-				"action": "Get a random dog of a breed",
-				"description": "A random dog of a breed",
-				"routing": {
-					"request": {
-						"method": "GET",
-						"url": "=/fun/dogs/breed/{{$parameter[\"breed\"]}}/random"
-					}
-				}
+				name: 'Get Joke',
+				value: 'get-joke',
+				action: 'Get a joke',
+				description: 'Get a joke by ID',
+				routing: {
+					request: {
+						method: 'GET',
+						url: '=/fun/jokes/{{$parameter["joke_id"]}}',
+					},
+				},
 			},
 			{
-				"name": "Get Random Cat",
-				"value": "get-random-cat",
-				"action": "Get a random cat image",
-				"description": "A random cat image",
-				"routing": {
-					"request": {
-						"method": "GET",
-						"url": "=/fun/cats/random"
-					}
-				}
+				name: 'Get Number Fact',
+				value: 'get-number-fact',
+				action: 'Get a fact about a number',
+				description: 'A fact about a number',
+				routing: {
+					request: {
+						method: 'GET',
+						url: '=/fun/numbers/{{$parameter["n"]}}',
+					},
+				},
 			},
 			{
-				"name": "Get Random Robot",
-				"value": "get-random-robot",
-				"action": "Get a random robot image",
-				"description": "A random robot image",
-				"routing": {
-					"request": {
-						"method": "GET",
-						"url": "=/fun/robots/random"
-					}
-				}
+				name: 'Get Random Activity',
+				value: 'get-random-activity',
+				action: 'Get a random activity',
+				description: 'A random activity',
+				routing: {
+					request: {
+						method: 'GET',
+						url: '=/fun/activities/random',
+					},
+				},
 			},
 			{
-				"name": "Get Random Joke",
-				"value": "get-random-joke",
-				"action": "Get a random joke",
-				"description": "A random joke",
-				"routing": {
-					"request": {
-						"method": "GET",
-						"url": "=/fun/jokes/random"
-					}
-				}
+				name: 'Get Random Cat',
+				value: 'get-random-cat',
+				action: 'Get a random cat image',
+				description: 'A random cat image',
+				routing: {
+					request: {
+						method: 'GET',
+						url: '=/fun/cats/random',
+					},
+				},
 			},
 			{
-				"name": "Get Joke",
-				"value": "get-joke",
-				"action": "Get a joke",
-				"description": "Get a joke by id",
-				"routing": {
-					"request": {
-						"method": "GET",
-						"url": "=/fun/jokes/{{$parameter[\"joke_id\"]}}"
-					}
-				}
+				name: 'Get Random Dog',
+				value: 'get-random-dog',
+				action: 'Get a random dog image',
+				description: 'A random dog image',
+				routing: {
+					request: {
+						method: 'GET',
+						url: '=/fun/dogs/random',
+					},
+				},
 			},
 			{
-				"name": "Get Random Fact",
-				"value": "get-random-fact",
-				"action": "Get a random fact",
-				"description": "A random fact",
-				"routing": {
-					"request": {
-						"method": "GET",
-						"url": "=/fun/facts/random"
-					}
-				}
+				name: 'Get Random Dog by Breed',
+				value: 'get-random-dog-by-breed',
+				action: 'Get a random dog of a breed',
+				description: 'A random dog of a breed',
+				routing: {
+					request: {
+						method: 'GET',
+						url: '=/fun/dogs/breed/{{$parameter["breed"]}}/random',
+					},
+				},
 			},
 			{
-				"name": "Get Random Activity",
-				"value": "get-random-activity",
-				"action": "Get a random activity",
-				"description": "A random activity",
-				"routing": {
-					"request": {
-						"method": "GET",
-						"url": "=/fun/activities/random"
-					}
-				}
+				name: 'Get Random Fact',
+				value: 'get-random-fact',
+				action: 'Get a random fact',
+				description: 'A random fact',
+				routing: {
+					request: {
+						method: 'GET',
+						url: '=/fun/facts/random',
+					},
+				},
 			},
 			{
-				"name": "Get Trivia",
-				"value": "get-trivia",
-				"action": "Get trivia questions",
-				"description": "Trivia questions",
-				"routing": {
-					"request": {
-						"method": "GET",
-						"url": "=/fun/trivia"
-					}
-				}
+				name: 'Get Random Joke',
+				value: 'get-random-joke',
+				action: 'Get a random joke',
+				description: 'A random joke',
+				routing: {
+					request: {
+						method: 'GET',
+						url: '=/fun/jokes/random',
+					},
+				},
 			},
 			{
-				"name": "Get Random Users",
-				"value": "get-random-users",
-				"action": "Get random fake users",
-				"description": "Random fake users",
-				"routing": {
-					"request": {
-						"method": "GET",
-						"url": "=/fun/users/random"
-					}
-				}
+				name: 'Get Random Robot',
+				value: 'get-random-robot',
+				action: 'Get a random robot image',
+				description: 'A random robot image',
+				routing: {
+					request: {
+						method: 'GET',
+						url: '=/fun/robots/random',
+					},
+				},
 			},
 			{
-				"name": "Get Number Fact",
-				"value": "get-number-fact",
-				"action": "Get a fact about a number",
-				"description": "A fact about a number",
-				"routing": {
-					"request": {
-						"method": "GET",
-						"url": "=/fun/numbers/{{$parameter[\"n\"]}}"
-					}
-				}
+				name: 'Get Random Users',
+				value: 'get-random-users',
+				action: 'Get random fake users',
+				description: 'Random fake users',
+				routing: {
+					request: {
+						method: 'GET',
+						url: '=/fun/users/random',
+					},
+				},
 			},
 			{
-				"name": "Get Fortune",
-				"value": "get-fortune",
-				"action": "Get a fortune-cookie message",
-				"description": "A fortune-cookie message",
-				"routing": {
-					"request": {
-						"method": "GET",
-						"url": "=/fun/fortune"
-					}
-				}
-			}
+				name: 'Get Trivia',
+				value: 'get-trivia',
+				action: 'Get trivia questions',
+				description: 'Trivia questions',
+				routing: {
+					request: {
+						method: 'GET',
+						url: '=/fun/trivia',
+					},
+				},
+			},
 		],
-		"default": "get-random-dog"
+		default: 'get-random-dog',
 	},
 	{
-		"displayName": "Additional Fields",
-		"name": "additionalFields",
-		"type": "collection",
-		"placeholder": "Add Field",
-		"default": {},
-		"displayOptions": {
-			"show": {
-				"resource": [
-					"fun"
-				],
-				"operation": [
-					"get-random-dog"
-				]
-			}
+		displayName: 'Additional Fields',
+		name: 'additionalFields',
+		type: 'collection',
+		placeholder: 'Add Field',
+		default: {},
+		displayOptions: {
+			show: {
+				resource: ['fun'],
+				operation: ['get-random-dog'],
+			},
 		},
-		"options": [
+		options: [
 			{
-				"displayName": "Seed",
-				"name": "seed",
-				"description": "Deterministic if set",
-				"default": "",
-				"type": "string",
-				"routing": {
-					"send": {
-						"type": "query",
-						"property": "seed",
-						"value": "={{ $value }}",
-						"propertyInDotNotation": false
-					}
-				}
-			}
-		]
+				displayName: 'Seed',
+				name: 'seed',
+				type: 'string',
+				description: 'Deterministic if set',
+				default: '',
+				routing: {
+					send: {
+						type: 'query',
+						property: 'seed',
+						value: '={{ $value }}',
+						propertyInDotNotation: false,
+					},
+				},
+			},
+		],
 	},
 	{
-		"displayName": "Breed",
-		"name": "breed",
-		"required": true,
-		"default": "",
-		"type": "string",
-		"displayOptions": {
-			"show": {
-				"resource": [
-					"fun"
-				],
-				"operation": [
-					"get-random-dog-by-breed"
-				]
-			}
-		}
-	},
-	{
-		"displayName": "Additional Fields",
-		"name": "additionalFields",
-		"type": "collection",
-		"placeholder": "Add Field",
-		"default": {},
-		"displayOptions": {
-			"show": {
-				"resource": [
-					"fun"
-				],
-				"operation": [
-					"get-random-dog-by-breed"
-				]
-			}
+		displayName: 'Breed',
+		name: 'breed',
+		type: 'string',
+		required: true,
+		default: '',
+		displayOptions: {
+			show: {
+				resource: ['fun'],
+				operation: ['get-random-dog-by-breed'],
+			},
 		},
-		"options": [
-			{
-				"displayName": "Seed",
-				"name": "seed",
-				"default": "",
-				"type": "string",
-				"routing": {
-					"send": {
-						"type": "query",
-						"property": "seed",
-						"value": "={{ $value }}",
-						"propertyInDotNotation": false
-					}
-				}
-			}
-		]
 	},
 	{
-		"displayName": "Additional Fields",
-		"name": "additionalFields",
-		"type": "collection",
-		"placeholder": "Add Field",
-		"default": {},
-		"displayOptions": {
-			"show": {
-				"resource": [
-					"fun"
-				],
-				"operation": [
-					"get-random-cat"
-				]
-			}
+		displayName: 'Additional Fields',
+		name: 'additionalFields',
+		type: 'collection',
+		placeholder: 'Add Field',
+		default: {},
+		displayOptions: {
+			show: {
+				resource: ['fun'],
+				operation: ['get-random-dog-by-breed'],
+			},
 		},
-		"options": [
+		options: [
 			{
-				"displayName": "Seed",
-				"name": "seed",
-				"default": "",
-				"type": "string",
-				"routing": {
-					"send": {
-						"type": "query",
-						"property": "seed",
-						"value": "={{ $value }}",
-						"propertyInDotNotation": false
-					}
-				}
-			}
-		]
+				displayName: 'Seed',
+				name: 'seed',
+				type: 'string',
+				default: '',
+				routing: {
+					send: {
+						type: 'query',
+						property: 'seed',
+						value: '={{ $value }}',
+						propertyInDotNotation: false,
+					},
+				},
+			},
+		],
 	},
 	{
-		"displayName": "Additional Fields",
-		"name": "additionalFields",
-		"type": "collection",
-		"placeholder": "Add Field",
-		"default": {},
-		"displayOptions": {
-			"show": {
-				"resource": [
-					"fun"
-				],
-				"operation": [
-					"get-random-robot"
-				]
-			}
+		displayName: 'Additional Fields',
+		name: 'additionalFields',
+		type: 'collection',
+		placeholder: 'Add Field',
+		default: {},
+		displayOptions: {
+			show: {
+				resource: ['fun'],
+				operation: ['get-random-cat'],
+			},
 		},
-		"options": [
+		options: [
 			{
-				"displayName": "Seed",
-				"name": "seed",
-				"default": "",
-				"type": "string",
-				"routing": {
-					"send": {
-						"type": "query",
-						"property": "seed",
-						"value": "={{ $value }}",
-						"propertyInDotNotation": false
-					}
-				}
-			}
-		]
+				displayName: 'Seed',
+				name: 'seed',
+				type: 'string',
+				default: '',
+				routing: {
+					send: {
+						type: 'query',
+						property: 'seed',
+						value: '={{ $value }}',
+						propertyInDotNotation: false,
+					},
+				},
+			},
+		],
 	},
 	{
-		"displayName": "Additional Fields",
-		"name": "additionalFields",
-		"type": "collection",
-		"placeholder": "Add Field",
-		"default": {},
-		"displayOptions": {
-			"show": {
-				"resource": [
-					"fun"
-				],
-				"operation": [
-					"get-random-joke"
-				]
-			}
+		displayName: 'Additional Fields',
+		name: 'additionalFields',
+		type: 'collection',
+		placeholder: 'Add Field',
+		default: {},
+		displayOptions: {
+			show: {
+				resource: ['fun'],
+				operation: ['get-random-robot'],
+			},
 		},
-		"options": [
+		options: [
 			{
-				"displayName": "Seed",
-				"name": "seed",
-				"description": "Deterministic if set",
-				"default": "",
-				"type": "string",
-				"routing": {
-					"send": {
-						"type": "query",
-						"property": "seed",
-						"value": "={{ $value }}",
-						"propertyInDotNotation": false
-					}
-				}
-			}
-		]
+				displayName: 'Seed',
+				name: 'seed',
+				type: 'string',
+				default: '',
+				routing: {
+					send: {
+						type: 'query',
+						property: 'seed',
+						value: '={{ $value }}',
+						propertyInDotNotation: false,
+					},
+				},
+			},
+		],
 	},
 	{
-		"displayName": "Joke ID",
-		"name": "joke_id",
-		"required": true,
-		"default": 0,
-		"type": "number",
-		"displayOptions": {
-			"show": {
-				"resource": [
-					"fun"
-				],
-				"operation": [
-					"get-joke"
-				]
-			}
-		}
-	},
-	{
-		"displayName": "Additional Fields",
-		"name": "additionalFields",
-		"type": "collection",
-		"placeholder": "Add Field",
-		"default": {},
-		"displayOptions": {
-			"show": {
-				"resource": [
-					"fun"
-				],
-				"operation": [
-					"get-random-fact"
-				]
-			}
+		displayName: 'Additional Fields',
+		name: 'additionalFields',
+		type: 'collection',
+		placeholder: 'Add Field',
+		default: {},
+		displayOptions: {
+			show: {
+				resource: ['fun'],
+				operation: ['get-random-joke'],
+			},
 		},
-		"options": [
+		options: [
 			{
-				"displayName": "Category",
-				"name": "category",
-				"description": "animals | space | engineering",
-				"default": "",
-				"type": "string",
-				"routing": {
-					"send": {
-						"type": "query",
-						"property": "category",
-						"value": "={{ $value }}",
-						"propertyInDotNotation": false
-					}
-				}
+				displayName: 'Seed',
+				name: 'seed',
+				type: 'string',
+				description: 'Deterministic if set',
+				default: '',
+				routing: {
+					send: {
+						type: 'query',
+						property: 'seed',
+						value: '={{ $value }}',
+						propertyInDotNotation: false,
+					},
+				},
+			},
+		],
+	},
+	{
+		displayName: 'Joke ID',
+		name: 'joke_id',
+		type: 'number',
+		required: true,
+		default: 0,
+		displayOptions: {
+			show: {
+				resource: ['fun'],
+				operation: ['get-joke'],
+			},
+		},
+	},
+	{
+		displayName: 'Additional Fields',
+		name: 'additionalFields',
+		type: 'collection',
+		placeholder: 'Add Field',
+		default: {},
+		displayOptions: {
+			show: {
+				resource: ['fun'],
+				operation: ['get-random-fact'],
+			},
+		},
+		options: [
+			{
+				displayName: 'Category',
+				name: 'category',
+				type: 'string',
+				description: 'Animals | space | engineering',
+				default: '',
+				routing: {
+					send: {
+						type: 'query',
+						property: 'category',
+						value: '={{ $value }}',
+						propertyInDotNotation: false,
+					},
+				},
 			},
 			{
-				"displayName": "Seed",
-				"name": "seed",
-				"default": "",
-				"type": "string",
-				"routing": {
-					"send": {
-						"type": "query",
-						"property": "seed",
-						"value": "={{ $value }}",
-						"propertyInDotNotation": false
-					}
-				}
-			}
-		]
+				displayName: 'Seed',
+				name: 'seed',
+				type: 'string',
+				default: '',
+				routing: {
+					send: {
+						type: 'query',
+						property: 'seed',
+						value: '={{ $value }}',
+						propertyInDotNotation: false,
+					},
+				},
+			},
+		],
 	},
 	{
-		"displayName": "Additional Fields",
-		"name": "additionalFields",
-		"type": "collection",
-		"placeholder": "Add Field",
-		"default": {},
-		"displayOptions": {
-			"show": {
-				"resource": [
-					"fun"
-				],
-				"operation": [
-					"get-random-activity"
-				]
-			}
+		displayName: 'Additional Fields',
+		name: 'additionalFields',
+		type: 'collection',
+		placeholder: 'Add Field',
+		default: {},
+		displayOptions: {
+			show: {
+				resource: ['fun'],
+				operation: ['get-random-activity'],
+			},
 		},
-		"options": [
+		options: [
 			{
-				"displayName": "Seed",
-				"name": "seed",
-				"default": "",
-				"type": "string",
-				"routing": {
-					"send": {
-						"type": "query",
-						"property": "seed",
-						"value": "={{ $value }}",
-						"propertyInDotNotation": false
-					}
-				}
-			}
-		]
+				displayName: 'Seed',
+				name: 'seed',
+				type: 'string',
+				default: '',
+				routing: {
+					send: {
+						type: 'query',
+						property: 'seed',
+						value: '={{ $value }}',
+						propertyInDotNotation: false,
+					},
+				},
+			},
+		],
 	},
 	{
-		"displayName": "Additional Fields",
-		"name": "additionalFields",
-		"type": "collection",
-		"placeholder": "Add Field",
-		"default": {},
-		"displayOptions": {
-			"show": {
-				"resource": [
-					"fun"
-				],
-				"operation": [
-					"get-trivia"
-				]
-			}
+		displayName: 'Additional Fields',
+		name: 'additionalFields',
+		type: 'collection',
+		placeholder: 'Add Field',
+		default: {},
+		displayOptions: {
+			show: {
+				resource: ['fun'],
+				operation: ['get-trivia'],
+			},
 		},
-		"options": [
+		options: [
 			{
-				"displayName": "Amount",
-				"name": "amount",
-				"description": "How many questions",
-				"default": 10,
-				"type": "number",
-				"routing": {
-					"send": {
-						"type": "query",
-						"property": "amount",
-						"value": "={{ $value }}",
-						"propertyInDotNotation": false
-					}
-				}
+				displayName: 'Amount',
+				name: 'amount',
+				type: 'number',
+				description: 'How many questions',
+				default: 10,
+				routing: {
+					send: {
+						type: 'query',
+						property: 'amount',
+						value: '={{ $value }}',
+						propertyInDotNotation: false,
+					},
+				},
 			},
 			{
-				"displayName": "Category",
-				"name": "category",
-				"default": "",
-				"type": "string",
-				"routing": {
-					"send": {
-						"type": "query",
-						"property": "category",
-						"value": "={{ $value }}",
-						"propertyInDotNotation": false
-					}
-				}
+				displayName: 'Category',
+				name: 'category',
+				type: 'string',
+				default: '',
+				routing: {
+					send: {
+						type: 'query',
+						property: 'category',
+						value: '={{ $value }}',
+						propertyInDotNotation: false,
+					},
+				},
 			},
 			{
-				"displayName": "Difficulty",
-				"name": "difficulty",
-				"description": "easy | medium | hard",
-				"default": "",
-				"type": "string",
-				"routing": {
-					"send": {
-						"type": "query",
-						"property": "difficulty",
-						"value": "={{ $value }}",
-						"propertyInDotNotation": false
-					}
-				}
+				displayName: 'Difficulty',
+				name: 'difficulty',
+				type: 'string',
+				description: 'Easy | medium | hard',
+				default: '',
+				routing: {
+					send: {
+						type: 'query',
+						property: 'difficulty',
+						value: '={{ $value }}',
+						propertyInDotNotation: false,
+					},
+				},
 			},
 			{
-				"displayName": "Seed",
-				"name": "seed",
-				"default": "",
-				"type": "string",
-				"routing": {
-					"send": {
-						"type": "query",
-						"property": "seed",
-						"value": "={{ $value }}",
-						"propertyInDotNotation": false
-					}
-				}
-			}
-		]
+				displayName: 'Seed',
+				name: 'seed',
+				type: 'string',
+				default: '',
+				routing: {
+					send: {
+						type: 'query',
+						property: 'seed',
+						value: '={{ $value }}',
+						propertyInDotNotation: false,
+					},
+				},
+			},
+		],
 	},
 	{
-		"displayName": "Additional Fields",
-		"name": "additionalFields",
-		"type": "collection",
-		"placeholder": "Add Field",
-		"default": {},
-		"displayOptions": {
-			"show": {
-				"resource": [
-					"fun"
-				],
-				"operation": [
-					"get-random-users"
-				]
-			}
+		displayName: 'Additional Fields',
+		name: 'additionalFields',
+		type: 'collection',
+		placeholder: 'Add Field',
+		default: {},
+		displayOptions: {
+			show: {
+				resource: ['fun'],
+				operation: ['get-random-users'],
+			},
 		},
-		"options": [
+		options: [
 			{
-				"displayName": "Count",
-				"name": "count",
-				"description": "How many users",
-				"default": 1,
-				"type": "number",
-				"routing": {
-					"send": {
-						"type": "query",
-						"property": "count",
-						"value": "={{ $value }}",
-						"propertyInDotNotation": false
-					}
-				}
+				displayName: 'Count',
+				name: 'count',
+				type: 'number',
+				description: 'How many users',
+				default: 1,
+				routing: {
+					send: {
+						type: 'query',
+						property: 'count',
+						value: '={{ $value }}',
+						propertyInDotNotation: false,
+					},
+				},
 			},
 			{
-				"displayName": "Seed",
-				"name": "seed",
-				"default": "",
-				"type": "string",
-				"routing": {
-					"send": {
-						"type": "query",
-						"property": "seed",
-						"value": "={{ $value }}",
-						"propertyInDotNotation": false
-					}
-				}
-			}
-		]
+				displayName: 'Seed',
+				name: 'seed',
+				type: 'string',
+				default: '',
+				routing: {
+					send: {
+						type: 'query',
+						property: 'seed',
+						value: '={{ $value }}',
+						propertyInDotNotation: false,
+					},
+				},
+			},
+		],
 	},
 	{
-		"displayName": "N",
-		"name": "n",
-		"required": true,
-		"default": 0,
-		"type": "number",
-		"displayOptions": {
-			"show": {
-				"resource": [
-					"fun"
-				],
-				"operation": [
-					"get-number-fact"
-				]
-			}
-		}
-	}
+		displayName: 'N',
+		name: 'n',
+		type: 'number',
+		required: true,
+		default: 0,
+		displayOptions: {
+			show: {
+				resource: ['fun'],
+				operation: ['get-number-fact'],
+			},
+		},
+	},
 ];

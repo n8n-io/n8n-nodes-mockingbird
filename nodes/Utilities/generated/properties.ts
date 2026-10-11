@@ -3,534 +3,478 @@ import type { INodeProperties } from 'n8n-workflow';
 
 export const generatedProperties: INodeProperties[] = [
 	{
-		"displayName": "Resource",
-		"name": "resource",
-		"type": "options",
-		"noDataExpression": true,
-		"options": [
+		displayName: 'Resource',
+		name: 'resource',
+		type: 'options',
+		noDataExpression: true,
+		options: [
 			{
-				"name": "Utility",
-				"value": "utility",
-				"description": ""
-			}
+				name: 'Utility',
+				value: 'utility',
+			},
 		],
-		"default": "utility"
+		default: 'utility',
 	},
 	{
-		"displayName": "Operation",
-		"name": "operation",
-		"type": "options",
-		"noDataExpression": true,
-		"displayOptions": {
-			"show": {
-				"resource": [
-					"utility"
-				]
-			}
+		displayName: 'Operation',
+		name: 'operation',
+		type: 'options',
+		noDataExpression: true,
+		displayOptions: {
+			show: {
+				resource: ['utility'],
+			},
 		},
-		"options": [
+		options: [
 			{
-				"name": "Get Countries",
-				"value": "get-countries",
-				"action": "Get a list of countries",
-				"description": "Countries",
-				"routing": {
-					"request": {
-						"method": "GET",
-						"url": "=/util/countries"
-					}
-				}
+				name: 'Convert Units',
+				value: 'convert-units',
+				action: 'Convert between units',
+				description: 'Convert between units',
+				routing: {
+					request: {
+						method: 'GET',
+						url: '=/util/convert',
+					},
+				},
 			},
 			{
-				"name": "Echo",
-				"value": "echo",
-				"action": "Echo the request",
-				"description": "Echo the request",
-				"routing": {
-					"request": {
-						"method": "GET",
-						"url": "=/util/echo"
-					}
-				}
+				name: 'Decode Base64',
+				value: 'decode-base64',
+				action: 'Base64 decode text',
+				description: 'Base64-decode text',
+				routing: {
+					request: {
+						method: 'POST',
+						url: '=/util/base64/decode',
+					},
+				},
 			},
 			{
-				"name": "Respond With Status",
-				"value": "respond-with-status",
-				"action": "Respond with a given HTTP status",
-				"description": "Respond with a given HTTP status",
-				"routing": {
-					"request": {
-						"method": "GET",
-						"url": "=/util/status/{{$parameter[\"code\"]}}"
-					}
-				}
+				name: 'Echo',
+				value: 'echo',
+				action: 'Echo the request',
+				description: 'Echo the request',
+				routing: {
+					request: {
+						method: 'GET',
+						url: '=/util/echo',
+					},
+				},
 			},
 			{
-				"name": "Respond After Delay",
-				"value": "respond-after-delay",
-				"action": "Respond after a delay",
-				"description": "Respond after a delay",
-				"routing": {
-					"request": {
-						"method": "GET",
-						"url": "=/util/delay/{{$parameter[\"seconds\"]}}"
-					}
-				}
+				name: 'Encode Base64',
+				value: 'encode-base64',
+				action: 'Base64 encode text',
+				description: 'Base64-encode text',
+				routing: {
+					request: {
+						method: 'POST',
+						url: '=/util/base64/encode',
+					},
+				},
 			},
 			{
-				"name": "Generate UUID",
-				"value": "generate-uuid",
-				"action": "Generate UUIDs",
-				"description": "Generate UUIDs",
-				"routing": {
-					"request": {
-						"method": "GET",
-						"url": "=/util/uuid"
-					}
-				}
+				name: 'Generate Lorem Ipsum',
+				value: 'generate-lorem-ipsum',
+				action: 'Generate placeholder text',
+				description: 'Generate placeholder text',
+				routing: {
+					request: {
+						method: 'POST',
+						url: '=/util/lorem',
+					},
+				},
 			},
 			{
-				"name": "Hash Text",
-				"value": "hash-text",
-				"action": "Hash text",
-				"description": "Hash text",
-				"routing": {
-					"request": {
-						"method": "POST",
-						"url": "=/util/hash"
-					}
-				}
+				name: 'Generate UUID',
+				value: 'generate-uuid',
+				action: 'Generate a UUID',
+				description: 'Generate UUIDs',
+				routing: {
+					request: {
+						method: 'GET',
+						url: '=/util/uuid',
+					},
+				},
 			},
 			{
-				"name": "Encode Base64",
-				"value": "encode-base64",
-				"action": "Base64-encode text",
-				"description": "Base64-encode text",
-				"routing": {
-					"request": {
-						"method": "POST",
-						"url": "=/util/base64/encode"
-					}
-				}
+				name: 'Get Countries',
+				value: 'get-countries',
+				action: 'Get a list of countries',
+				description: 'Countries',
+				routing: {
+					request: {
+						method: 'GET',
+						url: '=/util/countries',
+					},
+				},
 			},
 			{
-				"name": "Decode Base64",
-				"value": "decode-base64",
-				"action": "Base64-decode text",
-				"description": "Base64-decode text",
-				"routing": {
-					"request": {
-						"method": "POST",
-						"url": "=/util/base64/decode"
-					}
-				}
+				name: 'Hash Text',
+				value: 'hash-text',
+				action: 'Hash text',
+				routing: {
+					request: {
+						method: 'POST',
+						url: '=/util/hash',
+					},
+				},
 			},
 			{
-				"name": "Validate Email",
-				"value": "validate-email",
-				"action": "Validate an email address",
-				"description": "Validate an email address",
-				"routing": {
-					"request": {
-						"method": "POST",
-						"url": "=/util/validate/email"
-					}
-				}
+				name: 'Respond After Delay',
+				value: 'respond-after-delay',
+				action: 'Respond after a delay',
+				description: 'Respond after a delay',
+				routing: {
+					request: {
+						method: 'GET',
+						url: '=/util/delay/{{$parameter["seconds"]}}',
+					},
+				},
 			},
 			{
-				"name": "Validate IBAN",
-				"value": "validate-iban",
-				"action": "Validate an IBAN",
-				"description": "Validate an IBAN",
-				"routing": {
-					"request": {
-						"method": "POST",
-						"url": "=/util/validate/iban"
-					}
-				}
+				name: 'Respond With Status',
+				value: 'respond-with-status',
+				action: 'Respond with a given HTTP status',
+				description: 'Respond with a given HTTP status',
+				routing: {
+					request: {
+						method: 'GET',
+						url: '=/util/status/{{$parameter["code"]}}',
+					},
+				},
 			},
 			{
-				"name": "Validate VAT Number",
-				"value": "validate-vat-number",
-				"action": "Validate an EU VAT number",
-				"description": "Validate an EU VAT number",
-				"routing": {
-					"request": {
-						"method": "POST",
-						"url": "=/util/validate/vat"
-					}
-				}
+				name: 'Validate Email',
+				value: 'validate-email',
+				action: 'Validate an email address',
+				description: 'Validate an email address',
+				routing: {
+					request: {
+						method: 'POST',
+						url: '=/util/validate/email',
+					},
+				},
 			},
 			{
-				"name": "Convert Units",
-				"value": "convert-units",
-				"action": "Convert between units",
-				"description": "Convert between units",
-				"routing": {
-					"request": {
-						"method": "GET",
-						"url": "=/util/convert"
-					}
-				}
+				name: 'Validate IBAN',
+				value: 'validate-iban',
+				action: 'Validate an IBAN',
+				description: 'Validate an IBAN',
+				routing: {
+					request: {
+						method: 'POST',
+						url: '=/util/validate/iban',
+					},
+				},
 			},
 			{
-				"name": "Generate Lorem Ipsum",
-				"value": "generate-lorem-ipsum",
-				"action": "Generate placeholder text",
-				"description": "Generate placeholder text",
-				"routing": {
-					"request": {
-						"method": "POST",
-						"url": "=/util/lorem"
-					}
-				}
-			}
+				name: 'Validate VAT Number',
+				value: 'validate-vat-number',
+				action: 'Validate an EU VAT number',
+				description: 'Validate an EU VAT number',
+				routing: {
+					request: {
+						method: 'POST',
+						url: '=/util/validate/vat',
+					},
+				},
+			},
 		],
-		"default": "get-countries"
+		default: 'get-countries',
 	},
 	{
-		"displayName": "Code",
-		"name": "code",
-		"required": true,
-		"default": 0,
-		"type": "number",
-		"displayOptions": {
-			"show": {
-				"resource": [
-					"utility"
-				],
-				"operation": [
-					"respond-with-status"
-				]
-			}
-		}
-	},
-	{
-		"displayName": "Seconds",
-		"name": "seconds",
-		"required": true,
-		"default": 0,
-		"type": "number",
-		"displayOptions": {
-			"show": {
-				"resource": [
-					"utility"
-				],
-				"operation": [
-					"respond-after-delay"
-				]
-			}
-		}
-	},
-	{
-		"displayName": "Additional Fields",
-		"name": "additionalFields",
-		"type": "collection",
-		"placeholder": "Add Field",
-		"default": {},
-		"displayOptions": {
-			"show": {
-				"resource": [
-					"utility"
-				],
-				"operation": [
-					"generate-uuid"
-				]
-			}
+		displayName: 'Code',
+		name: 'code',
+		type: 'number',
+		required: true,
+		default: 0,
+		displayOptions: {
+			show: {
+				resource: ['utility'],
+				operation: ['respond-with-status'],
+			},
 		},
-		"options": [
+	},
+	{
+		displayName: 'Seconds',
+		name: 'seconds',
+		type: 'number',
+		required: true,
+		default: 0,
+		displayOptions: {
+			show: {
+				resource: ['utility'],
+				operation: ['respond-after-delay'],
+			},
+		},
+	},
+	{
+		displayName: 'Additional Fields',
+		name: 'additionalFields',
+		type: 'collection',
+		placeholder: 'Add Field',
+		default: {},
+		displayOptions: {
+			show: {
+				resource: ['utility'],
+				operation: ['generate-uuid'],
+			},
+		},
+		options: [
 			{
-				"displayName": "Count",
-				"name": "count",
-				"description": "How many UUIDs",
-				"default": 1,
-				"type": "number",
-				"routing": {
-					"send": {
-						"type": "query",
-						"property": "count",
-						"value": "={{ $value }}",
-						"propertyInDotNotation": false
-					}
-				}
+				displayName: 'Count',
+				name: 'count',
+				type: 'number',
+				description: 'How many UUIDs',
+				default: 1,
+				routing: {
+					send: {
+						type: 'query',
+						property: 'count',
+						value: '={{ $value }}',
+						propertyInDotNotation: false,
+					},
+				},
 			},
 			{
-				"displayName": "Seed",
-				"name": "seed",
-				"description": "Seed for deterministic output",
-				"default": "",
-				"type": "string",
-				"routing": {
-					"send": {
-						"type": "query",
-						"property": "seed",
-						"value": "={{ $value }}",
-						"propertyInDotNotation": false
-					}
-				}
-			}
-		]
+				displayName: 'Seed',
+				name: 'seed',
+				type: 'string',
+				description: 'Seed for deterministic output',
+				default: '',
+				routing: {
+					send: {
+						type: 'query',
+						property: 'seed',
+						value: '={{ $value }}',
+						propertyInDotNotation: false,
+					},
+				},
+			},
+		],
 	},
 	{
-		"required": true,
-		"displayName": "Text",
-		"name": "text",
-		"type": "string",
-		"default": "",
-		"routing": {
-			"send": {
-				"property": "text",
-				"propertyInDotNotation": false,
-				"type": "body",
-				"value": "={{ $value }}"
-			}
+		displayName: 'Text',
+		name: 'text',
+		type: 'string',
+		required: true,
+		default: '',
+		routing: {
+			send: {
+				property: 'text',
+				propertyInDotNotation: false,
+				type: 'body',
+				value: '={{ $value }}',
+			},
 		},
-		"displayOptions": {
-			"show": {
-				"resource": [
-					"utility"
-				],
-				"operation": [
-					"hash-text"
-				]
-			}
-		}
+		displayOptions: {
+			show: {
+				resource: ['utility'],
+				operation: ['hash-text'],
+			},
+		},
 	},
 	{
-		"required": true,
-		"displayName": "Text",
-		"name": "text",
-		"type": "string",
-		"default": "",
-		"routing": {
-			"send": {
-				"property": "text",
-				"propertyInDotNotation": false,
-				"type": "body",
-				"value": "={{ $value }}"
-			}
+		displayName: 'Text',
+		name: 'text',
+		type: 'string',
+		required: true,
+		default: '',
+		routing: {
+			send: {
+				property: 'text',
+				propertyInDotNotation: false,
+				type: 'body',
+				value: '={{ $value }}',
+			},
 		},
-		"displayOptions": {
-			"show": {
-				"resource": [
-					"utility"
-				],
-				"operation": [
-					"encode-base64"
-				]
-			}
-		}
+		displayOptions: {
+			show: {
+				resource: ['utility'],
+				operation: ['encode-base64'],
+			},
+		},
 	},
 	{
-		"required": true,
-		"displayName": "Text",
-		"name": "text",
-		"type": "string",
-		"default": "",
-		"routing": {
-			"send": {
-				"property": "text",
-				"propertyInDotNotation": false,
-				"type": "body",
-				"value": "={{ $value }}"
-			}
+		displayName: 'Text',
+		name: 'text',
+		type: 'string',
+		required: true,
+		default: '',
+		routing: {
+			send: {
+				property: 'text',
+				propertyInDotNotation: false,
+				type: 'body',
+				value: '={{ $value }}',
+			},
 		},
-		"displayOptions": {
-			"show": {
-				"resource": [
-					"utility"
-				],
-				"operation": [
-					"decode-base64"
-				]
-			}
-		}
+		displayOptions: {
+			show: {
+				resource: ['utility'],
+				operation: ['decode-base64'],
+			},
+		},
 	},
 	{
-		"required": true,
-		"displayName": "Text",
-		"name": "text",
-		"type": "string",
-		"default": "",
-		"routing": {
-			"send": {
-				"property": "text",
-				"propertyInDotNotation": false,
-				"type": "body",
-				"value": "={{ $value }}"
-			}
+		displayName: 'Text',
+		name: 'text',
+		type: 'string',
+		required: true,
+		default: '',
+		routing: {
+			send: {
+				property: 'text',
+				propertyInDotNotation: false,
+				type: 'body',
+				value: '={{ $value }}',
+			},
 		},
-		"displayOptions": {
-			"show": {
-				"resource": [
-					"utility"
-				],
-				"operation": [
-					"validate-email"
-				]
-			}
-		}
+		displayOptions: {
+			show: {
+				resource: ['utility'],
+				operation: ['validate-email'],
+			},
+		},
 	},
 	{
-		"required": true,
-		"displayName": "Text",
-		"name": "text",
-		"type": "string",
-		"default": "",
-		"routing": {
-			"send": {
-				"property": "text",
-				"propertyInDotNotation": false,
-				"type": "body",
-				"value": "={{ $value }}"
-			}
+		displayName: 'Text',
+		name: 'text',
+		type: 'string',
+		required: true,
+		default: '',
+		routing: {
+			send: {
+				property: 'text',
+				propertyInDotNotation: false,
+				type: 'body',
+				value: '={{ $value }}',
+			},
 		},
-		"displayOptions": {
-			"show": {
-				"resource": [
-					"utility"
-				],
-				"operation": [
-					"validate-iban"
-				]
-			}
-		}
+		displayOptions: {
+			show: {
+				resource: ['utility'],
+				operation: ['validate-iban'],
+			},
+		},
 	},
 	{
-		"required": true,
-		"displayName": "Text",
-		"name": "text",
-		"type": "string",
-		"default": "",
-		"routing": {
-			"send": {
-				"property": "text",
-				"propertyInDotNotation": false,
-				"type": "body",
-				"value": "={{ $value }}"
-			}
+		displayName: 'Text',
+		name: 'text',
+		type: 'string',
+		required: true,
+		default: '',
+		routing: {
+			send: {
+				property: 'text',
+				propertyInDotNotation: false,
+				type: 'body',
+				value: '={{ $value }}',
+			},
 		},
-		"displayOptions": {
-			"show": {
-				"resource": [
-					"utility"
-				],
-				"operation": [
-					"validate-vat-number"
-				]
-			}
-		}
+		displayOptions: {
+			show: {
+				resource: ['utility'],
+				operation: ['validate-vat-number'],
+			},
+		},
 	},
 	{
-		"displayName": "Value",
-		"name": "value",
-		"required": true,
-		"description": "Value to convert",
-		"default": 0,
-		"type": "number",
-		"routing": {
-			"send": {
-				"type": "query",
-				"property": "value",
-				"value": "={{ $value }}",
-				"propertyInDotNotation": false
-			}
+		displayName: 'Value',
+		name: 'value',
+		type: 'number',
+		required: true,
+		description: 'Value to convert',
+		default: 0,
+		routing: {
+			send: {
+				type: 'query',
+				property: 'value',
+				value: '={{ $value }}',
+				propertyInDotNotation: false,
+			},
 		},
-		"displayOptions": {
-			"show": {
-				"resource": [
-					"utility"
-				],
-				"operation": [
-					"convert-units"
-				]
-			}
-		}
+		displayOptions: {
+			show: {
+				resource: ['utility'],
+				operation: ['convert-units'],
+			},
+		},
 	},
 	{
-		"displayName": "From",
-		"name": "from",
-		"required": true,
-		"description": "Source unit",
-		"default": "",
-		"type": "string",
-		"routing": {
-			"send": {
-				"type": "query",
-				"property": "from",
-				"value": "={{ $value }}",
-				"propertyInDotNotation": false
-			}
+		displayName: 'From',
+		name: 'from',
+		type: 'string',
+		required: true,
+		description: 'Source unit',
+		default: '',
+		routing: {
+			send: {
+				type: 'query',
+				property: 'from',
+				value: '={{ $value }}',
+				propertyInDotNotation: false,
+			},
 		},
-		"displayOptions": {
-			"show": {
-				"resource": [
-					"utility"
-				],
-				"operation": [
-					"convert-units"
-				]
-			}
-		}
+		displayOptions: {
+			show: {
+				resource: ['utility'],
+				operation: ['convert-units'],
+			},
+		},
 	},
 	{
-		"displayName": "To",
-		"name": "to",
-		"required": true,
-		"description": "Target unit",
-		"default": "",
-		"type": "string",
-		"routing": {
-			"send": {
-				"type": "query",
-				"property": "to",
-				"value": "={{ $value }}",
-				"propertyInDotNotation": false
-			}
+		displayName: 'To',
+		name: 'to',
+		type: 'string',
+		required: true,
+		description: 'Target unit',
+		default: '',
+		routing: {
+			send: {
+				type: 'query',
+				property: 'to',
+				value: '={{ $value }}',
+				propertyInDotNotation: false,
+			},
 		},
-		"displayOptions": {
-			"show": {
-				"resource": [
-					"utility"
-				],
-				"operation": [
-					"convert-units"
-				]
-			}
-		}
+		displayOptions: {
+			show: {
+				resource: ['utility'],
+				operation: ['convert-units'],
+			},
+		},
 	},
 	{
-		"displayName": "Additional Fields",
-		"name": "additionalFields",
-		"type": "collection",
-		"placeholder": "Add Field",
-		"default": {},
-		"displayOptions": {
-			"show": {
-				"resource": [
-					"utility"
-				],
-				"operation": [
-					"generate-lorem-ipsum"
-				]
-			}
+		displayName: 'Additional Fields',
+		name: 'additionalFields',
+		type: 'collection',
+		placeholder: 'Add Field',
+		default: {},
+		displayOptions: {
+			show: {
+				resource: ['utility'],
+				operation: ['generate-lorem-ipsum'],
+			},
 		},
-		"options": [
+		options: [
 			{
-				"displayName": "Paragraphs",
-				"name": "paragraphs",
-				"description": "Number of paragraphs",
-				"default": 3,
-				"type": "number",
-				"routing": {
-					"send": {
-						"type": "query",
-						"property": "paragraphs",
-						"value": "={{ $value }}",
-						"propertyInDotNotation": false
-					}
-				}
-			}
-		]
-	}
+				displayName: 'Paragraphs',
+				name: 'paragraphs',
+				type: 'number',
+				description: 'Number of paragraphs',
+				default: 3,
+				routing: {
+					send: {
+						type: 'query',
+						property: 'paragraphs',
+						value: '={{ $value }}',
+						propertyInDotNotation: false,
+					},
+				},
+			},
+		],
+	},
 ];

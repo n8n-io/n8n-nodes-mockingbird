@@ -4,884 +4,801 @@ import { unwrapData } from '../../shared/unwrapData';
 
 export const generatedProperties: INodeProperties[] = [
 	{
-		"displayName": "Resource",
-		"name": "resource",
-		"type": "options",
-		"noDataExpression": true,
-		"options": [
+		displayName: 'Resource',
+		name: 'resource',
+		type: 'options',
+		noDataExpression: true,
+		options: [
 			{
-				"name": "Ticket",
-				"value": "ticket",
-				"description": ""
-			}
+				name: 'Ticket',
+				value: 'ticket',
+			},
 		],
-		"default": "ticket"
+		default: 'ticket',
 	},
 	{
-		"displayName": "Operation",
-		"name": "operation",
-		"type": "options",
-		"noDataExpression": true,
-		"displayOptions": {
-			"show": {
-				"resource": [
-					"ticket"
-				]
-			}
+		displayName: 'Operation',
+		name: 'operation',
+		type: 'options',
+		noDataExpression: true,
+		displayOptions: {
+			show: {
+				resource: ['ticket'],
+			},
 		},
-		"options": [
+		options: [
 			{
-				"name": "Get Many",
-				"value": "get-many",
-				"action": "Get many tickets",
-				"description": "List tickets",
-				"routing": {
-					"request": {
-						"method": "GET",
-						"url": "=/tickets",
-						"qs": {
-							"paginate": "={{ !$parameter.returnAll }}",
-							"limit": "={{ $parameter.returnAll ? 200 : $parameter.limit }}"
-						}
+				name: 'Add Comment',
+				value: 'add-comment',
+				action: 'Add a comment to a ticket',
+				description: 'Add a comment',
+				routing: {
+					request: {
+						method: 'POST',
+						url: '=/tickets/{{$parameter["ticket_id"]}}/comments',
 					},
-					"output": {
-						"postReceive": [
-							unwrapData
-						]
-					}
-				}
+				},
 			},
 			{
-				"name": "Create",
-				"value": "create",
-				"action": "Create a ticket",
-				"description": "Create a ticket",
-				"routing": {
-					"request": {
-						"method": "POST",
-						"url": "=/tickets"
-					}
-				}
+				name: 'Create',
+				value: 'create',
+				action: 'Create a ticket',
+				description: 'Create a ticket',
+				routing: {
+					request: {
+						method: 'POST',
+						url: '=/tickets',
+					},
+				},
 			},
 			{
-				"name": "Get",
-				"value": "get",
-				"action": "Get a ticket",
-				"description": "Get a ticket with comments",
-				"routing": {
-					"request": {
-						"method": "GET",
-						"url": "=/tickets/{{$parameter[\"ticket_id\"]}}"
-					}
-				}
+				name: 'Get',
+				value: 'get',
+				action: 'Get a ticket',
+				description: 'Get a ticket with comments',
+				routing: {
+					request: {
+						method: 'GET',
+						url: '=/tickets/{{$parameter["ticket_id"]}}',
+					},
+				},
 			},
 			{
-				"name": "Update",
-				"value": "update",
-				"action": "Update a ticket",
-				"description": "Update a ticket",
-				"routing": {
-					"request": {
-						"method": "PATCH",
-						"url": "=/tickets/{{$parameter[\"ticket_id\"]}}"
-					}
-				}
+				name: 'Get Many',
+				value: 'get-many',
+				action: 'Get many tickets',
+				description: 'List tickets',
+				routing: {
+					request: {
+						method: 'GET',
+						url: '=/tickets',
+						qs: {
+							paginate: '={{ !$parameter.returnAll }}',
+							limit: '={{ $parameter.returnAll ? 200 : $parameter.limit }}',
+						},
+					},
+					output: {
+						postReceive: [unwrapData],
+					},
+				},
 			},
 			{
-				"name": "Replace",
-				"value": "replace",
-				"action": "Replace a ticket",
-				"description": "Replace a ticket",
-				"routing": {
-					"request": {
-						"method": "PUT",
-						"url": "=/tickets/{{$parameter[\"ticket_id\"]}}"
-					}
-				}
+				name: 'Replace',
+				value: 'replace',
+				action: 'Replace a ticket',
+				description: 'Replace a ticket',
+				routing: {
+					request: {
+						method: 'PUT',
+						url: '=/tickets/{{$parameter["ticket_id"]}}',
+					},
+				},
 			},
 			{
-				"name": "Add Comment",
-				"value": "add-comment",
-				"action": "Add a comment to a ticket",
-				"description": "Add a comment",
-				"routing": {
-					"request": {
-						"method": "POST",
-						"url": "=/tickets/{{$parameter[\"ticket_id\"]}}/comments"
-					}
-				}
-			}
+				name: 'Update',
+				value: 'update',
+				action: 'Update a ticket',
+				description: 'Update a ticket',
+				routing: {
+					request: {
+						method: 'PATCH',
+						url: '=/tickets/{{$parameter["ticket_id"]}}',
+					},
+				},
+			},
 		],
-		"default": "get-many"
+		default: 'get-many',
 	},
 	{
-		"displayName": "Return All",
-		"name": "returnAll",
-		"type": "boolean",
-		"default": false,
-		"description": "Whether to return all results or only up to a given limit",
-		"displayOptions": {
-			"show": {
-				"resource": [
-					"ticket"
-				],
-				"operation": [
-					"get-many"
-				]
-			}
-		}
-	},
-	{
-		"displayName": "Limit",
-		"name": "limit",
-		"type": "number",
-		"typeOptions": {
-			"minValue": 1,
-			"maxValue": 200
+		displayName: 'Return All',
+		name: 'returnAll',
+		type: 'boolean',
+		default: false,
+		description: 'Whether to return all results or only up to a given limit',
+		displayOptions: {
+			show: {
+				resource: ['ticket'],
+				operation: ['get-many'],
+			},
 		},
-		"default": 50,
-		"description": "Max number of results to return",
-		"displayOptions": {
-			"show": {
-				"resource": [
-					"ticket"
-				],
-				"operation": [
-					"get-many"
-				],
-				"returnAll": [
-					false
-				]
-			}
-		}
 	},
 	{
-		"displayName": "Additional Fields",
-		"name": "additionalFields",
-		"type": "collection",
-		"placeholder": "Add Field",
-		"default": {},
-		"displayOptions": {
-			"show": {
-				"resource": [
-					"ticket"
-				],
-				"operation": [
-					"get-many"
-				]
-			}
+		displayName: 'Limit',
+		name: 'limit',
+		type: 'number',
+		typeOptions: {
+			minValue: 1,
+			maxValue: 200,
 		},
-		"options": [
+		default: 50,
+		description: 'Max number of results to return',
+		displayOptions: {
+			show: {
+				resource: ['ticket'],
+				operation: ['get-many'],
+				returnAll: [false],
+			},
+		},
+	},
+	{
+		displayName: 'Additional Fields',
+		name: 'additionalFields',
+		type: 'collection',
+		placeholder: 'Add Field',
+		default: {},
+		displayOptions: {
+			show: {
+				resource: ['ticket'],
+				operation: ['get-many'],
+			},
+		},
+		options: [
 			{
-				"displayName": "Status",
-				"name": "status",
-				"default": "open",
-				"type": "options",
-				"routing": {
-					"send": {
-						"type": "query",
-						"property": "status",
-						"value": "={{ $value }}",
-						"propertyInDotNotation": false
-					}
+				displayName: 'Category',
+				name: 'category',
+				type: 'options',
+				default: 'billing',
+				routing: {
+					send: {
+						type: 'query',
+						property: 'category',
+						value: '={{ $value }}',
+						propertyInDotNotation: false,
+					},
 				},
-				"options": [
+				options: [
 					{
-						"name": "Open",
-						"value": "open"
+						name: 'Billing',
+						value: 'billing',
 					},
 					{
-						"name": "Pending",
-						"value": "pending"
+						name: 'Defect',
+						value: 'defect',
 					},
 					{
-						"name": "Resolved",
-						"value": "resolved"
+						name: 'Installation',
+						value: 'installation',
 					},
 					{
-						"name": "Closed",
-						"value": "closed"
-					}
-				]
+						name: 'Other',
+						value: 'other',
+					},
+					{
+						name: 'Shipping',
+						value: 'shipping',
+					},
+				],
 			},
 			{
-				"displayName": "Priority",
-				"name": "priority",
-				"default": "low",
-				"type": "options",
-				"routing": {
-					"send": {
-						"type": "query",
-						"property": "priority",
-						"value": "={{ $value }}",
-						"propertyInDotNotation": false
-					}
+				displayName: 'Priority',
+				name: 'priority',
+				type: 'options',
+				default: 'low',
+				routing: {
+					send: {
+						type: 'query',
+						property: 'priority',
+						value: '={{ $value }}',
+						propertyInDotNotation: false,
+					},
 				},
-				"options": [
+				options: [
 					{
-						"name": "Low",
-						"value": "low"
+						name: 'High',
+						value: 'high',
 					},
 					{
-						"name": "Normal",
-						"value": "normal"
+						name: 'Low',
+						value: 'low',
 					},
 					{
-						"name": "High",
-						"value": "high"
+						name: 'Normal',
+						value: 'normal',
 					},
 					{
-						"name": "Urgent",
-						"value": "urgent"
-					}
-				]
+						name: 'Urgent',
+						value: 'urgent',
+					},
+				],
 			},
 			{
-				"displayName": "Category",
-				"name": "category",
-				"default": "billing",
-				"type": "options",
-				"routing": {
-					"send": {
-						"type": "query",
-						"property": "category",
-						"value": "={{ $value }}",
-						"propertyInDotNotation": false
-					}
+				displayName: 'Status',
+				name: 'status',
+				type: 'options',
+				default: 'open',
+				routing: {
+					send: {
+						type: 'query',
+						property: 'status',
+						value: '={{ $value }}',
+						propertyInDotNotation: false,
+					},
 				},
-				"options": [
+				options: [
 					{
-						"name": "Billing",
-						"value": "billing"
+						name: 'Closed',
+						value: 'closed',
 					},
 					{
-						"name": "Defect",
-						"value": "defect"
+						name: 'Open',
+						value: 'open',
 					},
 					{
-						"name": "Installation",
-						"value": "installation"
+						name: 'Pending',
+						value: 'pending',
 					},
 					{
-						"name": "Shipping",
-						"value": "shipping"
+						name: 'Resolved',
+						value: 'resolved',
 					},
-					{
-						"name": "Other",
-						"value": "other"
-					}
-				]
-			}
-		]
+				],
+			},
+		],
 	},
 	{
-		"required": true,
-		"displayName": "Customer ID",
-		"name": "customer_id",
-		"type": "number",
-		"default": 0,
-		"routing": {
-			"send": {
-				"property": "customer_id",
-				"propertyInDotNotation": false,
-				"type": "body",
-				"value": "={{ $value }}"
-			}
+		displayName: 'Customer ID',
+		name: 'customer_id',
+		type: 'number',
+		required: true,
+		default: 0,
+		routing: {
+			send: {
+				property: 'customer_id',
+				propertyInDotNotation: false,
+				type: 'body',
+				value: '={{ $value }}',
+			},
 		},
-		"displayOptions": {
-			"show": {
-				"resource": [
-					"ticket"
-				],
-				"operation": [
-					"create"
-				]
-			}
-		}
+		displayOptions: {
+			show: {
+				resource: ['ticket'],
+				operation: ['create'],
+			},
+		},
 	},
 	{
-		"required": true,
-		"displayName": "Subject",
-		"name": "subject",
-		"type": "string",
-		"default": "",
-		"routing": {
-			"send": {
-				"property": "subject",
-				"propertyInDotNotation": false,
-				"type": "body",
-				"value": "={{ $value }}"
-			}
+		displayName: 'Subject',
+		name: 'subject',
+		type: 'string',
+		required: true,
+		default: '',
+		routing: {
+			send: {
+				property: 'subject',
+				propertyInDotNotation: false,
+				type: 'body',
+				value: '={{ $value }}',
+			},
 		},
-		"displayOptions": {
-			"show": {
-				"resource": [
-					"ticket"
-				],
-				"operation": [
-					"create"
-				]
-			}
-		}
+		displayOptions: {
+			show: {
+				resource: ['ticket'],
+				operation: ['create'],
+			},
+		},
 	},
 	{
-		"required": true,
-		"displayName": "Body",
-		"name": "body",
-		"type": "string",
-		"default": "",
-		"routing": {
-			"send": {
-				"property": "body",
-				"propertyInDotNotation": false,
-				"type": "body",
-				"value": "={{ $value }}"
-			}
+		displayName: 'Body',
+		name: 'body',
+		type: 'string',
+		required: true,
+		default: '',
+		routing: {
+			send: {
+				property: 'body',
+				propertyInDotNotation: false,
+				type: 'body',
+				value: '={{ $value }}',
+			},
 		},
-		"displayOptions": {
-			"show": {
-				"resource": [
-					"ticket"
-				],
-				"operation": [
-					"create"
-				]
-			}
-		}
+		displayOptions: {
+			show: {
+				resource: ['ticket'],
+				operation: ['create'],
+			},
+		},
 	},
 	{
-		"displayName": "Additional Fields",
-		"name": "additionalFields",
-		"type": "collection",
-		"placeholder": "Add Field",
-		"default": {},
-		"displayOptions": {
-			"show": {
-				"resource": [
-					"ticket"
-				],
-				"operation": [
-					"create"
-				]
-			}
+		displayName: 'Additional Fields',
+		name: 'additionalFields',
+		type: 'collection',
+		placeholder: 'Add Field',
+		default: {},
+		displayOptions: {
+			show: {
+				resource: ['ticket'],
+				operation: ['create'],
+			},
 		},
-		"options": [
+		options: [
 			{
-				"displayName": "Priority",
-				"name": "priority",
-				"type": "options",
-				"default": "low",
-				"routing": {
-					"send": {
-						"property": "priority",
-						"propertyInDotNotation": false,
-						"type": "body",
-						"value": "={{ $value }}"
-					}
+				displayName: 'Category',
+				name: 'category',
+				type: 'options',
+				default: 'billing',
+				routing: {
+					send: {
+						property: 'category',
+						propertyInDotNotation: false,
+						type: 'body',
+						value: '={{ $value }}',
+					},
 				},
-				"options": [
+				options: [
 					{
-						"name": "Low",
-						"value": "low"
+						name: 'Billing',
+						value: 'billing',
 					},
 					{
-						"name": "Normal",
-						"value": "normal"
+						name: 'Defect',
+						value: 'defect',
 					},
 					{
-						"name": "High",
-						"value": "high"
+						name: 'Installation',
+						value: 'installation',
 					},
 					{
-						"name": "Urgent",
-						"value": "urgent"
-					}
-				]
+						name: 'Other',
+						value: 'other',
+					},
+					{
+						name: 'Shipping',
+						value: 'shipping',
+					},
+				],
 			},
 			{
-				"displayName": "Category",
-				"name": "category",
-				"type": "options",
-				"default": "billing",
-				"routing": {
-					"send": {
-						"property": "category",
-						"propertyInDotNotation": false,
-						"type": "body",
-						"value": "={{ $value }}"
-					}
+				displayName: 'Priority',
+				name: 'priority',
+				type: 'options',
+				default: 'low',
+				routing: {
+					send: {
+						property: 'priority',
+						propertyInDotNotation: false,
+						type: 'body',
+						value: '={{ $value }}',
+					},
 				},
-				"options": [
+				options: [
 					{
-						"name": "Billing",
-						"value": "billing"
+						name: 'High',
+						value: 'high',
 					},
 					{
-						"name": "Defect",
-						"value": "defect"
+						name: 'Low',
+						value: 'low',
 					},
 					{
-						"name": "Installation",
-						"value": "installation"
+						name: 'Normal',
+						value: 'normal',
 					},
 					{
-						"name": "Shipping",
-						"value": "shipping"
+						name: 'Urgent',
+						value: 'urgent',
 					},
-					{
-						"name": "Other",
-						"value": "other"
-					}
-				]
-			}
-		]
+				],
+			},
+		],
 	},
 	{
-		"displayName": "Ticket ID",
-		"name": "ticket_id",
-		"required": true,
-		"default": 0,
-		"type": "number",
-		"displayOptions": {
-			"show": {
-				"resource": [
-					"ticket"
-				],
-				"operation": [
-					"get"
-				]
-			}
-		}
-	},
-	{
-		"displayName": "Ticket ID",
-		"name": "ticket_id",
-		"required": true,
-		"default": 0,
-		"type": "number",
-		"displayOptions": {
-			"show": {
-				"resource": [
-					"ticket"
-				],
-				"operation": [
-					"update"
-				]
-			}
-		}
-	},
-	{
-		"displayName": "Additional Fields",
-		"name": "additionalFields",
-		"type": "collection",
-		"placeholder": "Add Field",
-		"default": {},
-		"displayOptions": {
-			"show": {
-				"resource": [
-					"ticket"
-				],
-				"operation": [
-					"update"
-				]
-			}
+		displayName: 'Ticket ID',
+		name: 'ticket_id',
+		type: 'number',
+		required: true,
+		default: 0,
+		displayOptions: {
+			show: {
+				resource: ['ticket'],
+				operation: ['get'],
+			},
 		},
-		"options": [
-			{
-				"displayName": "Subject",
-				"name": "subject",
-				"type": "string",
-				"default": "",
-				"routing": {
-					"send": {
-						"property": "subject",
-						"propertyInDotNotation": false,
-						"type": "body",
-						"value": "={{ $value }}"
-					}
-				}
+	},
+	{
+		displayName: 'Ticket ID',
+		name: 'ticket_id',
+		type: 'number',
+		required: true,
+		default: 0,
+		displayOptions: {
+			show: {
+				resource: ['ticket'],
+				operation: ['update'],
 			},
-			{
-				"displayName": "Body",
-				"name": "body",
-				"type": "string",
-				"default": "",
-				"routing": {
-					"send": {
-						"property": "body",
-						"propertyInDotNotation": false,
-						"type": "body",
-						"value": "={{ $value }}"
-					}
-				}
+		},
+	},
+	{
+		displayName: 'Additional Fields',
+		name: 'additionalFields',
+		type: 'collection',
+		placeholder: 'Add Field',
+		default: {},
+		displayOptions: {
+			show: {
+				resource: ['ticket'],
+				operation: ['update'],
 			},
+		},
+		options: [
 			{
-				"displayName": "Priority",
-				"name": "priority",
-				"type": "options",
-				"default": "low",
-				"routing": {
-					"send": {
-						"property": "priority",
-						"propertyInDotNotation": false,
-						"type": "body",
-						"value": "={{ $value }}"
-					}
+				displayName: 'Body',
+				name: 'body',
+				type: 'string',
+				default: '',
+				routing: {
+					send: {
+						property: 'body',
+						propertyInDotNotation: false,
+						type: 'body',
+						value: '={{ $value }}',
+					},
 				},
-				"options": [
-					{
-						"name": "Low",
-						"value": "low"
-					},
-					{
-						"name": "Normal",
-						"value": "normal"
-					},
-					{
-						"name": "High",
-						"value": "high"
-					},
-					{
-						"name": "Urgent",
-						"value": "urgent"
-					}
-				]
 			},
 			{
-				"displayName": "Status",
-				"name": "status",
-				"type": "options",
-				"default": "open",
-				"routing": {
-					"send": {
-						"property": "status",
-						"propertyInDotNotation": false,
-						"type": "body",
-						"value": "={{ $value }}"
-					}
+				displayName: 'Category',
+				name: 'category',
+				type: 'options',
+				default: 'billing',
+				routing: {
+					send: {
+						property: 'category',
+						propertyInDotNotation: false,
+						type: 'body',
+						value: '={{ $value }}',
+					},
 				},
-				"options": [
+				options: [
 					{
-						"name": "Open",
-						"value": "open"
+						name: 'Billing',
+						value: 'billing',
 					},
 					{
-						"name": "Pending",
-						"value": "pending"
+						name: 'Defect',
+						value: 'defect',
 					},
 					{
-						"name": "Resolved",
-						"value": "resolved"
+						name: 'Installation',
+						value: 'installation',
 					},
 					{
-						"name": "Closed",
-						"value": "closed"
-					}
-				]
+						name: 'Other',
+						value: 'other',
+					},
+					{
+						name: 'Shipping',
+						value: 'shipping',
+					},
+				],
 			},
 			{
-				"displayName": "Category",
-				"name": "category",
-				"type": "options",
-				"default": "billing",
-				"routing": {
-					"send": {
-						"property": "category",
-						"propertyInDotNotation": false,
-						"type": "body",
-						"value": "={{ $value }}"
-					}
+				displayName: 'Priority',
+				name: 'priority',
+				type: 'options',
+				default: 'low',
+				routing: {
+					send: {
+						property: 'priority',
+						propertyInDotNotation: false,
+						type: 'body',
+						value: '={{ $value }}',
+					},
 				},
-				"options": [
+				options: [
 					{
-						"name": "Billing",
-						"value": "billing"
+						name: 'High',
+						value: 'high',
 					},
 					{
-						"name": "Defect",
-						"value": "defect"
+						name: 'Low',
+						value: 'low',
 					},
 					{
-						"name": "Installation",
-						"value": "installation"
+						name: 'Normal',
+						value: 'normal',
 					},
 					{
-						"name": "Shipping",
-						"value": "shipping"
+						name: 'Urgent',
+						value: 'urgent',
+					},
+				],
+			},
+			{
+				displayName: 'Status',
+				name: 'status',
+				type: 'options',
+				default: 'open',
+				routing: {
+					send: {
+						property: 'status',
+						propertyInDotNotation: false,
+						type: 'body',
+						value: '={{ $value }}',
+					},
+				},
+				options: [
+					{
+						name: 'Closed',
+						value: 'closed',
 					},
 					{
-						"name": "Other",
-						"value": "other"
-					}
-				]
-			}
-		]
+						name: 'Open',
+						value: 'open',
+					},
+					{
+						name: 'Pending',
+						value: 'pending',
+					},
+					{
+						name: 'Resolved',
+						value: 'resolved',
+					},
+				],
+			},
+			{
+				displayName: 'Subject',
+				name: 'subject',
+				type: 'string',
+				default: '',
+				routing: {
+					send: {
+						property: 'subject',
+						propertyInDotNotation: false,
+						type: 'body',
+						value: '={{ $value }}',
+					},
+				},
+			},
+		],
 	},
 	{
-		"displayName": "Ticket ID",
-		"name": "ticket_id",
-		"required": true,
-		"default": 0,
-		"type": "number",
-		"displayOptions": {
-			"show": {
-				"resource": [
-					"ticket"
-				],
-				"operation": [
-					"replace"
-				]
-			}
-		}
+		displayName: 'Ticket ID',
+		name: 'ticket_id',
+		type: 'number',
+		required: true,
+		default: 0,
+		displayOptions: {
+			show: {
+				resource: ['ticket'],
+				operation: ['replace'],
+			},
+		},
 	},
 	{
-		"required": true,
-		"displayName": "Customer ID",
-		"name": "customer_id",
-		"type": "number",
-		"default": 0,
-		"routing": {
-			"send": {
-				"property": "customer_id",
-				"propertyInDotNotation": false,
-				"type": "body",
-				"value": "={{ $value }}"
-			}
+		displayName: 'Customer ID',
+		name: 'customer_id',
+		type: 'number',
+		required: true,
+		default: 0,
+		routing: {
+			send: {
+				property: 'customer_id',
+				propertyInDotNotation: false,
+				type: 'body',
+				value: '={{ $value }}',
+			},
 		},
-		"displayOptions": {
-			"show": {
-				"resource": [
-					"ticket"
-				],
-				"operation": [
-					"replace"
-				]
-			}
-		}
+		displayOptions: {
+			show: {
+				resource: ['ticket'],
+				operation: ['replace'],
+			},
+		},
 	},
 	{
-		"required": true,
-		"displayName": "Subject",
-		"name": "subject",
-		"type": "string",
-		"default": "",
-		"routing": {
-			"send": {
-				"property": "subject",
-				"propertyInDotNotation": false,
-				"type": "body",
-				"value": "={{ $value }}"
-			}
+		displayName: 'Subject',
+		name: 'subject',
+		type: 'string',
+		required: true,
+		default: '',
+		routing: {
+			send: {
+				property: 'subject',
+				propertyInDotNotation: false,
+				type: 'body',
+				value: '={{ $value }}',
+			},
 		},
-		"displayOptions": {
-			"show": {
-				"resource": [
-					"ticket"
-				],
-				"operation": [
-					"replace"
-				]
-			}
-		}
+		displayOptions: {
+			show: {
+				resource: ['ticket'],
+				operation: ['replace'],
+			},
+		},
 	},
 	{
-		"required": true,
-		"displayName": "Body",
-		"name": "body",
-		"type": "string",
-		"default": "",
-		"routing": {
-			"send": {
-				"property": "body",
-				"propertyInDotNotation": false,
-				"type": "body",
-				"value": "={{ $value }}"
-			}
+		displayName: 'Body',
+		name: 'body',
+		type: 'string',
+		required: true,
+		default: '',
+		routing: {
+			send: {
+				property: 'body',
+				propertyInDotNotation: false,
+				type: 'body',
+				value: '={{ $value }}',
+			},
 		},
-		"displayOptions": {
-			"show": {
-				"resource": [
-					"ticket"
-				],
-				"operation": [
-					"replace"
-				]
-			}
-		}
+		displayOptions: {
+			show: {
+				resource: ['ticket'],
+				operation: ['replace'],
+			},
+		},
 	},
 	{
-		"required": true,
-		"displayName": "Priority",
-		"name": "priority",
-		"type": "options",
-		"default": "low",
-		"routing": {
-			"send": {
-				"property": "priority",
-				"propertyInDotNotation": false,
-				"type": "body",
-				"value": "={{ $value }}"
-			}
+		displayName: 'Priority',
+		name: 'priority',
+		type: 'options',
+		required: true,
+		default: 'low',
+		routing: {
+			send: {
+				property: 'priority',
+				propertyInDotNotation: false,
+				type: 'body',
+				value: '={{ $value }}',
+			},
 		},
-		"displayOptions": {
-			"show": {
-				"resource": [
-					"ticket"
-				],
-				"operation": [
-					"replace"
-				]
-			}
+		displayOptions: {
+			show: {
+				resource: ['ticket'],
+				operation: ['replace'],
+			},
 		},
-		"options": [
+		options: [
 			{
-				"name": "Low",
-				"value": "low"
+				name: 'High',
+				value: 'high',
 			},
 			{
-				"name": "Normal",
-				"value": "normal"
+				name: 'Low',
+				value: 'low',
 			},
 			{
-				"name": "High",
-				"value": "high"
+				name: 'Normal',
+				value: 'normal',
 			},
 			{
-				"name": "Urgent",
-				"value": "urgent"
-			}
-		]
+				name: 'Urgent',
+				value: 'urgent',
+			},
+		],
 	},
 	{
-		"required": true,
-		"displayName": "Status",
-		"name": "status",
-		"type": "options",
-		"default": "open",
-		"routing": {
-			"send": {
-				"property": "status",
-				"propertyInDotNotation": false,
-				"type": "body",
-				"value": "={{ $value }}"
-			}
+		displayName: 'Status',
+		name: 'status',
+		type: 'options',
+		required: true,
+		default: 'open',
+		routing: {
+			send: {
+				property: 'status',
+				propertyInDotNotation: false,
+				type: 'body',
+				value: '={{ $value }}',
+			},
 		},
-		"displayOptions": {
-			"show": {
-				"resource": [
-					"ticket"
-				],
-				"operation": [
-					"replace"
-				]
-			}
+		displayOptions: {
+			show: {
+				resource: ['ticket'],
+				operation: ['replace'],
+			},
 		},
-		"options": [
+		options: [
 			{
-				"name": "Open",
-				"value": "open"
+				name: 'Closed',
+				value: 'closed',
 			},
 			{
-				"name": "Pending",
-				"value": "pending"
+				name: 'Open',
+				value: 'open',
 			},
 			{
-				"name": "Resolved",
-				"value": "resolved"
+				name: 'Pending',
+				value: 'pending',
 			},
 			{
-				"name": "Closed",
-				"value": "closed"
-			}
-		]
+				name: 'Resolved',
+				value: 'resolved',
+			},
+		],
 	},
 	{
-		"required": true,
-		"displayName": "Category",
-		"name": "category",
-		"type": "options",
-		"default": "billing",
-		"routing": {
-			"send": {
-				"property": "category",
-				"propertyInDotNotation": false,
-				"type": "body",
-				"value": "={{ $value }}"
-			}
+		displayName: 'Category',
+		name: 'category',
+		type: 'options',
+		required: true,
+		default: 'billing',
+		routing: {
+			send: {
+				property: 'category',
+				propertyInDotNotation: false,
+				type: 'body',
+				value: '={{ $value }}',
+			},
 		},
-		"displayOptions": {
-			"show": {
-				"resource": [
-					"ticket"
-				],
-				"operation": [
-					"replace"
-				]
-			}
+		displayOptions: {
+			show: {
+				resource: ['ticket'],
+				operation: ['replace'],
+			},
 		},
-		"options": [
+		options: [
 			{
-				"name": "Billing",
-				"value": "billing"
+				name: 'Billing',
+				value: 'billing',
 			},
 			{
-				"name": "Defect",
-				"value": "defect"
+				name: 'Defect',
+				value: 'defect',
 			},
 			{
-				"name": "Installation",
-				"value": "installation"
+				name: 'Installation',
+				value: 'installation',
 			},
 			{
-				"name": "Shipping",
-				"value": "shipping"
+				name: 'Other',
+				value: 'other',
 			},
 			{
-				"name": "Other",
-				"value": "other"
-			}
-		]
+				name: 'Shipping',
+				value: 'shipping',
+			},
+		],
 	},
 	{
-		"displayName": "Ticket ID",
-		"name": "ticket_id",
-		"required": true,
-		"default": 0,
-		"type": "number",
-		"displayOptions": {
-			"show": {
-				"resource": [
-					"ticket"
-				],
-				"operation": [
-					"add-comment"
-				]
-			}
-		}
+		displayName: 'Ticket ID',
+		name: 'ticket_id',
+		type: 'number',
+		required: true,
+		default: 0,
+		displayOptions: {
+			show: {
+				resource: ['ticket'],
+				operation: ['add-comment'],
+			},
+		},
 	},
 	{
-		"required": true,
-		"displayName": "Body",
-		"name": "body",
-		"type": "string",
-		"default": "",
-		"routing": {
-			"send": {
-				"property": "body",
-				"propertyInDotNotation": false,
-				"type": "body",
-				"value": "={{ $value }}"
-			}
+		displayName: 'Body',
+		name: 'body',
+		type: 'string',
+		required: true,
+		default: '',
+		routing: {
+			send: {
+				property: 'body',
+				propertyInDotNotation: false,
+				type: 'body',
+				value: '={{ $value }}',
+			},
 		},
-		"displayOptions": {
-			"show": {
-				"resource": [
-					"ticket"
-				],
-				"operation": [
-					"add-comment"
-				]
-			}
-		}
-	}
+		displayOptions: {
+			show: {
+				resource: ['ticket'],
+				operation: ['add-comment'],
+			},
+		},
+	},
 ];

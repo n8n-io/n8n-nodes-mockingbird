@@ -22,7 +22,7 @@ module.exports = {
 
 	// Weather
 	'GET /weather/{city}': ['Get Current', 'Get the current weather for a city'],
-	'GET /weather/{city}/forecast': ['Get Forecast', 'Get a multi-day forecast for a city'],
+	'GET /weather/{city}/forecast': ['Get Forecast', 'Get a forecast for a city'],
 
 	// Exchange Rates
 	'GET /rates': ['Get Rates', 'Get exchange rates for a base currency'],
@@ -38,10 +38,10 @@ module.exports = {
 	'GET /util/echo': ['Echo', 'Echo the request'],
 	'GET /util/status/{code}': ['Respond With Status', 'Respond with a given HTTP status'],
 	'GET /util/delay/{seconds}': ['Respond After Delay', 'Respond after a delay'],
-	'GET /util/uuid': ['Generate UUID', 'Generate UUIDs'],
+	'GET /util/uuid': ['Generate UUID', 'Generate a UUID'],
 	'POST /util/hash': ['Hash Text', 'Hash text'],
-	'POST /util/base64/encode': ['Encode Base64', 'Base64-encode text'],
-	'POST /util/base64/decode': ['Decode Base64', 'Base64-decode text'],
+	'POST /util/base64/encode': ['Encode Base64', 'Base64 encode text'],
+	'POST /util/base64/decode': ['Decode Base64', 'Base64 decode text'],
 	'POST /util/validate/email': ['Validate Email', 'Validate an email address'],
 	'POST /util/validate/iban': ['Validate IBAN', 'Validate an IBAN'],
 	'POST /util/validate/vat': ['Validate VAT Number', 'Validate an EU VAT number'],
@@ -66,5 +66,5 @@ module.exports = {
 	'GET /fun/trivia': ['Get Trivia', 'Get trivia questions'],
 	'GET /fun/users/random': ['Get Random Users', 'Get random fake users'],
 	'GET /fun/numbers/{n}': ['Get Number Fact', 'Get a fact about a number'],
-	'GET /fun/fortune': ['Get Fortune', 'Get a fortune-cookie message'],
+	'GET /fun/fortune': ['Get Fortune', 'Get a fortune cookie message'],
 };
