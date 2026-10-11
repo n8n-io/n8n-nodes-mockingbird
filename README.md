@@ -16,39 +16,54 @@ Follow the [installation guide](https://docs.n8n.io/integrations/community-nodes
 
 ## Nodes
 
-| Node | Operations | Credential |
+Six nodes group the Mockingbird APIs by theme. Pick the node, then a resource, then an operation.
+
+| Node | Resources | Credential |
 | --- | --- | --- |
-| Mockingbird Product Catalogue | Get, Get Many, Get Categories | Optional |
-| Mockingbird Helpdesk | Get, Get Many, Create, Update, Replace, Add Comment | Required |
-| Mockingbird Orders | Get, Get Many, Get Many (Cursor) | Required |
-| Mockingbird Weather | Get Current, Get Forecast | Optional |
-| Mockingbird Exchange Rates | Get Rates, Convert | Optional |
-| Mockingbird Quotes | Get, Get Many, Get Quote of the Day | Optional |
-| Mockingbird Utilities | Echo, Hash Text, Encode and Decode Base64, Validate Email, IBAN, and VAT Number, Convert Units, Generate UUID, Generate Lorem Ipsum, and more | Optional |
-| Mockingbird CRM Lite | Get, Get Many, Create | Optional |
-| Mockingbird Fun Pack | Random dog, cat, robot, joke, fact, activity, and users; Get Trivia, Number Fact, and Fortune | Optional |
-| Mockingbird People / HR | Get, Get Many, Create, Update, Get Reports, Get Departments, Get Org Chart, Get Salary Bands | Required |
-| Mockingbird Time Off | Get Many, Get Many by Employee, Create, Update, Get Balance, Get Calendar | Required |
-| Mockingbird Inventory | Get, Create Reservation, Delete Reservation | Required |
-| Mockingbird Batch Jobs | Create, Get, Get Result | Required |
-| Mockingbird Event Stream | Get Many | Required |
-| Mockingbird Fraud Detection | Get, Get Many, Score, Create Case, Update Case | Required |
-| Mockingbird Security Monitor | Get Many Events, Get Many Blocks, Create Block | Required |
-| Mockingbird Product Reviews | Get Many, Get Latest, Create, Moderate | Optional |
-| Mockingbird Webhook Hub | Get Many Subscriptions, Create Subscription, Delete Subscription, Fire | Required |
-| Mockingbird Document Store | Get Many | Required |
-| Mockingbird Sandbox | Reset, Get ID | Required |
-| Mockingbird Meeting Rooms | Get Many Rooms, Get Availability, Create Booking, Delete Booking | Required |
-| Mockingbird Knowledge Base | Search, Get | Required |
-| Mockingbird Agent Tools | Look Up Customer, Refund Order, Cancel Order, Resend Invoice, Get Next Ticket, Resolve Ticket, Get Tools | Required |
-| Mockingbird Classifier | Classify Sentiment, Classify Intent, Extract Entities | Required |
-| Mockingbird Assessments | Get, Get Many, Get Source, Submit | Optional |
+| Mockingbird Commerce | Product, Order, Inventory, Review, Customer | Optional |
+| Mockingbird Support | Ticket, Article, Agent Tool, Text | Required |
+| Mockingbird People | Employee, Time Off Request, Room | Required |
+| Mockingbird Finance and Security | Transaction, Security, Exchange Rate | Optional |
+| Mockingbird Platform | Job, Event, Webhook, File, Sandbox, Assessment | Optional |
+| Mockingbird Fun and Utilities | Fun, Utility, Weather, Quote | Optional |
+
+Some resources need no credential. Examples are Product, Weather, and Exchange Rate. In a node marked Optional, a resource that needs a key fails with 401 if you add no credential. Nodes marked Required always need one.
+
+### Operations
+
+| Resource | Operations |
+| --- | --- |
+| Product | Get, Get Many, Get Categories |
+| Order | Get, Get Many, Get Many (Cursor) |
+| Inventory | Get, Create Reservation, Delete Reservation |
+| Review | Get Many, Get Latest, Create, Moderate |
+| Customer | Get, Get Many, Create |
+| Ticket | Get, Get Many, Create, Update, Replace, Add Comment |
+| Article | Search, Get |
+| Agent Tool | Look Up Customer, Refund Order, Cancel Order, Resend Invoice, Get Next Ticket, Resolve Ticket, Get Tools |
+| Text | Classify Sentiment, Classify Intent, Extract Entities |
+| Employee | Get, Get Many, Create, Update, Get Reports, Get Departments, Get Org Chart, Get Salary Bands |
+| Time Off Request | Get Many, Get Many by Employee, Create, Update, Get Balance, Get Calendar |
+| Room | Get Many Rooms, Get Availability, Create Booking, Delete Booking |
+| Transaction | Get, Get Many, Score, Create Case, Update Case |
+| Security | Get Many Events, Get Many Blocks, Create Block |
+| Exchange Rate | Get Rates, Convert |
+| Job | Create, Get, Get Result |
+| Event | Get Many |
+| Webhook | Get Many Subscriptions, Create Subscription, Delete Subscription, Fire |
+| File | Get Many |
+| Sandbox | Reset, Get ID |
+| Assessment | Get, Get Many, Get Source, Submit |
+| Fun | Random dog, cat, robot, joke, fact, activity, and users; Get Trivia, Number Fact, and Fortune |
+| Utility | Echo, Hash Text, Encode and Decode Base64, Validate Email, IBAN, and VAT Number, Convert Units, Generate UUID, Generate Lorem Ipsum, and more |
+| Weather | Get Current, Get Forecast |
+| Quote | Get, Get Many, Get Quote of the Day |
 
 **Get Many (Cursor)** makes one request and returns the full `{ data, meta }` response. It does not follow `meta.next_cursor`. Pass the cursor back in Additional Fields to read the next page.
 
 ## Credentials
 
-Some operations need no credential, such as Product Catalogue and Weather. Nodes marked Required in the table always need one.
+Some resources need no credential, such as Product and Weather. See the Nodes table.
 
 1. Get an API key from the Mockingbird dashboard.
 2. Create a **Mockingbird API** credential in n8n.
@@ -73,7 +88,7 @@ The credential also works with the HTTP Request node as a predefined credential 
 
 ## Usage
 
-Add a Mockingbird node to a workflow. Pick a resource and an operation. Example: Mockingbird Product Catalogue, Get Many, with `Search` set to `chair`.
+Add a Mockingbird node to a workflow. Pick a resource and an operation. Example: Mockingbird Commerce, Product, Get Many, with `Search` set to `chair`.
 
 ## Development
 

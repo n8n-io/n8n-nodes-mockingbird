@@ -2,8 +2,7 @@
 
 ## Unreleased
 
-- Add Weather, Exchange Rates, Quotes, Utilities, CRM Lite, and Fun Pack nodes.
-- Add People / HR, Time Off, Inventory, Batch Jobs, Event Stream, Fraud Detection, Security Monitor, Product Reviews, Webhook Hub, Document Store, Sandbox, Meeting Rooms, Knowledge Base, Agent Tools, Classifier, and Assessments nodes.
+- Group the Mockingbird APIs into six themed nodes: Commerce, Support, People, Finance and Security, Platform, and Fun and Utilities. Each node has one resource per API.
 - Update the README licence section and the n8n description.
 - The generator now writes the node files and updates `package.json`.
 

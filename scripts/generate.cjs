@@ -12,7 +12,8 @@ const spec = JSON.parse(
 const OPERATIONS = require('./operations.cjs');
 
 // One node per API (tag). `resource` is the n8n resource label.
-const NODES = [
+// One entry per spec tag. NODES below groups them into the nodes users see.
+const APIS = [
 	{
 		dir: 'ProductCatalogue',
 		tag: 'Product Catalogue',
@@ -71,13 +72,13 @@ const NODES = [
 	{
 		dir: 'TimeOff',
 		tag: 'Time Off',
-		resource: 'Request',
+		resource: 'Time Off Request',
 		description: 'Manage time off requests in Mockingbird',
 	},
 	{
 		dir: 'Inventory',
 		tag: 'Inventory',
-		resource: 'Stock',
+		resource: 'Inventory',
 		description: 'Check and reserve stock in Mockingbird Inventory',
 	},
 	{
@@ -143,7 +144,7 @@ const NODES = [
 	{
 		dir: 'AgentTools',
 		tag: 'Agent Tools',
-		resource: 'Tool',
+		resource: 'Agent Tool',
 		description: 'Use the Mockingbird tools made for AI agents',
 	},
 	{
@@ -157,6 +158,46 @@ const NODES = [
 		tag: 'Assessments',
 		resource: 'Assessment',
 		description: 'Get and submit assessments in Mockingbird',
+	},
+];
+
+const NODES = [
+	{
+		dir: 'Commerce',
+		displayName: 'Mockingbird Commerce',
+		description: 'Work with products, orders, inventory, reviews, and customers in Mockingbird',
+		tags: ['Product Catalogue', 'Orders', 'Inventory', 'Product Reviews', 'CRM Lite'],
+	},
+	{
+		dir: 'Support',
+		displayName: 'Mockingbird Support',
+		description: 'Work with tickets, articles, agent tools, and text classification in Mockingbird',
+		tags: ['Helpdesk', 'Knowledge Base', 'Agent Tools', 'Classifier'],
+	},
+	{
+		dir: 'People',
+		displayName: 'Mockingbird People',
+		description: 'Work with employees, time off, and meeting rooms in Mockingbird',
+		tags: ['People / HR', 'Time Off', 'Meeting Rooms'],
+	},
+	{
+		dir: 'FinanceSecurity',
+		displayName: 'Mockingbird Finance and Security',
+		description: 'Work with fraud checks, security events, and exchange rates in Mockingbird',
+		tags: ['Fraud Detection', 'Security Monitor', 'Exchange Rates'],
+	},
+	{
+		dir: 'Platform',
+		displayName: 'Mockingbird Platform',
+		description:
+			'Work with jobs, events, webhooks, documents, sandboxes, and assessments in Mockingbird',
+		tags: ['Batch Jobs', 'Event Stream', 'Webhook Hub', 'Document Store', 'Sandbox', 'Assessments'],
+	},
+	{
+		dir: 'Fun',
+		displayName: 'Mockingbird Fun and Utilities',
+		description: 'Get weather, quotes, fun data, and helper endpoints from Mockingbird',
+		tags: ['Fun Pack', 'Utilities', 'Weather', 'Quotes'],
 	},
 ];
 
@@ -608,28 +649,54 @@ async function writeFormatted(file, content) {
 
 (async () => {
 	const nodePaths = [];
-	for (const { dir, tag, resource, description } of NODES) {
-		const sub = JSON.parse(JSON.stringify(spec));
-		sub.paths = {};
-		for (const [p, item] of Object.entries(spec.paths)) {
-			const kept = {};
-			for (const [method, op] of Object.entries(item)) {
-				if (op.tags && op.tags.includes(tag)) kept[method] = op;
+	for (const { dir, displayName, description, tags } of NODES) {
+		const properties = [];
+		const resources = [];
+		let secured = [];
+		for (const tag of tags) {
+			const { resource } = APIS.find((a) => a.tag === tag);
+			const sub = JSON.parse(JSON.stringify(spec));
+			sub.paths = {};
+			for (const [p, item] of Object.entries(spec.paths)) {
+				const kept = {};
+				for (const [method, op] of Object.entries(item)) {
+					if (op.tags && op.tags.includes(tag)) kept[method] = op;
+				}
+				if (Object.keys(kept).length) sub.paths[p.replace(/^\/v1/, '')] = kept;
 			}
-			if (Object.keys(kept).length) sub.paths[p.replace(/^\/v1/, '')] = kept;
+			sub.tags = (spec.tags || []).filter((t) => t.name === tag);
+			const built = postProcess(
+				new N8NPropertiesBuilder(sub, {
+					operation: operationParser,
+					resource: {
+						name: () => resource,
+						value: () => kebab(resource),
+						description: () => '',
+					},
+				}).build(),
+				tag,
+			);
+			for (const p of built) {
+				if (p.name === 'resource') resources.push(...p.options);
+				else properties.push(p);
+			}
+			secured = secured.concat(
+				Object.values(sub.paths).flatMap((item) =>
+					Object.values(item).map((op) => Boolean(op.security && op.security.length)),
+				),
+			);
 		}
-		sub.tags = (spec.tags || []).filter((t) => t.name === tag);
-		const properties = postProcess(
-			new N8NPropertiesBuilder(sub, {
-				operation: operationParser,
-				resource: {
-					name: () => resource,
-					value: () => kebab(resource),
-					description: () => '',
-				},
-			}).build(),
-			tag,
-		);
+		const names = resources.map((r) => r.value);
+		if (new Set(names).size !== names.length) throw new Error(`Duplicate resource in ${dir}`);
+		resources.sort((a, b) => a.name.localeCompare(b.name));
+		properties.unshift({
+			displayName: 'Resource',
+			name: 'resource',
+			type: 'options',
+			noDataExpression: true,
+			options: resources,
+			default: resources[0].value,
+		});
 		const out = path.join(__dirname, '..', 'nodes', dir, 'generated');
 		fs.mkdirSync(out, { recursive: true });
 		await writeFormatted(
@@ -643,15 +710,12 @@ async function writeFormatted(file, content) {
 				';\n',
 		);
 		// Credential is required only when every generated operation needs auth.
-		const secured = Object.values(sub.paths).flatMap((item) =>
-			Object.values(item).map((op) => Boolean(op.security && op.security.length)),
-		);
 		const required = secured.length > 0 && secured.every(Boolean);
 		const cls = 'Mockingbird' + dir;
 		const nodeDir = path.join(ROOT, 'nodes', dir);
 		await writeFormatted(
 			path.join(nodeDir, cls + '.node.ts'),
-			nodeSource(cls, 'Mockingbird ' + tag, description, required),
+			nodeSource(cls, displayName, description, required),
 		);
 		await writeFormatted(path.join(nodeDir, cls + '.node.json'), nodeCodex(cls));
 		fs.writeFileSync(path.join(nodeDir, 'mockingbird.svg'), icon);
@@ -660,16 +724,17 @@ async function writeFormatted(file, content) {
 		console.log(dir, properties.length, 'properties');
 	}
 
+	// Remove node folders that no longer exist in NODES. The shared folder stays.
+	const keep = new Set(['shared', ...NODES.map((n) => n.dir)]);
+	for (const d of fs.readdirSync(path.join(ROOT, 'nodes'))) {
+		if (!keep.has(d)) fs.rmSync(path.join(ROOT, 'nodes', d), { recursive: true, force: true });
+	}
+
 	fs.writeFileSync(path.join(ROOT, 'credentials', 'mockingbird.svg'), icon);
 	fs.writeFileSync(path.join(ROOT, 'credentials', 'mockingbird.dark.svg'), icon);
 
 	const pkgPath = path.join(ROOT, 'package.json');
 	const pkg = JSON.parse(fs.readFileSync(pkgPath, 'utf8'));
-	// Keep hand-written nodes: replace only the entries for generated node folders.
-	const generated = new Set(NODES.map((n) => `dist/nodes/${n.dir}/`));
-	const handWritten = (pkg.n8n.nodes || []).filter(
-		(n) => ![...generated].some((prefix) => n.startsWith(prefix)),
-	);
-	pkg.n8n.nodes = [...nodePaths, ...handWritten];
+	pkg.n8n.nodes = nodePaths;
 	await writeFormatted(pkgPath, JSON.stringify(pkg, null, '\t') + '\n');
 })();
