@@ -1,0 +1,24 @@
+scripts/generate.cjs
+  s_dfbabf402cf9db::t_d92f5774e6d9be 288
+nodes/FraudDetection/generated/properties.ts
+  ai_agent 329
+test/generated.test.cjs
+  s_dfbabf402cf9db::t_d92f5774e6d9be 78-85,88-93
+  ai_agent 86-87
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.2",
+  "base_commit_sha": "532e03826e5fc367fba22658d2c9f54c29fcc6ae",
+  "prompts": {},
+  "sessions": {
+    "s_dfbabf402cf9db": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "8583a217-13b9-4fe7-84a5-4daed4508dce",
+        "model": "claude-sonnet-5-5"
+      },
+      "human_author": "Jamie Madden <digitalchild@gmail.com>"
+    }
+  }
+}
