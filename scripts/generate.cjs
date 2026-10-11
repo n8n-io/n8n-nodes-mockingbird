@@ -724,10 +724,13 @@ async function writeFormatted(file, content) {
 		console.log(dir, properties.length, 'properties');
 	}
 
-	// Remove node folders that no longer exist in NODES. The shared folder stays.
+	// Remove generated node folders that no longer exist in NODES. Folders without generated output stay.
 	const keep = new Set(['shared', ...NODES.map((n) => n.dir)]);
 	for (const d of fs.readdirSync(path.join(ROOT, 'nodes'))) {
-		if (!keep.has(d)) fs.rmSync(path.join(ROOT, 'nodes', d), { recursive: true, force: true });
+		const generatedDir = path.join(ROOT, 'nodes', d, 'generated');
+		if (!keep.has(d) && fs.existsSync(generatedDir)) {
+			fs.rmSync(path.join(ROOT, 'nodes', d), { recursive: true, force: true });
+		}
 	}
 
 	fs.writeFileSync(path.join(ROOT, 'credentials', 'mockingbird.svg'), icon);
