@@ -21,6 +21,12 @@ Follow the [installation guide](https://docs.n8n.io/integrations/community-nodes
 | Mockingbird Product Catalogue | Get, Get Many, Get Categories | Optional |
 | Mockingbird Helpdesk | Get, Get Many, Create, Update, Replace, Add Comment | Required |
 | Mockingbird Orders | Get, Get Many, Get Many (Cursor) | Required |
+| Mockingbird Weather | Get Current, Get Forecast | Optional |
+| Mockingbird Exchange Rates | Get Rates, Convert | Optional |
+| Mockingbird Quotes | Get, Get Many, Get Quote of the Day | Optional |
+| Mockingbird Utilities | Echo, Hash Text, Encode and Decode Base64, Validate Email, IBAN, and VAT Number, Convert Units, Generate UUID, Generate Lorem Ipsum, and more | Optional |
+| Mockingbird CRM Lite | Get, Get Many, Create | Optional |
+| Mockingbird Fun Pack | Random dog, cat, robot, joke, fact, activity, and users; Get Trivia, Number Fact, and Fortune | Optional |
 
 **Get Many (Cursor)** makes one request and returns the full `{ data, meta }` response. It does not follow `meta.next_cursor`. Pass the cursor back in Additional Fields to read the next page.
 

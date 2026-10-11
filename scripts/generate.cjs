@@ -8,32 +8,60 @@ const spec = JSON.parse(
 	fs.readFileSync(path.join(__dirname, '..', 'spec', 'openapi.json'), 'utf8'),
 );
 
-// One node per API (tag). Pilot set. `resource` is the n8n resource label.
-const NODES = [
-	{ dir: 'ProductCatalogue', tag: 'Product Catalogue', resource: 'Product' },
-	{ dir: 'Helpdesk', tag: 'Helpdesk', resource: 'Ticket' },
-	{ dir: 'Orders', tag: 'Orders', resource: 'Order' },
-];
+const OPERATIONS = require('./operations.cjs');
 
-// operationId -> n8n standard vocabulary. Anything missing here is skipped.
-// Binary endpoints (PDF, zip) are hand-written overrides, not generated.
-const OPERATIONS = {
-	list_products_v1_products_get: ['Get Many', 'Get many products'],
-	product_categories_v1_products_categories_get: ['Get Categories', 'Get product categories'],
-	get_product_v1_products__product_id__get: ['Get', 'Get a product'],
-	list_orders_v1_orders_get: ['Get Many', 'Get many orders'],
-	list_orders_cursor_v1_orders_cursor_get: [
-		'Get Many (Cursor)',
-		'Get many orders using cursor pagination',
-	],
-	get_order_v1_orders__order_id__get: ['Get', 'Get an order'],
-	list_tickets_v1_tickets_get: ['Get Many', 'Get many tickets'],
-	create_ticket_v1_tickets_post: ['Create', 'Create a ticket'],
-	get_ticket_v1_tickets__ticket_id__get: ['Get', 'Get a ticket'],
-	patch_ticket_v1_tickets__ticket_id__patch: ['Update', 'Update a ticket'],
-	put_ticket_v1_tickets__ticket_id__put: ['Replace', 'Replace a ticket'],
-	add_comment_v1_tickets__ticket_id__comments_post: ['Add Comment', 'Add a comment to a ticket'],
-};
+// One node per API (tag). `resource` is the n8n resource label.
+const NODES = [
+	{
+		dir: 'ProductCatalogue',
+		tag: 'Product Catalogue',
+		resource: 'Product',
+		description: 'Get products from the Mockingbird product catalogue',
+	},
+	{
+		dir: 'Helpdesk',
+		tag: 'Helpdesk',
+		resource: 'Ticket',
+		description: 'Manage support tickets in the Mockingbird helpdesk',
+	},
+	{
+		dir: 'Orders',
+		tag: 'Orders',
+		resource: 'Order',
+		description: 'Get orders from the Mockingbird orders API',
+	},
+	{
+		dir: 'Weather',
+		tag: 'Weather',
+		resource: 'Weather',
+		description: 'Get synthetic weather from Mockingbird',
+	},
+	{
+		dir: 'ExchangeRates',
+		tag: 'Exchange Rates',
+		resource: 'Exchange Rate',
+		description: 'Get synthetic exchange rates from Mockingbird',
+	},
+	{ dir: 'Quotes', tag: 'Quotes', resource: 'Quote', description: 'Get quotes from Mockingbird' },
+	{
+		dir: 'Utilities',
+		tag: 'Utilities',
+		resource: 'Utility',
+		description: 'Use Mockingbird helper endpoints such as hash, validate, and convert',
+	},
+	{
+		dir: 'CrmLite',
+		tag: 'CRM Lite',
+		resource: 'Customer',
+		description: 'Get and create customers in Mockingbird CRM Lite',
+	},
+	{
+		dir: 'FunPack',
+		tag: 'Fun Pack',
+		resource: 'Fun',
+		description: 'Get dogs, cats, jokes, facts, and other fun data from Mockingbird',
+	},
+];
 
 const kebab = (s) =>
 	s
@@ -104,6 +132,35 @@ const ENUMS = {
 		status: ['open', 'pending', 'resolved', 'closed'],
 		priority: ['low', 'normal', 'high', 'urgent'],
 		category: ['billing', 'defect', 'installation', 'shipping', 'other'],
+	},
+	'Exchange Rates': {
+		base: ['EUR', 'USD', 'GBP', 'CHF', 'SEK', 'NOK', 'PLN', 'CZK', 'JPY', 'AUD'],
+		from: ['EUR', 'USD', 'GBP', 'CHF', 'SEK', 'NOK', 'PLN', 'CZK', 'JPY', 'AUD'],
+		to: ['EUR', 'USD', 'GBP', 'CHF', 'SEK', 'NOK', 'PLN', 'CZK', 'JPY', 'AUD'],
+	},
+	'CRM Lite': {
+		segment: ['enterprise', 'mid_market', 'small'],
+		country: [
+			'AT',
+			'AU',
+			'BR',
+			'CA',
+			'CH',
+			'DE',
+			'ES',
+			'FR',
+			'GB',
+			'IE',
+			'IN',
+			'IT',
+			'JP',
+			'NL',
+			'NO',
+			'PL',
+			'SE',
+			'SG',
+			'US',
+		],
 	},
 	Orders: {
 		status: ['pending', 'paid', 'shipped', 'delivered', 'cancelled', 'refunded'],
@@ -227,15 +284,73 @@ function postProcess(properties, tag) {
 	return setOperationDefault(addListHandling(applyEnums(collected, tag)));
 }
 
+const opKey = (context) => `${context.method.toUpperCase()} ${context.pattern}`;
 const operationParser = {
-	shouldSkip: (op) => !OPERATIONS[op.operationId],
-	name: (op) => OPERATIONS[op.operationId][0],
-	value: (op) => kebab(OPERATIONS[op.operationId][0]),
-	action: (op) => OPERATIONS[op.operationId][1],
+	shouldSkip: (op, context) => !OPERATIONS[opKey(context)],
+	name: (op, context) => OPERATIONS[opKey(context)][0],
+	value: (op, context) => kebab(OPERATIONS[opKey(context)][0]),
+	action: (op, context) => OPERATIONS[opKey(context)][1],
 	description: (op) => (op.summary || '').replace(/\s*\(.*\)\s*$/, ''),
 };
 
-for (const { dir, tag, resource } of NODES) {
+const ROOT = path.join(__dirname, '..');
+const icon = fs.readFileSync(path.join(ROOT, 'assets', 'mockingbird.svg'));
+
+function nodeSource(cls, displayName, description, required) {
+	return `import { NodeConnectionTypes, type INodeType, type INodeTypeDescription } from 'n8n-workflow';
+import { generatedProperties } from './generated/properties';
+
+export class ${cls} implements INodeType {
+	description: INodeTypeDescription = {
+		displayName: '${displayName}',
+		name: '${cls.charAt(0).toLowerCase() + cls.slice(1)}',
+		icon: { light: 'file:mockingbird.svg', dark: 'file:mockingbird.dark.svg' },
+		group: ['transform'],
+		version: 1,
+		subtitle: '={{$parameter["operation"].replace(/-/g, " ") + ": " + $parameter["resource"]}}',
+		description: '${description}',
+		defaults: {
+			name: '${displayName}',
+		},
+		usableAsTool: true,
+		inputs: [NodeConnectionTypes.Main],
+		outputs: [NodeConnectionTypes.Main],
+		credentials: [{ name: 'mockingbirdApi', required: ${required} }],
+		requestDefaults: {
+			baseURL: '={{ ($credentials?.baseUrl || "https://mockingbird.n8n.io/v1").replace(/\\\\/+$/, "") }}',
+			headers: {
+				Accept: 'application/json',
+				'Content-Type': 'application/json',
+			},
+		},
+		properties: generatedProperties,
+	};
+}
+`;
+}
+
+function nodeCodex(cls) {
+	const base = 'https://github.com/n8n-io/n8n-nodes-mockingbird';
+	return (
+		JSON.stringify(
+			{
+				node: 'n8n-nodes-mockingbird.' + cls.charAt(0).toLowerCase() + cls.slice(1),
+				nodeVersion: '1.0',
+				codexVersion: '1.0',
+				categories: ['Development'],
+				resources: {
+					credentialDocumentation: [{ url: base + '?tab=readme-ov-file#credentials' }],
+					primaryDocumentation: [{ url: base + '?tab=readme-ov-file' }],
+				},
+			},
+			null,
+			'\t',
+		) + '\n'
+	);
+}
+
+const nodePaths = [];
+for (const { dir, tag, resource, description } of NODES) {
 	const sub = JSON.parse(JSON.stringify(spec));
 	sub.paths = {};
 	for (const [p, item] of Object.entries(spec.paths)) {
@@ -261,9 +376,36 @@ for (const { dir, tag, resource } of NODES) {
 	fs.mkdirSync(out, { recursive: true });
 	fs.writeFileSync(
 		path.join(out, 'properties.ts'),
-		"// Generated by scripts/generate.cjs. Do not edit.\nimport type { INodeProperties } from 'n8n-workflow';\nimport { unwrapData } from '../../shared/unwrapData';\n\nexport const generatedProperties: INodeProperties[] = " +
+		"// Generated by scripts/generate.cjs. Do not edit.\nimport type { INodeProperties } from 'n8n-workflow';\n" +
+			(JSON.stringify(properties).includes('__unwrapData__')
+				? "import { unwrapData } from '../../shared/unwrapData';\n"
+				: '') +
+			'\nexport const generatedProperties: INodeProperties[] = ' +
 			JSON.stringify(properties, null, '\t').replace(/"__unwrapData__"/g, 'unwrapData') +
 			';\n',
 	);
+	// Credential is required only when every generated operation needs auth.
+	const secured = Object.values(sub.paths).flatMap((item) =>
+		Object.values(item).map((op) => Boolean(op.security && op.security.length)),
+	);
+	const required = secured.length > 0 && secured.every(Boolean);
+	const cls = 'Mockingbird' + dir;
+	const nodeDir = path.join(ROOT, 'nodes', dir);
+	fs.writeFileSync(
+		path.join(nodeDir, cls + '.node.ts'),
+		nodeSource(cls, 'Mockingbird ' + tag, description, required),
+	);
+	fs.writeFileSync(path.join(nodeDir, cls + '.node.json'), nodeCodex(cls));
+	fs.writeFileSync(path.join(nodeDir, 'mockingbird.svg'), icon);
+	fs.writeFileSync(path.join(nodeDir, 'mockingbird.dark.svg'), icon);
+	nodePaths.push(`dist/nodes/${dir}/${cls}.node.js`);
 	console.log(dir, properties.length, 'properties');
 }
+
+fs.writeFileSync(path.join(ROOT, 'credentials', 'mockingbird.svg'), icon);
+fs.writeFileSync(path.join(ROOT, 'credentials', 'mockingbird.dark.svg'), icon);
+
+const pkgPath = path.join(ROOT, 'package.json');
+const pkg = JSON.parse(fs.readFileSync(pkgPath, 'utf8'));
+pkg.n8n.nodes = nodePaths;
+fs.writeFileSync(pkgPath, JSON.stringify(pkg, null, '\t') + '\n');
