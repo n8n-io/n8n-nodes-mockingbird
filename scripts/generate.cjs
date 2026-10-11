@@ -357,15 +357,15 @@ import { generatedProperties } from './generated/properties';
 
 export class ${cls} implements INodeType {
 	description: INodeTypeDescription = {
-		displayName: '${displayName}',
-		name: '${cls.charAt(0).toLowerCase() + cls.slice(1)}',
+		displayName: ${JSON.stringify(displayName)},
+		name: ${JSON.stringify(cls.charAt(0).toLowerCase() + cls.slice(1))},
 		icon: { light: 'file:mockingbird.svg', dark: 'file:mockingbird.dark.svg' },
 		group: ['transform'],
 		version: 1,
 		subtitle: '={{$parameter["operation"].replace(/-/g, " ") + ": " + $parameter["resource"]}}',
-		description: '${description}',
+		description: ${JSON.stringify(description)},
 		defaults: {
-			name: '${displayName}',
+			name: ${JSON.stringify(displayName)},
 		},
 		usableAsTool: true,
 		inputs: [NodeConnectionTypes.Main],
