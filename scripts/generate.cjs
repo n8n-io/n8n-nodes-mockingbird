@@ -426,9 +426,10 @@ function normalize(props) {
 			// The API rejects POST /reservations without this header, although the spec marks it optional.
 			out.displayName = 'Idempotency Key';
 			out.required = true;
-			out.default = '={{ $now.toMillis() + "-" + $itemIndex }}';
+			out.default =
+				'={{ ($execution.id || $now.toMillis()) + "-" + $workflow.id + "-" + $runIndex + "-" + $itemIndex }}';
 			out.description =
-				'Sent as the Idempotency-Key header. The default is new on every run. Set a fixed key to make retries safe: repeating a key returns the first result instead of creating a second reservation.';
+				'Sent as the Idempotency-Key header. The default is unique per execution, workflow, run, and item, so a retry inside one execution reuses the key. Repeating a key returns the first result instead of creating a second reservation.';
 		}
 		if (out.type === 'string' && /email/i.test(out.name) && !out.placeholder) {
 			out.placeholder = 'name@email.com';
