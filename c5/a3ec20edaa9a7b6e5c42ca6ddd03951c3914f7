@@ -1,0 +1,21 @@
+scripts/generate.cjs
+  s_dfbabf402cf9db::t_2f4dbd5d71d5e3 741,744-750
+README.md
+  s_dfbabf402cf9db::t_2f4dbd5d71d5e3 21-28,34-60
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.2",
+  "base_commit_sha": "c5a3ec20edaa9a7b6e5c42ca6ddd03951c3914f7",
+  "prompts": {},
+  "sessions": {
+    "s_dfbabf402cf9db": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "8583a217-13b9-4fe7-84a5-4daed4508dce",
+        "model": "claude-sonnet-5-5"
+      },
+      "human_author": "Jamie Madden <digitalchild@gmail.com>"
+    }
+  }
+}
