@@ -738,10 +738,16 @@ async function writeFormatted(file, content) {
 
 	const pkgPath = path.join(ROOT, 'package.json');
 	const pkg = JSON.parse(fs.readFileSync(pkgPath, 'utf8'));
-	// Keep hand-written nodes: entries whose folder has no generated output.
+	// Keep hand-written nodes: entries whose folder exists and has no generated output.
 	const handWritten = (pkg.n8n.nodes || []).filter((n) => {
 		const dir = n.split('/')[2];
-		return !nodePaths.includes(n) && !fs.existsSync(path.join(ROOT, 'nodes', dir, 'generated'));
+		const folder = path.join(ROOT, 'nodes', dir);
+		// A folder removed by the cleanup above no longer exists, so its stale path is dropped.
+		return (
+			!nodePaths.includes(n) &&
+			fs.existsSync(folder) &&
+			!fs.existsSync(path.join(folder, 'generated'))
+		);
 	});
 	pkg.n8n.nodes = [...nodePaths, ...handWritten];
 	await writeFormatted(pkgPath, JSON.stringify(pkg, null, '\t') + '\n');

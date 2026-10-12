@@ -18,46 +18,46 @@ Follow the [installation guide](https://docs.n8n.io/integrations/community-nodes
 
 Six nodes group the Mockingbird APIs by theme. Pick the node, then a resource, then an operation.
 
-| Node | Resources | Credential |
-| --- | --- | --- |
-| Mockingbird Commerce | Product, Order, Inventory, Review, Customer | Optional |
-| Mockingbird Support | Ticket, Article, Agent Tool, Text | Required |
-| Mockingbird People | Employee, Time Off Request, Room | Required |
-| Mockingbird Finance and Security | Transaction, Security, Exchange Rate | Optional |
-| Mockingbird Platform | Job, Event, Webhook, File, Sandbox, Assessment | Optional |
-| Mockingbird Fun and Utilities | Fun, Utility, Weather, Quote | Optional |
+| Node                             | Resources                                      | Credential |
+| -------------------------------- | ---------------------------------------------- | ---------- |
+| Mockingbird Commerce             | Product, Order, Inventory, Review, Customer    | Optional   |
+| Mockingbird Support              | Ticket, Article, Agent Tool, Text              | Required   |
+| Mockingbird People               | Employee, Time Off Request, Room               | Required   |
+| Mockingbird Finance and Security | Transaction, Security, Exchange Rate           | Optional   |
+| Mockingbird Platform             | Job, Event, Webhook, File, Sandbox, Assessment | Optional   |
+| Mockingbird Fun and Utilities    | Fun, Utility, Weather, Quote                   | Optional   |
 
 Some resources need no credential. Examples are Product, Weather, and Exchange Rate. In a node marked Optional, a resource that needs a key fails with 401 if you add no credential. Nodes marked Required always need one.
 
 ### Operations
 
-| Resource | Operations |
-| --- | --- |
-| Product | Get, Get Many, Get Categories |
-| Order | Get, Get Many, Get Many (Cursor) |
-| Inventory | Get, Create Reservation, Delete Reservation |
-| Review | Get Many, Get Latest, Create, Moderate |
-| Customer | Get, Get Many, Create |
-| Ticket | Get, Get Many, Create, Update, Replace, Add Comment |
-| Article | Search, Get |
-| Agent Tool | Look Up Customer, Refund Order, Cancel Order, Resend Invoice, Get Next Ticket, Resolve Ticket, Get Tools |
-| Text | Classify Sentiment, Classify Intent, Extract Entities |
-| Employee | Get, Get Many, Create, Update, Get Reports, Get Departments, Get Org Chart, Get Salary Bands |
-| Time Off Request | Get Many, Get Many by Employee, Create, Update, Get Balance, Get Calendar |
-| Room | Get Many Rooms, Get Availability, Create Booking, Delete Booking |
-| Transaction | Get, Get Many, Score, Create Case, Update Case |
-| Security | Get Many Events, Get Many Blocks, Create Block |
-| Exchange Rate | Get Rates, Convert |
-| Job | Create, Get, Get Result |
-| Event | Get Many |
-| Webhook | Get Many Subscriptions, Create Subscription, Delete Subscription, Fire |
-| File | Get Many |
-| Sandbox | Reset, Get ID |
-| Assessment | Get, Get Many, Get Source, Submit |
-| Fun | Random dog, cat, robot, joke, fact, activity, and users; Get Trivia, Number Fact, and Fortune |
-| Utility | Echo, Hash Text, Encode and Decode Base64, Validate Email, IBAN, and VAT Number, Convert Units, Generate UUID, Generate Lorem Ipsum, and more |
-| Weather | Get Current, Get Forecast |
-| Quote | Get, Get Many, Get Quote of the Day |
+| Resource         | Operations                                                                                                                                                                                                             |
+| ---------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Product          | Get, Get Many, Get Categories                                                                                                                                                                                          |
+| Order            | Get, Get Many, Get Many (Cursor)                                                                                                                                                                                       |
+| Inventory        | Get, Create Reservation, Delete Reservation                                                                                                                                                                            |
+| Review           | Get Many, Get Latest, Create, Moderate                                                                                                                                                                                 |
+| Customer         | Get, Get Many, Create                                                                                                                                                                                                  |
+| Ticket           | Get, Get Many, Create, Update, Replace, Add Comment                                                                                                                                                                    |
+| Article          | Search, Get                                                                                                                                                                                                            |
+| Agent Tool       | Look Up Customer, Refund Order, Cancel Order, Resend Invoice, Get Next Ticket, Resolve Ticket, Get Tools                                                                                                               |
+| Text             | Classify Sentiment, Classify Intent, Extract Entities                                                                                                                                                                  |
+| Employee         | Get, Get Many, Create, Update, Get Reports, Get Departments, Get Org Chart, Get Salary Bands                                                                                                                           |
+| Time Off Request | Get Many, Get Many by Employee, Create, Update, Get Balance, Get Calendar                                                                                                                                              |
+| Room             | Get Many Rooms, Get Availability, Create Booking, Delete Booking                                                                                                                                                       |
+| Transaction      | Get, Get Many, Score, Create Case, Update Case                                                                                                                                                                         |
+| Security         | Get Many Events, Get Many Blocks, Create Block                                                                                                                                                                         |
+| Exchange Rate    | Get Rates, Convert                                                                                                                                                                                                     |
+| Job              | Create, Get, Get Result                                                                                                                                                                                                |
+| Event            | Get Many                                                                                                                                                                                                               |
+| Webhook          | Get Many Subscriptions, Create Subscription, Delete Subscription, Fire                                                                                                                                                 |
+| File             | Get Many                                                                                                                                                                                                               |
+| Sandbox          | Reset, Get ID                                                                                                                                                                                                          |
+| Assessment       | Get, Get Many, Get Source, Submit                                                                                                                                                                                      |
+| Fun              | Get Random Dog, Get Dog Breeds, Get Random Dog by Breed, Get Random Cat, Get Random Robot, Get Random Joke, Get Joke, Get Random Fact, Get Random Activity, Get Trivia, Get Random Users, Get Number Fact, Get Fortune |
+| Utility          | Get Countries, Echo, Respond With Status, Respond After Delay, Generate UUID, Hash Text, Encode Base64, Decode Base64, Validate Email, Validate IBAN, Validate VAT Number, Convert Units, Generate Lorem Ipsum         |
+| Weather          | Get Current, Get Forecast                                                                                                                                                                                              |
+| Quote            | Get, Get Many, Get Quote of the Day                                                                                                                                                                                    |
 
 **Get Many (Cursor)** makes one request and returns the full `{ data, meta }` response. It does not follow `meta.next_cursor`. Pass the cursor back in Additional Fields to read the next page.
 
