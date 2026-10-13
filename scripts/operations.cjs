@@ -67,4 +67,108 @@ module.exports = {
 	'GET /fun/users/random': ['Get Random Users', 'Get random fake users'],
 	'GET /fun/numbers/{n}': ['Get Number Fact', 'Get a fact about a number'],
 	'GET /fun/fortune': ['Get Fortune', 'Get a fortune cookie message'],
+
+	// People / HR (employee photo is binary)
+	'GET /employees': ['Get Many', 'Get many employees'],
+	'POST /employees': ['Create', 'Create an employee'],
+	'GET /employees/{employee_id}': ['Get', 'Get an employee'],
+	'PATCH /employees/{employee_id}': ['Update', 'Update an employee'],
+	'GET /employees/{employee_id}/reports': ['Get Reports', 'Get the direct reports of an employee'],
+	'GET /departments': ['Get Departments', 'Get departments'],
+	'GET /orgchart': ['Get Org Chart', 'Get the org chart'],
+	'GET /salary-bands': ['Get Salary Bands', 'Get salary bands'],
+
+	// Time Off
+	'GET /employees/{employee_id}/time-off/balance': [
+		'Get Balance',
+		'Get the time off balance of an employee',
+	],
+	'GET /time-off/requests': ['Get Many', 'Get many time off requests'],
+	'POST /time-off/requests': ['Create', 'Create a time off request'],
+	'GET /employees/{employee_id}/time-off/requests': [
+		'Get Many by Employee',
+		'Get the time off requests of an employee',
+	],
+	'PATCH /time-off/requests/{request_id}': ['Update', 'Update a time off request'],
+	'GET /time-off/calendar': ['Get Calendar', 'Get the time off calendar'],
+
+	// Inventory
+	'GET /inventory/{product_id}': ['Get', 'Get the stock level of a product'],
+	'POST /reservations': ['Create Reservation', 'Reserve stock'],
+	'DELETE /reservations/{reservation_id}': ['Delete Reservation', 'Delete a stock reservation'],
+
+	// Batch Jobs
+	'POST /jobs': ['Create', 'Create a job'],
+	'GET /jobs/{job_id}': ['Get', 'Get a job'],
+	'GET /jobs/{job_id}/result': ['Get Result', 'Get the result of a job'],
+
+	// Event Stream
+	'GET /events': ['Get Many', 'Get many events'],
+
+	// Fraud Detection
+	'GET /transactions': ['Get Many', 'Get many transactions'],
+	'GET /transactions/{transaction_id}': ['Get', 'Get a transaction'],
+	'POST /fraud/score': ['Score', 'Score a transaction for fraud'],
+	'POST /fraud/cases': ['Create Case', 'Create a fraud case'],
+	'PATCH /fraud/cases/{case_id}': ['Update Case', 'Update a fraud case'],
+
+	// Security Monitor
+	'GET /security/events': ['Get Many Events', 'Get many security events'],
+	'GET /security/blocks': ['Get Many Blocks', 'Get many blocks'],
+	'POST /security/blocks': ['Create Block', 'Create a block'],
+
+	// Product Reviews
+	'GET /reviews': ['Get Many', 'Get many reviews'],
+	'POST /reviews': ['Create', 'Create a review'],
+	'GET /reviews/latest': ['Get Latest', 'Get the latest reviews'],
+	'PATCH /reviews/{review_id}/moderate': ['Moderate', 'Moderate a review'],
+
+	// Webhook Hub
+	'GET /webhooks/subscriptions': ['Get Many Subscriptions', 'Get many webhook subscriptions'],
+	'POST /webhooks/subscriptions': ['Create Subscription', 'Create a webhook subscription'],
+	'DELETE /webhooks/subscriptions/{subscription_id}': [
+		'Delete Subscription',
+		'Delete a webhook subscription',
+	],
+	'POST /webhooks/fire': ['Fire', 'Fire a webhook event'],
+
+	// Document Store (file upload and download are binary)
+	'GET /files': ['Get Many', 'Get many files'],
+
+	// Sandbox
+	'POST /sandbox/reset': ['Reset', 'Reset the sandbox'],
+	'GET /sandbox-id': ['Get ID', 'Get a new sandbox ID'],
+
+	// Meeting Rooms
+	'GET /rooms': ['Get Many Rooms', 'Get many rooms'],
+	'GET /rooms/availability': ['Get Availability', 'Get room availability'],
+	'POST /bookings': ['Create Booking', 'Book a room'],
+	'DELETE /bookings/{booking_id}': ['Delete Booking', 'Delete a booking'],
+
+	// Knowledge Base
+	'GET /kb/search': ['Search', 'Search articles'],
+	'GET /kb/articles/{article_id}': ['Get', 'Get an article'],
+
+	// Agent Tools
+	'GET /agent/customers/lookup': ['Look Up Customer', 'Look up a customer'],
+	'POST /agent/orders/{order_id}/refund': ['Refund Order', 'Refund an order'],
+	'POST /agent/orders/{order_id}/cancel': ['Cancel Order', 'Cancel an order'],
+	'POST /agent/orders/{order_id}/resend-invoice': [
+		'Resend Invoice',
+		'Resend the invoice of an order',
+	],
+	'GET /agent/tickets/next': ['Get Next Ticket', 'Get the next ticket to work on'],
+	'POST /agent/tickets/{ticket_id}/resolve': ['Resolve Ticket', 'Resolve a ticket'],
+	'GET /agent/tools': ['Get Tools', 'Get the available agent tools'],
+
+	// Classifier
+	'POST /classify/sentiment': ['Classify Sentiment', 'Classify the sentiment of text'],
+	'POST /classify/intent': ['Classify Intent', 'Classify the intent of text'],
+	'POST /extract/entities': ['Extract Entities', 'Extract entities from text'],
+
+	// Assessments (source zip is binary)
+	'GET /assessments': ['Get Many', 'Get many assessments'],
+	'GET /assessments/{slug}': ['Get', 'Get an assessment'],
+	'GET /assessments/{slug}/source': ['Get Source', 'Get the source files of an assessment'],
+	'POST /assessments/{slug}/submit': ['Submit', 'Submit an assessment'],
 };

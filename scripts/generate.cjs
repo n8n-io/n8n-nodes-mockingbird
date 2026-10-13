@@ -12,7 +12,8 @@ const spec = JSON.parse(
 const OPERATIONS = require('./operations.cjs');
 
 // One node per API (tag). `resource` is the n8n resource label.
-const NODES = [
+// One entry per spec tag. NODES below groups them into the nodes users see.
+const APIS = [
 	{
 		dir: 'ProductCatalogue',
 		tag: 'Product Catalogue',
@@ -62,6 +63,142 @@ const NODES = [
 		resource: 'Fun',
 		description: 'Get dogs, cats, jokes, facts, and other fun data from Mockingbird',
 	},
+	{
+		dir: 'PeopleHr',
+		tag: 'People / HR',
+		resource: 'Employee',
+		description: 'Manage employees in Mockingbird People / HR',
+	},
+	{
+		dir: 'TimeOff',
+		tag: 'Time Off',
+		resource: 'Time Off Request',
+		description: 'Manage time off requests in Mockingbird',
+	},
+	{
+		dir: 'Inventory',
+		tag: 'Inventory',
+		resource: 'Inventory',
+		description: 'Check and reserve stock in Mockingbird Inventory',
+	},
+	{
+		dir: 'BatchJobs',
+		tag: 'Batch Jobs',
+		resource: 'Job',
+		description: 'Create and check jobs in Mockingbird Batch Jobs',
+	},
+	{
+		dir: 'EventStream',
+		tag: 'Event Stream',
+		resource: 'Event',
+		description: 'Get events from the Mockingbird event stream',
+	},
+	{
+		dir: 'FraudDetection',
+		tag: 'Fraud Detection',
+		resource: 'Transaction',
+		description: 'Score transactions and manage cases in Mockingbird Fraud Detection',
+	},
+	{
+		dir: 'SecurityMonitor',
+		tag: 'Security Monitor',
+		resource: 'Security',
+		description: 'Get security events and manage blocks in Mockingbird Security Monitor',
+	},
+	{
+		dir: 'ProductReviews',
+		tag: 'Product Reviews',
+		resource: 'Review',
+		description: 'Manage product reviews in Mockingbird',
+	},
+	{
+		dir: 'WebhookHub',
+		tag: 'Webhook Hub',
+		resource: 'Webhook',
+		description: 'Manage and fire webhooks in Mockingbird Webhook Hub',
+	},
+	{
+		dir: 'DocumentStore',
+		tag: 'Document Store',
+		resource: 'File',
+		description: 'List files in the Mockingbird document store',
+	},
+	{
+		dir: 'Sandbox',
+		tag: 'Sandbox',
+		resource: 'Sandbox',
+		description: 'Reset a sandbox or get a new sandbox ID in Mockingbird',
+	},
+	{
+		dir: 'MeetingRooms',
+		tag: 'Meeting Rooms',
+		resource: 'Room',
+		description: 'Check rooms and manage bookings in Mockingbird Meeting Rooms',
+	},
+	{
+		dir: 'KnowledgeBase',
+		tag: 'Knowledge Base',
+		resource: 'Article',
+		description: 'Search and get articles in the Mockingbird knowledge base',
+	},
+	{
+		dir: 'AgentTools',
+		tag: 'Agent Tools',
+		resource: 'Agent Tool',
+		description: 'Use the Mockingbird tools made for AI agents',
+	},
+	{
+		dir: 'Classifier',
+		tag: 'Classifier',
+		resource: 'Text',
+		description: 'Classify text and extract entities with Mockingbird',
+	},
+	{
+		dir: 'Assessments',
+		tag: 'Assessments',
+		resource: 'Assessment',
+		description: 'Get and submit assessments in Mockingbird',
+	},
+];
+
+const NODES = [
+	{
+		dir: 'Commerce',
+		displayName: 'Mockingbird Commerce',
+		description: 'Work with products, orders, inventory, reviews, and customers in Mockingbird',
+		tags: ['Product Catalogue', 'Orders', 'Inventory', 'Product Reviews', 'CRM Lite'],
+	},
+	{
+		dir: 'Support',
+		displayName: 'Mockingbird Support',
+		description: 'Work with tickets, articles, agent tools, and text classification in Mockingbird',
+		tags: ['Helpdesk', 'Knowledge Base', 'Agent Tools', 'Classifier'],
+	},
+	{
+		dir: 'People',
+		displayName: 'Mockingbird People',
+		description: 'Work with employees, time off, and meeting rooms in Mockingbird',
+		tags: ['People / HR', 'Time Off', 'Meeting Rooms'],
+	},
+	{
+		dir: 'FinanceSecurity',
+		displayName: 'Mockingbird Finance and Security',
+		description: 'Work with fraud checks, security events, and exchange rates in Mockingbird',
+		tags: ['Fraud Detection', 'Security Monitor', 'Exchange Rates'],
+	},
+	{
+		dir: 'Platform',
+		displayName: 'Mockingbird Platform',
+		description:
+			'Work with jobs, events, webhooks, documents, sandboxes, and assessments in Mockingbird',
+		tags: ['Batch Jobs', 'Event Stream', 'Webhook Hub', 'Document Store', 'Sandbox', 'Assessments'],
+	},
+	{
+		dir: 'Fun',
+		displayName: 'Mockingbird Fun and Utilities',
+		description: 'Get weather, quotes, fun data, and helper endpoints from Mockingbird',
+		tags: ['Fun Pack', 'Utilities', 'Weather', 'Quotes'],
+	},
 ];
 
 const kebab = (s) =>
@@ -102,10 +239,7 @@ function collectOptional(properties) {
 		}
 		const { displayOptions, ...c } = p;
 		// ID filters reject 0, so an untouched default would fail with 422.
-		const child =
-			c.type === 'number' && /_id$/.test(c.name)
-				? { ...c, default: 1, typeOptions: { ...c.typeOptions, minValue: 1 } }
-				: c;
+		const child = c.type === 'number' && /_id$/.test(c.name) ? withIdMinimum(c) : c;
 		const key = op[0];
 		if (!byOp.has(key)) {
 			byOp.set(key, {
@@ -167,10 +301,37 @@ const ENUMS = {
 	Orders: {
 		status: ['pending', 'paid', 'shipped', 'delivered', 'cancelled', 'refunded'],
 	},
+	'People / HR': {
+		status: ['active', 'on_leave'],
+		department: ['engineering', 'finance', 'hr', 'ops', 'sales', 'support'],
+	},
+	'Time Off': {
+		leave_type: ['annual', 'sick', 'unpaid', 'parental'],
+		status: ['pending', 'approved', 'rejected', 'cancelled'],
+		department: ['engineering', 'finance', 'hr', 'ops', 'sales', 'support'],
+	},
+	'Batch Jobs': {
+		type: ['export_orders', 'report_sales', 'bulk_price_update'],
+	},
+	'Webhook Hub': {
+		event_type: ['order.created', 'ticket.updated', 'review.created', 'transaction.flagged'],
+	},
+	'Agent Tools': {
+		resolution_category: [
+			'resolved-info',
+			'replacement-shipped',
+			'refund-issued',
+			'no-fault-found',
+			'escalated',
+		],
+	},
+	'Fraud Detection': {
+		status: ['cleared', 'confirmed_fraud'],
+	},
 };
 
 const UNWRAP = '__unwrapData__';
-const optionName = (v) => v.replace(/_/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase());
+const optionName = (v) => v.replace(/[_.-]/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase());
 
 function applyEnums(props, tag) {
 	const enums = ENUMS[tag] || {};
@@ -258,6 +419,17 @@ function normalize(props) {
 		if (out.name === 'limit' && out.type === 'number') {
 			out.typeOptions = { minValue: 1, ...out.typeOptions };
 			out.description = 'Max number of results to return';
+			out.default = 50;
+		}
+		if (out.type === 'json' && /^\[\s*null\s*\]$/.test(String(out.default))) out.default = '[]';
+		if (out.name === 'Idempotency-Key') {
+			// The API rejects POST /reservations without this header, although the spec marks it optional.
+			out.displayName = 'Idempotency Key';
+			out.required = true;
+			out.default =
+				'={{ ($execution.id || $now.toMillis()) + "-" + $workflow.id + "-" + $runIndex + "-" + $itemIndex }}';
+			out.description =
+				'Sent as the Idempotency-Key header. The default is unique per execution, workflow, run, and item, so a retry inside one execution reuses the key. Repeating a key returns the first result instead of creating a second reservation.';
 		}
 		if (out.type === 'string' && /email/i.test(out.name) && !out.placeholder) {
 			out.placeholder = 'name@email.com';
@@ -318,12 +490,41 @@ function encodePathParams(props) {
 	});
 }
 
-// ID fields (path or body) start at 1, because the API rejects 0.
+// Smallest value the spec allows per ID name. Reservation, booking, and case IDs start at 100000.
+const ID_MINIMUMS = (() => {
+	const mins = {};
+	const add = (name, schema) => {
+		if (/_id$/.test(name) && schema && typeof schema.minimum === 'number') {
+			if (name in mins && mins[name] !== schema.minimum) {
+				throw new Error(
+					`Conflicting spec minimums for ${name}: ${mins[name]} and ${schema.minimum}`,
+				);
+			}
+			mins[name] = schema.minimum;
+		}
+	};
+	for (const item of Object.values(spec.paths)) {
+		for (const op of Object.values(item)) {
+			for (const prm of op.parameters || []) add(prm.name, prm.schema);
+		}
+	}
+	for (const schema of Object.values(spec.components.schemas)) {
+		for (const [name, prop] of Object.entries(schema.properties || {})) add(name, prop);
+	}
+	return mins;
+})();
+
+function withIdMinimum(p) {
+	const min = ID_MINIMUMS[p.name] || 1;
+	return { ...p, default: min, typeOptions: { ...p.typeOptions, minValue: min } };
+}
+
+// ID fields (path or body) start at the spec minimum, because the API rejects 0 and anything below it.
 function idDefaults(props) {
 	return props.map((p) => {
 		if (p.type === 'collection') return { ...p, options: idDefaults(p.options) };
 		if (p.type === 'number' && /_id$/.test(p.name)) {
-			return { ...p, default: 1, typeOptions: { ...p.typeOptions, minValue: 1 } };
+			return withIdMinimum(p);
 		}
 		return p;
 	});
@@ -449,28 +650,54 @@ async function writeFormatted(file, content) {
 
 (async () => {
 	const nodePaths = [];
-	for (const { dir, tag, resource, description } of NODES) {
-		const sub = JSON.parse(JSON.stringify(spec));
-		sub.paths = {};
-		for (const [p, item] of Object.entries(spec.paths)) {
-			const kept = {};
-			for (const [method, op] of Object.entries(item)) {
-				if (op.tags && op.tags.includes(tag)) kept[method] = op;
+	for (const { dir, displayName, description, tags } of NODES) {
+		const properties = [];
+		const resources = [];
+		let secured = [];
+		for (const tag of tags) {
+			const { resource } = APIS.find((a) => a.tag === tag);
+			const sub = JSON.parse(JSON.stringify(spec));
+			sub.paths = {};
+			for (const [p, item] of Object.entries(spec.paths)) {
+				const kept = {};
+				for (const [method, op] of Object.entries(item)) {
+					if (op.tags && op.tags.includes(tag)) kept[method] = op;
+				}
+				if (Object.keys(kept).length) sub.paths[p.replace(/^\/v1/, '')] = kept;
 			}
-			if (Object.keys(kept).length) sub.paths[p.replace(/^\/v1/, '')] = kept;
+			sub.tags = (spec.tags || []).filter((t) => t.name === tag);
+			const built = postProcess(
+				new N8NPropertiesBuilder(sub, {
+					operation: operationParser,
+					resource: {
+						name: () => resource,
+						value: () => kebab(resource),
+						description: () => '',
+					},
+				}).build(),
+				tag,
+			);
+			for (const p of built) {
+				if (p.name === 'resource') resources.push(...p.options);
+				else properties.push(p);
+			}
+			secured = secured.concat(
+				Object.values(sub.paths).flatMap((item) =>
+					Object.values(item).map((op) => Boolean(op.security && op.security.length)),
+				),
+			);
 		}
-		sub.tags = (spec.tags || []).filter((t) => t.name === tag);
-		const properties = postProcess(
-			new N8NPropertiesBuilder(sub, {
-				operation: operationParser,
-				resource: {
-					name: () => resource,
-					value: () => kebab(resource),
-					description: () => '',
-				},
-			}).build(),
-			tag,
-		);
+		const names = resources.map((r) => r.value);
+		if (new Set(names).size !== names.length) throw new Error(`Duplicate resource in ${dir}`);
+		resources.sort((a, b) => a.name.localeCompare(b.name));
+		properties.unshift({
+			displayName: 'Resource',
+			name: 'resource',
+			type: 'options',
+			noDataExpression: true,
+			options: resources,
+			default: resources[0].value,
+		});
 		const out = path.join(__dirname, '..', 'nodes', dir, 'generated');
 		fs.mkdirSync(out, { recursive: true });
 		await writeFormatted(
@@ -484,15 +711,12 @@ async function writeFormatted(file, content) {
 				';\n',
 		);
 		// Credential is required only when every generated operation needs auth.
-		const secured = Object.values(sub.paths).flatMap((item) =>
-			Object.values(item).map((op) => Boolean(op.security && op.security.length)),
-		);
 		const required = secured.length > 0 && secured.every(Boolean);
 		const cls = 'Mockingbird' + dir;
 		const nodeDir = path.join(ROOT, 'nodes', dir);
 		await writeFormatted(
 			path.join(nodeDir, cls + '.node.ts'),
-			nodeSource(cls, 'Mockingbird ' + tag, description, required),
+			nodeSource(cls, displayName, description, required),
 		);
 		await writeFormatted(path.join(nodeDir, cls + '.node.json'), nodeCodex(cls));
 		fs.writeFileSync(path.join(nodeDir, 'mockingbird.svg'), icon);
@@ -501,16 +725,31 @@ async function writeFormatted(file, content) {
 		console.log(dir, properties.length, 'properties');
 	}
 
+	// Remove generated node folders that no longer exist in NODES. Folders without generated output stay.
+	const keep = new Set(['shared', ...NODES.map((n) => n.dir)]);
+	for (const d of fs.readdirSync(path.join(ROOT, 'nodes'))) {
+		const generatedDir = path.join(ROOT, 'nodes', d, 'generated');
+		if (!keep.has(d) && fs.existsSync(generatedDir)) {
+			fs.rmSync(path.join(ROOT, 'nodes', d), { recursive: true, force: true });
+		}
+	}
+
 	fs.writeFileSync(path.join(ROOT, 'credentials', 'mockingbird.svg'), icon);
 	fs.writeFileSync(path.join(ROOT, 'credentials', 'mockingbird.dark.svg'), icon);
 
 	const pkgPath = path.join(ROOT, 'package.json');
 	const pkg = JSON.parse(fs.readFileSync(pkgPath, 'utf8'));
-	// Keep hand-written nodes: replace only the entries for generated node folders.
-	const generated = new Set(NODES.map((n) => `dist/nodes/${n.dir}/`));
-	const handWritten = (pkg.n8n.nodes || []).filter(
-		(n) => ![...generated].some((prefix) => n.startsWith(prefix)),
-	);
+	// Keep hand-written nodes: entries whose folder exists and has no generated output.
+	const handWritten = (pkg.n8n.nodes || []).filter((n) => {
+		const dir = n.split('/')[2];
+		const folder = path.join(ROOT, 'nodes', dir);
+		// A folder removed by the cleanup above no longer exists, so its stale path is dropped.
+		return (
+			!nodePaths.includes(n) &&
+			fs.existsSync(folder) &&
+			!fs.existsSync(path.join(folder, 'generated'))
+		);
+	});
 	pkg.n8n.nodes = [...nodePaths, ...handWritten];
 	await writeFormatted(pkgPath, JSON.stringify(pkg, null, '\t') + '\n');
 })();
