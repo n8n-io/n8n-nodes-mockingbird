@@ -69,6 +69,8 @@ export class MockingbirdApi implements ICredentialType {
 			name: 'baseUrl',
 			type: 'string',
 			default: 'https://mockingbird.n8n.io/v1',
+			description:
+				'Use https unless Mockingbird runs on a trusted internal network. The API key and ID are sent to this address.',
 		},
 	];
 
