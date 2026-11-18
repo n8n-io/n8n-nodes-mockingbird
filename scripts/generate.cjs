@@ -622,26 +622,6 @@ export class ${cls} implements INodeType {
 `;
 }
 
-function nodeCodex(cls) {
-	const base = 'https://github.com/n8n-io/n8n-nodes-mockingbird';
-	return (
-		JSON.stringify(
-			{
-				node: 'n8n-nodes-mockingbird.' + cls.charAt(0).toLowerCase() + cls.slice(1),
-				nodeVersion: '1.0',
-				codexVersion: '1.0',
-				categories: ['Development'],
-				resources: {
-					credentialDocumentation: [{ url: base + '?tab=readme-ov-file#credentials' }],
-					primaryDocumentation: [{ url: base + '?tab=readme-ov-file' }],
-				},
-			},
-			null,
-			'\t',
-		) + '\n'
-	);
-}
-
 // Emit formatted output so generated files match the repo style and diffs stay small.
 async function writeFormatted(file, content) {
 	const options = (await prettier.resolveConfig(file)) || {};
@@ -718,7 +698,8 @@ async function writeFormatted(file, content) {
 			path.join(nodeDir, cls + '.node.ts'),
 			nodeSource(cls, displayName, description, required),
 		);
-		await writeFormatted(path.join(nodeDir, cls + '.node.json'), nodeCodex(cls));
+		// Codex files are not used. Remove any left from older runs.
+		fs.rmSync(path.join(nodeDir, cls + '.node.json'), { force: true });
 		fs.writeFileSync(path.join(nodeDir, 'mockingbird.svg'), icon);
 		fs.writeFileSync(path.join(nodeDir, 'mockingbird.dark.svg'), icon);
 		nodePaths.push(`dist/nodes/${dir}/${cls}.node.js`);

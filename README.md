@@ -104,4 +104,4 @@ CI fails when generated files drift from the spec.
 
 ## License
 
-[Sustainable Use License](https://github.com/n8n-io/n8n/blob/master/LICENSE.md)
+[MIT](LICENSE)
