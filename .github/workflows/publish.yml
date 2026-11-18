@@ -45,12 +45,16 @@
 #
 # ─── RELEASE PROCESS ───────────────────────────────────────────────────────────
 #
-# Run the following command locally to start an interactive release:
+# main is protected, so the version bump goes through a pull request:
+#   1. Bump "version" in package.json and package-lock.json, and rename the
+#      "Unreleased" heading in CHANGELOG.md.
+#   2. Merge the pull request.
+#   3. Tag the merge commit with the version (for example 0.2.0) and push the tag.
+#   4. This workflow lints, builds, and publishes to npm with provenance.
+#   5. Create the GitHub Release with the changelog notes.
 #
-#   npm run release
-#
-# This will lint, build, prompt for a version bump, update the changelog,
-# commit, tag, and push, which triggers this workflow to publish to npm.
+# The workflow does not run `npm run release`. That command bumps, tags, and
+# pushes to main from a developer machine, and it rewrites CHANGELOG.md.
 
 name: Publish
 
