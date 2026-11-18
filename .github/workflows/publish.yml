@@ -7,13 +7,9 @@
 #
 # ─── PREREQUISITES ─────────────────────────────────────────────────────────────
 #
-# @n8n/node-cli ≥ 0.23.0 is required. Earlier versions do not support the
-# provenance flag passed by `npm run release` in CI, and the publish step will
-# fail. Check the version installed in this project with:
-#
-#   npm list @n8n/node-cli
-#
-# To upgrade, add @n8n/node-cli@latest as a dev dependency using your package manager.
+# The publish step calls `npm publish --provenance --access public` directly.
+# npm provenance needs a public source repository and `id-token: write` below.
+# @n8n/node-cli is used only for lint and build.
 #
 # ─── ONE-TIME SETUP ────────────────────────────────────────────────────────────
 #
@@ -87,6 +83,14 @@ jobs:
 
       - name: Install dependencies
         run: 'npm ci --ignore-scripts'
+
+      - name: Check the tag matches the package version
+        run: |
+          VERSION="$(node -p "require('./package.json').version")"
+          if [ "$GITHUB_REF_NAME" != "$VERSION" ]; then
+            echo "Tag $GITHUB_REF_NAME does not match package.json version $VERSION"
+            exit 1
+          fi
 
       - name: Lint and build
         # No npm token exists in this step, so lint and build tooling cannot read it.
