@@ -49,10 +49,10 @@
 	},
 	"devDependencies": {
 		"@devlikeapro/n8n-openapi-node": "^0.1.4",
-		"@n8n/node-cli": "*",
+		"@n8n/node-cli": "^1.2.1",
 		"eslint": "9.32.0",
-		"prettier": "3.6.2",
-		"release-it": "^21.1.0",
+		"prettier": "^3.10.1",
+		"release-it": "^21.1.2",
 		"typescript": "5.9.2"
 	},
 	"peerDependencies": {

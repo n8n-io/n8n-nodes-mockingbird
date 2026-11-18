@@ -140,7 +140,7 @@ module.exports = {
 	'GET /sandbox-id': ['Get ID', 'Get a new sandbox ID'],
 
 	// Meeting Rooms
-	'GET /rooms': ['Get Many Rooms', 'Get many rooms'],
+	'GET /rooms': ['Get Many', 'Get many rooms'],
 	'GET /rooms/availability': ['Get Availability', 'Get room availability'],
 	'POST /bookings': ['Create Booking', 'Book a room'],
 	'DELETE /bookings/{booking_id}': ['Delete Booking', 'Delete a booking'],
