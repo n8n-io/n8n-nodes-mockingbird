@@ -15,12 +15,6 @@ export class MockingbirdApi implements ICredentialType {
 		dark: 'file:mockingbird.dark.svg',
 	} as const;
 
-	httpRequestNode = {
-		name: 'Mockingbird',
-		docsUrl: 'https://github.com/n8n-io/n8n-nodes-mockingbird?tab=readme-ov-file#credentials',
-		apiBaseUrl: 'https://mockingbird.n8n.io/v1',
-	};
-
 	documentationUrl =
 		'https://github.com/n8n-io/n8n-nodes-mockingbird?tab=readme-ov-file#credentials';
 
