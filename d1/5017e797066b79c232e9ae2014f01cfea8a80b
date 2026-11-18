@@ -1,0 +1,11 @@
+.github/dependabot.yml
+  ai_agent 7-11
+.github/workflows/publish.yml
+  ai_agent 10-12,87-93
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.2",
+  "base_commit_sha": "d15017e797066b79c232e9ae2014f01cfea8a80b",
+  "prompts": {}
+}
