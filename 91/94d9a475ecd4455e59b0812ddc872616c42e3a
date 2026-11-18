@@ -1,0 +1,27 @@
+nodes/People/generated/properties.ts
+  s_dfbabf402cf9db::t_d9c159171fcdf8 1414-1415,1426
+scripts/operations.cjs
+  s_dfbabf402cf9db::t_d9c159171fcdf8 143
+README.md
+  ai_agent 47
+package.json
+  s_dfbabf402cf9db::t_e9e7f2ec74110b 53
+package-lock.json
+  ai_agent 14,115-175,372-374,378,380,383,386-389,391-394,396-399,401,403-410,413-416,418,420,423,426-429,432-434,436,993-999,1042-1048,3207-3213,4756-4779,5565-5567,5570-5572,5574-5580,5584,5588-5591,5594,5601,5609,5782-5785,5787-5790,5792-5822,5825,5828-5831,5833-5839,5841-5862,5866-5878,5892-5894,5896,5898-5899,5902-5905,6657-6669,6689-6695,9088-9106
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.2",
+  "base_commit_sha": "9194d9a475ecd4455e59b0812ddc872616c42e3a",
+  "prompts": {},
+  "sessions": {
+    "s_dfbabf402cf9db": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "8583a217-13b9-4fe7-84a5-4daed4508dce",
+        "model": "claude-sonnet-5-5"
+      },
+      "human_author": "Jamie Madden <digitalchild@gmail.com>"
+    }
+  }
+}
