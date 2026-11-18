@@ -1411,8 +1411,8 @@ export const generatedProperties: INodeProperties[] = [
 				},
 			},
 			{
-				name: 'Get Many Rooms',
-				value: 'get-many-rooms',
+				name: 'Get Many',
+				value: 'get-many',
 				action: 'Get many rooms',
 				description: 'List meeting rooms',
 				routing: {
@@ -1423,7 +1423,7 @@ export const generatedProperties: INodeProperties[] = [
 				},
 			},
 		],
-		default: 'get-many-rooms',
+		default: 'get-many',
 	},
 	{
 		displayName: 'Date',
