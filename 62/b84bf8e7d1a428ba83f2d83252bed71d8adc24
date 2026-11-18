@@ -1,0 +1,11 @@
+nodes/Commerce/generated/properties.ts
+  ai_agent 652
+scripts/generate.cjs
+  ai_agent 432
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.2",
+  "base_commit_sha": "62b84bf8e7d1a428ba83f2d83252bed71d8adc24",
+  "prompts": {}
+}
