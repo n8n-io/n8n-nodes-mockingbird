@@ -1,6 +1,6 @@
 {
 	"name": "n8n-nodes-mockingbird",
-	"version": "0.1.0",
+	"version": "0.2.0",
 	"description": "n8n community nodes for the Mockingbird mock APIs",
 	"license": "MIT",
 	"homepage": "https://github.com/n8n-io/n8n-nodes-mockingbird",
