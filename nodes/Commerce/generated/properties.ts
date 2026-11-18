@@ -649,7 +649,7 @@ export const generatedProperties: INodeProperties[] = [
 		name: 'Idempotency-Key',
 		type: 'string',
 		description:
-			'Sent as the Idempotency-Key header. The default is unique per execution, workflow, run, and item, so a retry inside one execution reuses the key. Repeating a key returns the first result instead of creating a second reservation.',
+			'Sent as the Idempotency-Key header. The default is unique per execution, workflow, run, and item, so a retry inside one execution reuses the key. It contains the execution ID (the current time when n8n has none) and the workflow ID, which are sent to the API. Repeating a key returns the first result instead of creating a second reservation.',
 		default:
 			'={{ ($execution.id || $now.toMillis()) + "-" + $workflow.id + "-" + $runIndex + "-" + $itemIndex }}',
 		routing: {
