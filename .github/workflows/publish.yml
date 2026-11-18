@@ -36,8 +36,10 @@
 # ─── TAG CONVENTION ────────────────────────────────────────────────────────────
 #
 # This workflow triggers on tags matching "*.*.*" (e.g. 0.2.0).
-# If you prefer tags with a "v" prefix (e.g. v0.2.0), change the filter to:
-#   tags: ['v*.*.*']
+# The tag must equal the version in package.json exactly. A "v" prefix
+# (e.g. v0.2.0) fails the version check. If you want a prefix, change both the
+# tag filter and the "Check the tag matches the package version" step.
+# A version with a hyphen (e.g. 1.0.0-rc.1) is published under the "next" dist-tag.
 #
 # ─── RELEASE PROCESS ───────────────────────────────────────────────────────────
 #
@@ -58,7 +60,7 @@ on:
   push:
     tags:
       # Matches 0.1.0, 1.2.3, 2.0.0-rc.1, etc.
-      # See "TAG CONVENTION" above if you prefer tags with a "v" prefix.
+      # See "TAG CONVENTION" above. The tag must equal the package.json version.
       - '[0-9]*.[0-9]*.[0-9]*'
 
 jobs:
@@ -108,6 +110,9 @@ jobs:
         #   .npmrc here before publishing.
         run: |
           [ -n "$NPM_TOKEN" ] && npm config set //registry.npmjs.org/:_authToken "$NPM_TOKEN"
-          npm publish --ignore-scripts --provenance --access public
+          VERSION="$(node -p "require('./package.json').version")"
+          DIST_TAG=latest
+          case "$VERSION" in *-*) DIST_TAG=next ;; esac
+          npm publish --ignore-scripts --provenance --access public --tag "$DIST_TAG"
         env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
