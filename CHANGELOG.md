@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## 0.2.0
 
 - Remove the `httpRequestNode` metadata from the credential. It is meant for credential-only nodes and would add an extra node to the panel. Remove the codex files, which declarative nodes do not need. Both follow n8n community node review feedback.
 - Breaking: the pilot Product Catalogue, Helpdesk, and Orders nodes are replaced by the themed nodes below. Workflows that use the old node types need the new nodes.
