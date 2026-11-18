@@ -2,7 +2,7 @@
 
 ## Unreleased
 
-- Remove the `httpRequestNode` metadata from the credential and the codex files. Declarative nodes do not need them.
+- Remove the `httpRequestNode` metadata from the credential. It is meant for credential-only nodes and would add an extra node to the panel. Remove the codex files, which declarative nodes do not need. Both follow n8n community node review feedback.
 - Breaking: the pilot Product Catalogue, Helpdesk, and Orders nodes are replaced by the themed nodes below. Workflows that use the old node types need the new nodes.
 - Group the Mockingbird APIs into six themed nodes: Commerce, Support, People, Finance and Security, Platform, and Fun and Utilities. Each node has one resource per API.
 - Update the README licence section and the n8n description.

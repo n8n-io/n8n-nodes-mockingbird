@@ -698,6 +698,8 @@ async function writeFormatted(file, content) {
 			path.join(nodeDir, cls + '.node.ts'),
 			nodeSource(cls, displayName, description, required),
 		);
+		// Codex files are not used. Remove any left from older runs.
+		fs.rmSync(path.join(nodeDir, cls + '.node.json'), { force: true });
 		fs.writeFileSync(path.join(nodeDir, 'mockingbird.svg'), icon);
 		fs.writeFileSync(path.join(nodeDir, 'mockingbird.dark.svg'), icon);
 		nodePaths.push(`dist/nodes/${dir}/${cls}.node.js`);
