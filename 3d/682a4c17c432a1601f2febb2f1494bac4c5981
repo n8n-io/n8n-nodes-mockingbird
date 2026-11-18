@@ -1,0 +1,11 @@
+scripts/generate.cjs
+  ai_agent 701-702
+CHANGELOG.md
+  ai_agent 5
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.2",
+  "base_commit_sha": "3d682a4c17c432a1601f2febb2f1494bac4c5981",
+  "prompts": {}
+}
