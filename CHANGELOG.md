@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.2.1
+
+- Publish with npm Trusted Publishing (OIDC). The publish workflow no longer reads an npm token. There are no changes to the nodes.
+
 ## 0.2.0
 
 - Breaking: the pilot Product Catalogue, Helpdesk, and Orders nodes are replaced by the themed nodes below. Workflows that use the old node types need the new nodes.

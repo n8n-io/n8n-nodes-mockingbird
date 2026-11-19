@@ -5,33 +5,18 @@
 # requirement. Provenance lets anyone cryptographically verify that a package
 # was built by this exact workflow, from this exact repository and commit.
 #
-# ─── PREREQUISITES ─────────────────────────────────────────────────────────────
+# ─── AUTHENTICATION ────────────────────────────────────────────────────────────
 #
-# The publish step calls `npm publish --provenance --access public` directly.
-# npm provenance needs a public source repository and `id-token: write` below.
+# npm Trusted Publishing (OIDC). No npm token exists in this repository.
+# The trusted publisher on npmjs.com is set to:
+#   Repository owner: n8n-io
+#   Repository name:  n8n-nodes-mockingbird
+#   Workflow name:    publish.yml
+#   Environment:      (blank)
+#   Allowed actions:  npm publish
+# This workflow publishes with `npm publish --provenance --access public`.
+# Both OIDC and provenance need a public source repository and `id-token: write`.
 # @n8n/node-cli is used only for lint and build.
-#
-# ─── ONE-TIME SETUP ────────────────────────────────────────────────────────────
-#
-# Option A, OIDC Trusted Publishing (recommended, no long-lived secrets):
-#   1. Log in to npmjs.com and open your package's settings.
-#   2. Under "Publish access" → "Trusted Publishers", click "Add a publisher".
-#   3. Select GitHub Actions and fill in:
-#        Repository owner: <your-github-username-or-org>
-#        Repository name:  <your-repo-name>
-#        Workflow name:    publish.yml
-#        Environment:      (leave blank unless you use GitHub Environments)
-#   4. Leave the NPM_TOKEN secret unset in this repository. GitHub's OIDC
-#      token is used instead, no secret ever touches your repo settings.
-#
-# Option B, npm Automation Token (fallback):
-#   1. On npmjs.com: Access Tokens → Generate New Token → Granular Access Token.
-#      Scope it to this package with "Read and write" publish permission.
-#   2. In GitHub: Settings → Secrets and variables → Actions → New secret.
-#      Name it NPM_TOKEN and paste the token value.
-#
-# Both options work with --provenance. Provenance is signed by GitHub's OIDC
-# infrastructure regardless of how npm authentication is handled.
 #
 # ─── TAG CONVENTION ────────────────────────────────────────────────────────────
 #
@@ -95,24 +80,16 @@ jobs:
           fi
 
       - name: Lint and build
-        # No npm token exists in this step, so lint and build tooling cannot read it.
+        # No npm token exists in this job, so lint and build tooling cannot read one.
         run: |
           npm run lint
           npm run build
 
       - name: Publish
-        # Publishes to npm with a provenance attestation (requires id-token: write above).
-        # --ignore-scripts skips prepublishOnly, so no package tooling runs with the token.
-        #
-        # Option A (OIDC): leave NPM_TOKEN unset, the token step is skipped and
-        #   npm uses the OIDC exchange instead.
-        # Option B (token): set NPM_TOKEN in repo secrets, it is written to
-        #   .npmrc here before publishing.
+        # Authenticates with the GitHub OIDC token (npm Trusted Publishing).
+        # No token is read or written here. --ignore-scripts skips prepublishOnly.
         run: |
-          [ -n "$NPM_TOKEN" ] && npm config set //registry.npmjs.org/:_authToken "$NPM_TOKEN"
           VERSION="$(node -p "require('./package.json').version")"
           DIST_TAG=latest
           case "$VERSION" in *-*) DIST_TAG=next ;; esac
           npm publish --ignore-scripts --provenance --access public --tag "$DIST_TAG"
-        env:
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
