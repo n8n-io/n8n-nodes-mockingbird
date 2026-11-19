@@ -17,6 +17,11 @@
 # This configuration must exist on npmjs.com before a tag is pushed. The workflow
 # filename must stay `publish.yml`, and the repository must stay `n8n-io/n8n-nodes-mockingbird`.
 # Otherwise the OIDC exchange fails and the publish stops with an auth error.
+#
+# Two jobs keep dev dependency code away from the publish credential. The
+# "verify" job runs lint, build, and tests and packs the tarball. It has no
+# `id-token: write`. The "publish" job has it, installs nothing, runs no package
+# code, and only publishes that tarball.
 # This workflow publishes with `npm publish --provenance --access public`.
 # Both OIDC and provenance need a public source repository and `id-token: write`.
 # @n8n/node-cli is used only for lint and build.
@@ -52,15 +57,12 @@ on:
       - '[0-9]*.[0-9]*.[0-9]*'
 
 jobs:
-  publish:
-    name: Publish to npm
+  verify:
+    name: Verify and pack
     runs-on: ubuntu-latest
 
+    # No id-token permission here, so lint, build, and test code cannot mint a publish credential.
     permissions:
-      # Required to mint the OIDC token. npm uses it to authenticate the publish
-      # (Trusted Publishing) and to sign the provenance attestation.
-      id-token: write
-      # Scoped down from the default (write) for least-privilege publishing.
       contents: read
 
     steps:
@@ -75,12 +77,6 @@ jobs:
       - name: Install dependencies
         run: 'npm ci --ignore-scripts'
 
-      - name: Check npm supports Trusted Publishing
-        # Trusted Publishing needs npm 11.5.1 or later and there is no token fallback.
-        run: |
-          npm --version
-          node -e "const [a,b,c]=process.argv[1].split('.').map(Number);process.exit(a>11||(a===11&&(b>5||(b===5&&c>=1)))?0:1)" "$(npm --version)" || { echo 'npm 11.5.1 or later is required'; exit 1; }
-
       - name: Check the tag matches the package version
         run: |
           VERSION="$(node -p "require('./package.json').version")"
@@ -90,16 +86,62 @@ jobs:
           fi
 
       - name: Lint, build, and test
-        # No npm token exists in this job, so lint and build tooling cannot read one.
         run: |
           npm run lint
           npm test
 
+      - name: Pack
+        # --ignore-scripts skips prepublishOnly and prepack.
+        run: |
+          mkdir pack
+          npm pack --ignore-scripts --pack-destination pack
+
+      - name: Upload the tarball
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: package
+          path: pack/*.tgz
+          if-no-files-found: error
+
+  publish:
+    name: Publish to npm
+    needs: verify
+    runs-on: ubuntu-latest
+
+    permissions:
+      # Mints the OIDC token. npm uses it to authenticate the publish
+      # (Trusted Publishing) and to sign the provenance attestation.
+      id-token: write
+      contents: read
+
+    steps:
+      - name: Set up Node.js
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: 'lts/*'
+
+      - name: Check npm supports Trusted Publishing
+        # Trusted Publishing needs npm 11.5.1 or later and there is no token fallback.
+        run: |
+          npm --version
+          npx --yes semver@7.7.2 -r '>=11.5.1' "$(npm --version)" || { echo 'npm 11.5.1 or later is required'; exit 1; }
+
+      - name: Download the tarball
+        uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        with:
+          name: package
+          path: pack
+
       - name: Publish
         # Authenticates with the GitHub OIDC token (npm Trusted Publishing).
-        # No token is read or written here. --ignore-scripts skips prepublishOnly.
+        # The tarball comes from the verify job. No package code runs here.
         run: |
-          VERSION="$(node -p "require('./package.json').version")"
+          TARBALL="$(ls pack/*.tgz)"
+          VERSION="$(tar -xOzf "$TARBALL" package/package.json | node -p "JSON.parse(require('fs').readFileSync(0,'utf8')).version")"
+          if [ "$GITHUB_REF_NAME" != "$VERSION" ]; then
+            echo "Tag $GITHUB_REF_NAME does not match tarball version $VERSION"
+            exit 1
+          fi
           DIST_TAG=latest
           case "$VERSION" in *-*) DIST_TAG=next ;; esac
-          npm publish --ignore-scripts --provenance --access public --tag "$DIST_TAG"
+          npm publish "$TARBALL" --provenance --access public --tag "$DIST_TAG"
