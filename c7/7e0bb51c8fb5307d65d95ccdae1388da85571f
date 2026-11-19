@@ -1,0 +1,19 @@
+.github/workflows/publish.yml
+  s_dfbabf402cf9db::t_5fbcd8f3c8a171 20-24,60-61,64,93-134,137,139-144,147
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.2",
+  "base_commit_sha": "c77e0bb51c8fb5307d65d95ccdae1388da85571f",
+  "prompts": {},
+  "sessions": {
+    "s_dfbabf402cf9db": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "8583a217-13b9-4fe7-84a5-4daed4508dce",
+        "model": "claude-sonnet-5-5"
+      },
+      "human_author": "Jamie Madden <digitalchild@gmail.com>"
+    }
+  }
+}
