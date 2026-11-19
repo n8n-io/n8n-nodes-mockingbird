@@ -124,7 +124,7 @@ jobs:
         # Trusted Publishing needs npm 11.5.1 or later and there is no token fallback.
         run: |
           npm --version
-          npx --yes semver@7.7.2 -r '>=11.5.1' "$(npm --version)" || { echo 'npm 11.5.1 or later is required'; exit 1; }
+          node -e "const [a,b,c]=process.argv[1].split('.').map(n=>parseInt(n,10));process.exit(a>11||(a===11&&(b>5||(b===5&&c>=1)))?0:1)" "$(npm --version)" || { echo 'npm 11.5.1 or later is required'; exit 1; }
 
       - name: Download the tarball
         uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
