@@ -136,7 +136,8 @@ jobs:
         # Authenticates with the GitHub OIDC token (npm Trusted Publishing).
         # The tarball comes from the verify job. No package code runs here.
         run: |
-          TARBALL="$(ls pack/*.tgz)"
+          # The ./ prefix stops npm from reading the path as a GitHub owner/repo shorthand.
+          TARBALL="./$(ls pack/*.tgz)"
           VERSION="$(tar -xOzf "$TARBALL" package/package.json | node -p "JSON.parse(require('fs').readFileSync(0,'utf8')).version")"
           if [ "$GITHUB_REF_NAME" != "$VERSION" ]; then
             echo "Tag $GITHUB_REF_NAME does not match tarball version $VERSION"
