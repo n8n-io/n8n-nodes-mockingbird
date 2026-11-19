@@ -5,33 +5,26 @@
 # requirement. Provenance lets anyone cryptographically verify that a package
 # was built by this exact workflow, from this exact repository and commit.
 #
-# ─── PREREQUISITES ─────────────────────────────────────────────────────────────
+# ─── AUTHENTICATION ────────────────────────────────────────────────────────────
 #
-# The publish step calls `npm publish --provenance --access public` directly.
-# npm provenance needs a public source repository and `id-token: write` below.
+# npm Trusted Publishing (OIDC). No npm token exists in this repository.
+# The trusted publisher on npmjs.com is set to:
+#   Repository owner: n8n-io
+#   Repository name:  n8n-nodes-mockingbird
+#   Workflow name:    publish.yml
+#   Environment:      (blank)
+#   Allowed actions:  npm publish
+# This configuration must exist on npmjs.com before a tag is pushed. The workflow
+# filename must stay `publish.yml`, and the repository must stay `n8n-io/n8n-nodes-mockingbird`.
+# Otherwise the OIDC exchange fails and the publish stops with an auth error.
+#
+# Two jobs keep dev dependency code away from the publish credential. The
+# "verify" job runs lint, build, and tests and packs the tarball. It has no
+# `id-token: write`. The "publish" job has it, installs nothing, runs no package
+# code, and only publishes that tarball.
+# This workflow publishes with `npm publish --provenance --access public`.
+# Both OIDC and provenance need a public source repository and `id-token: write`.
 # @n8n/node-cli is used only for lint and build.
-#
-# ─── ONE-TIME SETUP ────────────────────────────────────────────────────────────
-#
-# Option A, OIDC Trusted Publishing (recommended, no long-lived secrets):
-#   1. Log in to npmjs.com and open your package's settings.
-#   2. Under "Publish access" → "Trusted Publishers", click "Add a publisher".
-#   3. Select GitHub Actions and fill in:
-#        Repository owner: <your-github-username-or-org>
-#        Repository name:  <your-repo-name>
-#        Workflow name:    publish.yml
-#        Environment:      (leave blank unless you use GitHub Environments)
-#   4. Leave the NPM_TOKEN secret unset in this repository. GitHub's OIDC
-#      token is used instead, no secret ever touches your repo settings.
-#
-# Option B, npm Automation Token (fallback):
-#   1. On npmjs.com: Access Tokens → Generate New Token → Granular Access Token.
-#      Scope it to this package with "Read and write" publish permission.
-#   2. In GitHub: Settings → Secrets and variables → Actions → New secret.
-#      Name it NPM_TOKEN and paste the token value.
-#
-# Both options work with --provenance. Provenance is signed by GitHub's OIDC
-# infrastructure regardless of how npm authentication is handled.
 #
 # ─── TAG CONVENTION ────────────────────────────────────────────────────────────
 #
@@ -44,8 +37,8 @@
 # ─── RELEASE PROCESS ───────────────────────────────────────────────────────────
 #
 # main is protected, so the version bump goes through a pull request:
-#   1. Bump "version" in package.json and package-lock.json, and rename the
-#      "Unreleased" heading in CHANGELOG.md.
+#   1. Bump "version" in package.json and package-lock.json, and add a new
+#      version heading to CHANGELOG.md.
 #   2. Merge the pull request.
 #   3. Tag the merge commit with the version (for example 0.2.0) and push the tag.
 #   4. This workflow lints, builds, and publishes to npm with provenance.
@@ -64,14 +57,12 @@ on:
       - '[0-9]*.[0-9]*.[0-9]*'
 
 jobs:
-  publish:
-    name: Publish to npm
+  verify:
+    name: Verify and pack
     runs-on: ubuntu-latest
 
+    # No id-token permission here, so lint, build, and test code cannot mint a publish credential.
     permissions:
-      # Required to mint an OIDC token for npm provenance attestation.
-      id-token: write
-      # Scoped down from the default (write) for least-privilege publishing.
       contents: read
 
     steps:
@@ -94,25 +85,63 @@ jobs:
             exit 1
           fi
 
-      - name: Lint and build
-        # No npm token exists in this step, so lint and build tooling cannot read it.
+      - name: Lint, build, and test
         run: |
           npm run lint
-          npm run build
+          npm test
+
+      - name: Pack
+        # --ignore-scripts skips prepublishOnly and prepack.
+        run: |
+          mkdir pack
+          npm pack --ignore-scripts --pack-destination pack
+
+      - name: Upload the tarball
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: package
+          path: pack/*.tgz
+          if-no-files-found: error
+
+  publish:
+    name: Publish to npm
+    needs: verify
+    runs-on: ubuntu-latest
+
+    permissions:
+      # Mints the OIDC token. npm uses it to authenticate the publish
+      # (Trusted Publishing) and to sign the provenance attestation.
+      id-token: write
+      contents: read
+
+    steps:
+      - name: Set up Node.js
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: 'lts/*'
+
+      - name: Check npm supports Trusted Publishing
+        # Trusted Publishing needs npm 11.5.1 or later and there is no token fallback.
+        run: |
+          npm --version
+          node -e "const [a,b,c]=process.argv[1].split('.').map(n=>parseInt(n,10));process.exit(a>11||(a===11&&(b>5||(b===5&&c>=1)))?0:1)" "$(npm --version)" || { echo 'npm 11.5.1 or later is required'; exit 1; }
+
+      - name: Download the tarball
+        uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        with:
+          name: package
+          path: pack
 
       - name: Publish
-        # Publishes to npm with a provenance attestation (requires id-token: write above).
-        # --ignore-scripts skips prepublishOnly, so no package tooling runs with the token.
-        #
-        # Option A (OIDC): leave NPM_TOKEN unset, the token step is skipped and
-        #   npm uses the OIDC exchange instead.
-        # Option B (token): set NPM_TOKEN in repo secrets, it is written to
-        #   .npmrc here before publishing.
+        # Authenticates with the GitHub OIDC token (npm Trusted Publishing).
+        # The tarball comes from the verify job. No package code runs here.
         run: |
-          [ -n "$NPM_TOKEN" ] && npm config set //registry.npmjs.org/:_authToken "$NPM_TOKEN"
-          VERSION="$(node -p "require('./package.json').version")"
+          TARBALL="$(ls pack/*.tgz)"
+          VERSION="$(tar -xOzf "$TARBALL" package/package.json | node -p "JSON.parse(require('fs').readFileSync(0,'utf8')).version")"
+          if [ "$GITHUB_REF_NAME" != "$VERSION" ]; then
+            echo "Tag $GITHUB_REF_NAME does not match tarball version $VERSION"
+            exit 1
+          fi
           DIST_TAG=latest
           case "$VERSION" in *-*) DIST_TAG=next ;; esac
-          npm publish --ignore-scripts --provenance --access public --tag "$DIST_TAG"
-        env:
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+          npm publish "$TARBALL" --provenance --access public --tag "$DIST_TAG"
